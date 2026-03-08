@@ -611,19 +611,39 @@ body {
 }
 
 /* KIVULI CHA GIZA JUU YA PICHA */
+/* Hili ndio boksi linalobeba maandishi yote juu ya picha */
 .slide-overlay {
     position: absolute;
     top: 0;
+    /* Hii inapandisha boksi juu kabisa */
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+    /* Inajaza picha nzima ili tuweze kupanga maneno ndani yake */
     display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* Inasukuma kila kitu kuelekea juu */
     align-items: center;
-    justify-content: center;
+    /* Inayaweka maandishi katikati (Center) */
+    padding-top: 20px;
+    /* Inatoa nafasi kidogo isiguse fremu ya juu kabisa */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent);
+    /* Inafanya maandishi yasomeke vizuri */
+}
+
+/* Kurekebisha maandishi yenyewe yasibane sana juu */
+.slide-content {
     text-align: center;
-    z-index: 5;
-    /* Inakaa tabaka la 5 (Juu ya picha) */
+    max-width: 90%;
+}
+
+.slide-content h2 {
+    margin-top: 10px;
+    font-size: 1.4rem;
+    /* Ungepunguza kidogo kama ni makubwa sana */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    /* Inayafanya yang'ae */
 }
 
 /* MAANDISHI YA NDANI */
