@@ -262,26 +262,116 @@
                 <p style="font-size: 0.6rem; opacity: 0.5; margin-top: 5px;">Designed by Zepox Omni-Tech</p>
             </div>
         </footer>
+        <section class="faq-section">
+            <h3 class="section-title">❔ MASWALI YA MARA KWA MARA</h3>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Duka linapatikana wapi?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-content">
+                            <p>Mwenda Store inapatikana Kijenge Juu, Arusha, mtaa wa Livingstone St karibu na Kikuyu St.
+                                Tunapatikana kwa urahisi ukitumia ramani ya satelaiti iliyopo hapa chini.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Mnafungua saa ngapi?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-content">
+                            <p>Tunafungua kuanzia saa 12:30 asubuhi hadi saa 1:30 jioni, Jumatatu hadi Jumamosi.
+                                Jumapili tunafungua saa 3:00 asubuhi hadi saa 9:30 alasiri.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <style>
+            .faq-section {
+                max-width: 95%;
+                margin: 20px auto;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 15px;
+                padding: 15px;
+            }
+
+            .faq-item {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                margin-bottom: 5px;
+            }
+
+            .faq-question {
+                width: 100%;
+                padding: 18px;
+                background: none;
+                border: none;
+                color: white;
+                text-align: left;
+                font-size: 16px;
+                font-weight: bold;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            /* Hapa ndipo siri ya kutokata maneno ilipo */
+            .faq-answer {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease-out;
+                background: rgba(0, 0, 0, 0.2);
+            }
+
+            .faq-content {
+                padding: 15px 18px;
+            }
+
+            .faq-content p {
+                margin: 0;
+                color: #ccc;
+                line-height: 1.6;
+                font-size: 15px;
+                white-space: normal !important;
+                /* Inalazimisha maneno yashuke chini */
+                word-wrap: break-word;
+            }
+
+            .faq-item.active .faq-icon {
+                transform: rotate(45deg);
+                color: #ff4d4d;
+            }
+        </style>
+
         <script>
-            // Tunahakikisha kodi inaanza tu baada ya website yote kuwa tayari
             document.addEventListener('DOMContentLoaded', () => {
-                const faqItems = document.querySelectorAll('.faq-item');
+                const faqQuestions = document.querySelectorAll('.faq-question');
 
-                faqItems.forEach(item => {
-                    const question = item.querySelector('.faq-question');
-
+                faqQuestions.forEach(question => {
                     question.addEventListener('click', () => {
-                        // Angalia kama hili swali tayari limefunguliwa
-                        const isOpen = item.classList.contains('active');
+                        const item = question.parentElement;
+                        const answer = item.querySelector('.faq-answer');
+                        const isActive = item.classList.contains('active');
 
-                        // Funga maswali mengine yote kwanza (Hii inafanya yawe nadhifu)
-                        faqItems.forEach(otherItem => {
+                        // Funga maswali mengine yote kwanza
+                        document.querySelectorAll('.faq-item').forEach(otherItem => {
                             otherItem.classList.remove('active');
+                            otherItem.querySelector('.faq-answer').style.maxHeight = null;
                         });
 
-                        // Kama halikuwa wazi, lifungue sasa
-                        if (!isOpen) {
+                        // Kama swali halikuwa wazi, lifungue kwa kuhesabu urefu wake halisi
+                        if (!isActive) {
                             item.classList.add('active');
+                            // scrollHeight inapata urefu wote wa maandishi hata kama ni mengi
+                            answer.style.maxHeight = answer.scrollHeight + "px";
                         }
                     });
                 });
