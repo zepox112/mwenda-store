@@ -40,8 +40,8 @@
             </div>
 
             <div class="header-actions">
+
                 <button onclick="scrollToFooter()" class="contact-btn">Mawasiliano</button>
-                <button id="theme-toggle" class="icon-btn">🌓</button>
             </div>
         </div>
 
@@ -142,6 +142,10 @@
                         <div class="cat-icon">✨</div>
                         <span>Usafi & Urembo</span>
                     </div>
+                    <div class="cat-item glass" onclick="filterByCat('Clothing')">
+                        <div class="cat-icon">👕</div>
+                        <span>Mavazi & Nguo</span>
+                    </div>
                     <div class="cat-item glass" onclick="filterByCat('Hardware')">
                         <div class="cat-icon">🛠️</div>
                         <span>Home & Hardware</span>
@@ -219,10 +223,6 @@
 
         <div id="productQuickView" class="modal-overlay">
             <div class="modal-content">
-                <span class="close-btn" onclick="closeProductDetails()"
-                    style="position:fixed; top:20px; left:20px; background:rgba(0,0,0,0.5); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white;">
-                    &larr;
-                </span>
 
                 <div class="modal-img-container">
                     <img id="viewImg" src="">
@@ -256,6 +256,7 @@
 
             <div class="footer-grid">
                 <div class="shop-details">
+                    <a href="gallery.html" class="glow-gallery-btn">Our Gallery</a>
                     <p class="footer-brand">MWENDA STORE</p>
                     <p>Arusha, Tanzania (JMHP+MPW, Arusha)</p>
                     <p>📞 +255 747 185 190</p>
@@ -331,9 +332,9 @@
                 'Sports': { desc: 'Vifaa vya Michezo na Midoli ya watoto.', img: 'https://images.unsplash.com/photo-1595079676339-1534801ad6cf?q=80&w=1000' },
                 'Pest': { desc: 'Bidhaa za kulinda nyumba dhidi ya wadudu.', img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1000' },
                 'Grocery': { desc: 'Vyakula na Mahitaji ya Jikoni.', img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1000' },
-                'Mavazi': { desc: 'Nguo na mavazi bora ya kisasa.', img: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1000' }
+                // Imeongezwa: Mavazi & Nguo
+                'Clothing': { desc: 'Nguo na mavazi bora ya kisasa kwa rika zote.', img: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1000' }
             };
-
             // 3. THEME TOGGLE
             document.getElementById('theme-toggle').onclick = () => document.body.classList.toggle('light-mode');
 
@@ -465,19 +466,51 @@
                 document.getElementById('home-view').style.display = 'block';
                 document.getElementById('results-view').style.display = 'none';
             }
-
+            function closeModal() {
+                document.getElementById('productModal').style.display = 'none';
+                document.body.classList.remove('no-scroll');
+            }
             function order(name, price) {
                 const text = `Habari Mwenda Shop 🌿, nahitaji bidhaa hii:\n\n*Bidhaa:* ${name}\n*Bei:* ${price}`;
                 window.open(`https://wa.me/255747185190?text=${encodeURIComponent(text)}`);
             }
 
             window.onload = fetchProducts;
+            function openGallery() {
+                document.getElementById("galleryModal").style.display = "flex";
+            }
+
+            function closeGallery() {
+                document.getElementById("galleryModal").style.display = "none";
+            }
 
         </script>
         <a href="https://wa.me/255747185190" class="whatsapp-glass-btn" target="_blank">
             <div class="glow-ring"></div>
             <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
         </a>
+        <div id="galleryModal" class="modal-overlay">
+            <div class="modal-content liquid-glass">
+                <div class="modal-header">
+                    <h3>📸 Zepox Work Gallery</h3>
+                    <span class="close-btn" onclick="closeGallery()">&times;</span>
+                </div>
+                <div class="gallery-scroll-container">
+                    <div class="gallery-grid">
+                        <img src="gal1.jpg" alt="Gal 1" loading="lazy">
+                        <img src="gal2.jpg" alt="Gal 2" loading="lazy">
+                        <img src="gal3.jpg" alt="Gal 3" loading="lazy">
+                        <img src="gal4.jpg" alt="Gal 4" loading="lazy">
+                        <img src="gal5.jpg" alt="Gal 5" loading="lazy">
+                        <img src="gal6.jpg" alt="Gal 6" loading="lazy">
+                        <img src="gal7.jpg" alt="Gal 7" loading="lazy">
+                        <img src="gal8.jpg" alt="Gal 8" loading="lazy">
+                        <img src="gal9.jpg" alt="Gal 9" loading="lazy">
+                        <img src="gal10.jpg" alt="Gal 10" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
 </body>
 
 </html>

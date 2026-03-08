@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zepox Gallery | Modern Design</title>
+    <link rel="stylesheet" href="gallery-style.css">
+</head>
+
+<body>
+    <div class="background-blobs"></div>
+    <div class="gallery-container liquid-glass">
+        <header class="gallery-header">
+            <a href="index.html" class="back-btn">← Back to Home</a>
+            <h1>📸 OUR WORK GALLERY</h1>
+            <p>Picha mbalimbali za huduma na bidhaa zetu</p>
+        </header>
+
+        <main class="grid-layout">
+            <div class="gal-card glass-morph">
+                <img src="gal1.jpg" alt="Gallery 1" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+            <div class="gal-card glass-morph">
+                <img src="gal2.jpg" alt="Gallery 2" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+            <div class="gal-card glass-morph">
+                <img src="gal3.jpg" alt="Gallery 3" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+
+            <div class="gal-card glass-morph">
+                <img src="gal4.jpg" alt="Gallery 4" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+            <div class="gal-card glass-morph">
+                <img src="gal5.jpg" alt="Gallery 5" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+            <div class="gal-card glass-morph">
+                <img src="gal6.jpg" alt="Gallery 6" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+
+            <div class="gal-card glass-morph">
+                <img src="gal7.jpg" alt="Gallery 7" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+            <div class="gal-card glass-morph">
+                <img src="gal8.jpg" alt="Gallery 8" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+            <div class="gal-card glass-morph">
+                <img src="gal9.jpg" alt="Gallery 9" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+
+            <div class="gal-card glass-morph">
+                <img src="gal10.jpg" alt="Gallery 10" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+            <div class="gal-card glass-morph">
+                <img src="gal11.jpg" alt="Gallery 11" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+            <div class="gal-card glass-morph">
+                <img src="gal12.jpg" alt="Gallery 12" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+
+            <div class="gal-card glass-morph">
+                <img src="gal13.jpg" alt="Gallery 13" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+            <div class="gal-card glass-morph">
+                <img src="gal14.jpg" alt="Gallery 14" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+            <div class="gal-card glass-morph">
+                <img src="gal15.jpg" alt="Gallery 15" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+
+            <div class="gal-card glass-morph">
+                <img src="gal16.jpg" alt="Gallery 16" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+            <div class="gal-card glass-morph">
+                <img src="gal17.jpg" alt="Gallery 17" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+            <div class="gal-card glass-morph">
+                <img src="gal18.jpg" alt="Gallery 18" loading="lazy" onclick="openImage(this)">
+                <div class="gal-overlay"><span>Karibuni sana</span></div>
+            </div>
+        </main>
+        </main>
+    </div>
+    <div id="imageOpener" class="opener-overlay" onclick="closeImage()">
+        <span class="close-opener">&times;</span>
+
+        <img id="expandedImg" class="opened-image liquid-glass-border">
+    </div>
+</body>
+<script src="gallery-script.js">
+    // Function ya Kufungua Picha
+    function openImage(element) {
+        const opener = document.getElementById("imageOpener");
+        const expandedImg = document.getElementById("expandedImg");
+
+        // Vuta link ya picha iliyoguswa
+        expandedImg.src = element.src;
+
+        // Onyesha Ovarlay
+        opener.classList.add("active");
+
+        // ZUIA WEBSITE KUSCROLL (Lock body)
+        document.body.style.overflow = "hidden";
+    }
+
+    // Function ya Kufunga Picha
+    function closeImage() {
+        const opener = document.getElementById("imageOpener");
+
+        // Ficha Ovarlay
+        opener.classList.remove("active");
+
+        // RUHUSU WEBSITE KUSCROLL TENA (Unlock body)
+        document.body.style.overflow = "auto";
+    }
+</script>
+
+</html>

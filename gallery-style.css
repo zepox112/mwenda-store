@@ -1,0 +1,264 @@
+/* 1. MISINGI NA RANGI (ROOT) */
+:root {
+    --primary-green: #2ecc71;
+    --dark-glass: rgba(20, 40, 20, 0.4);
+    --liquid-gradient: linear-gradient(135deg, #1e2a1e 0%, #0d1a0d 100%);
+}
+
+/* 2. MWILINI (BODY) */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--liquid-gradient);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* 3. LIQUID BLOBS BACKGROUND */
+.background-blobs {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 30%, rgba(46, 204, 113, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(46, 204, 113, 0.1) 0%, transparent 40%);
+    z-index: -1;
+}
+
+/* 4. CHOMBO CHA KIOO (LIQUID GLASS CONTAINER) */
+.liquid-glass {
+    background: var(--dark-glass);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 40px;
+    width: 90%;
+    max-width: 1100px;
+    padding: 40px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    margin: 20px 0;
+}
+
+.gallery-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* 5. VITUFE (BUTTONS & LINKS) */
+.back-btn {
+    display: inline-block;
+    color: var(--primary-green);
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    transform: translateX(-5px);
+}
+
+.glow-gallery-btn {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 10px 20px;
+    margin-right: 15px;
+    border-radius: 12px;
+    background: rgba(46, 204, 113, 0.1);
+    border: 1px solid rgba(46, 204, 113, 0.5);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.2);
+}
+
+.glow-gallery-btn:hover {
+    background: rgba(46, 204, 113, 0.3);
+    border-color: #2ecc71;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.6),
+        0 0 40px rgba(46, 204, 113, 0.3);
+    transform: translateY(-2px);
+}
+
+.glow-gallery-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    transition: 0.5s;
+}
+
+.glow-gallery-btn:hover::after {
+    left: 120%;
+}
+
+/* 6. MPANGILIO WA GRIDI (GRID LAYOUT) */
+.grid-layout {
+    display: grid;
+    /* Inajipanga yenyewe kulingana na upana wa screen */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 7. KADI ZA PICHA (IMAGE CARDS) */
+.gal-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+}
+
+.gal-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    /* Inazuia picha isikatike vibaya */
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.gal-card:hover {
+    transform: scale(1.03);
+    border-color: #2ecc71;
+    box-shadow: 0 15px 35px rgba(46, 204, 113, 0.2);
+}
+
+.gal-card:hover img {
+    transform: scale(1.1);
+}
+
+.gal-overlay {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, rgba(46, 204, 113, 0.8), transparent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: bottom 0.4s ease;
+}
+
+.gal-card:hover .gal-overlay {
+    bottom: 0;
+}
+
+.gal-overlay span {
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* 8. IMAGE OPENER (LIGHTBOX OVERLAY) */
+.opener-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(15px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.opener-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.opened-image {
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: 30px;
+    box-shadow: 0 0 50px rgba(46, 204, 113, 0.5);
+    transform: scale(0.8);
+    transition: transform 0.4s ease;
+}
+
+.opener-overlay.active .opened-image {
+    transform: scale(1);
+}
+
+.close-opener {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    color: #fff;
+    font-size: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 2100;
+}
+
+.close-opener:hover {
+    color: #2ecc71;
+    transform: rotate(90deg);
+}
+
+/* 9. MAREKEBISHO KWA AJILI YA SIMU (RESPONSIVE) */
+@media (max-width: 768px) {
+    .liquid-glass {
+        width: 95%;
+        padding: 20px;
+        border-radius: 30px;
+    }
+
+    .grid-layout {
+        /* Inatengeneza picha 2 kwa kila mstari kwenye simu nyingi */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 10px;
+    }
+
+    .gal-card img {
+        height: 180px;
+        /* Inapunguza urefu picha zisiwe ndefu sana kwenye simu */
+    }
+
+    .gallery-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .opened-image {
+        max-width: 95%;
+        border-radius: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .grid-layout {
+        /* Kwa simu ndogo sana, picha 2 bado ni sawa, au tumia 1 kama unapenda picha kubwa zaidi */
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .close-opener {
+        top: 20px;
+        right: 20px;
+        font-size: 35px;
+    }
+}
