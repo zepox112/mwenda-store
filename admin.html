@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Mwenda Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f1113;
+            --accent: #81c784;
+            --grad: linear-gradient(135deg, #1b5e20, #43a047);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* BACKGROUND BLOBS */
+        .glass-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            top: 0;
+            left: 0;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.2;
+        }
+
+        .b1 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            top: -50px;
+            left: -50px;
+        }
+
+        .b2 {
+            width: 250px;
+            height: 250px;
+            background: #2196f3;
+            bottom: -50px;
+            right: -50px;
+        }
+
+        /* CARD CONTAINER */
+        .admin-card {
+            width: 90%;
+            max-width: 450px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            background: var(--grad);
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 20px rgba(27, 94, 32, 0.4);
+        }
+
+        h2 {
+            margin: 0;
+            font-weight: 900;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
+        p {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        /* FORM STYLES */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .glass-input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            color: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            transition: 0.3s ease;
+        }
+
+        .glass-input:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+            outline: none;
+        }
+
+        select.glass-input option {
+            background: #121212;
+            color: white;
+        }
+
+        /* FILE UPLOAD */
+        .file-upload-box {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed var(--glass-border);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .file-upload-box input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-box span {
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+
+        /* BUTTONS */
+        .glass-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 15px;
+            border: none;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: inherit;
+        }
+
+        .primary {
+            background: white;
+            color: black;
+            margin-top: 10px;
+        }
+
+        .success {
+            background: var(--grad);
+            color: white;
+            margin-top: 10px;
+        }
+
+        .glass-btn:active {
+            transform: scale(0.96);
+        }
+
+        .glass-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #status {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .logout-btn {
+            display: block;
+            margin: 25px auto 0;
+            background: none;
+            border: none;
+            color: #ff5252;
+            font-size: 0.7rem;
+            cursor: pointer;
+            opacity: 0.6;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="glass-bg">
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+    </div>
+
+    <div id="login-section" class="admin-card">
+        <div class="header-section">
+            <div class="icon-circle">🔐</div>
+            <h2>ADMIN LOGIN</h2>
+            <p>Ingiza namba ya siri ya Mwenda Shop</p>
+        </div>
+        <button onclick="showReset()"
+            style="background:none; border:none; color:var(--accent); font-size:0.7rem; margin-top:15px; cursor:pointer; text-decoration:underline;">Umesahau
+            Password?</button>
+
+        <div id="reset-section" class="hidden"
+            style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+            <p style="font-size: 0.7rem; color: #ff5252;">Weka Security Key kubadili password</p>
+            <input type="text" id="security-key" class="glass-input" placeholder="Security Key (Mfano: Zepox2026)"
+                style="margin-bottom: 10px;">
+            <input type="password" id="new-pass" class="glass-input" placeholder="Password Mpya">
+            <button class="glass-btn success" onclick="resetPassword()"
+                style="padding: 10px; font-size: 0.7rem;">BADILISHA SASA</button>
+        </div>
+        <div class="form-group">
+            <input type="password" id="admin-pass" class="glass-input" placeholder="Weka Password (2026)">
+        </div>
+        <button class="glass-btn primary" onclick="checkPass()">FUNGUA PANEL</button>
+    </div>
+
+    <div id="admin-form" class="admin-card hidden">
+        <div class="header-section">
+            <div class="icon-circle">📦</div>
+            <h2>ONGEZA BIDHAA</h2>
+            <p>Jaza fomu kutuma bidhaa moja kwa moja</p>
+        </div>
+
+        <form id="productForm">
+            <div class="form-group">
+                <label>Jina la Bidhaa</label>
+                <input type="text" id="p-name" class="glass-input" placeholder="Daftari, Sabuni, n.k." required>
+            </div>
+
+            <div class="field-row">
+                <div class="form-group">
+                    <label>Kategoria</label>
+                    <select id="p-category" class="glass-input" required>
+                        <option value="">Chagua...</option>
+                        <option value="Stationery">Stationery</option>
+                        <option value="Personal Care">Usafi/Urembo</option>
+                        <option value="Hardware">Hardware</option>
+                        <option value="Sports">Michezo</option>
+                        <option value="Pest">Pest Control</option>
+                        <option value="Grocery">Grocery</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Bei (TZS)</label>
+                    <input type="number" id="p-price" class="glass-input" placeholder="1500" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Picha ya Bidhaa</label>
+                <div class="file-upload-box">
+                    <input type="file" id="p-image-file" accept="image/*" required>
+                    <span id="file-label">Chagua picha ya bidhaa</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Maelezo (Optional)</label>
+                <textarea id="p-description" class="glass-input" rows="2" placeholder="Sifa za bidhaa..."></textarea>
+            </div>
+
+            <button type="submit" id="btn-save" class="glass-btn success">HIFADHI MTANDAONI</button>
+            <div id="status"></div>
+        </form>
+        <div id="manage-section" class="glass-card" style="margin-top: 30px; padding: 20px;">
+            <h3 style="color: #ff5252; margin-bottom: 15px;">🗑️ Manage Products</h3>
+            <p style="font-size: 0.8rem; margin-bottom: 20px;">Gusa kitufe cha "FUTA" kuondoa bidhaa kabisa.</p>
+
+            <div id="admin-product-list">
+                <p>Inapakia bidhaa...</p>
+            </div>
+        </div>
+        <button onclick="location.reload()" class="logout-btn">Log Out / Funga</button>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // Preview jina la picha ikichaguliwa
+        document.getElementById('p-image-file').onchange = function () {
+            document.getElementById('file-label').innerText = this.files[0].name;
+            document.getElementById('file-label').style.color = "#81c784";
+        };
+    </script>
+</body>
+
+</html>
