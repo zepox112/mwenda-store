@@ -55,245 +55,247 @@
         </div>
 
         <main class="main-content">
-            <div class="slider-container">
-                <div class="slider-track">
-                    <div class="slide">
-                        <img src="slide1.jpg" alt="Mwenda Store">
-                        <div class="slide-overlay">
-                            <div class="slide-content">
-                                <span class="slide-icon">👋</span>
-                                <h2>KARIBU MWENDA STORE</h2>
-                                <p>Uaminifu na Huduma Bora Arusha</p>
+            <div id="home-view">
+                <section class="main-slider glass">
+                    <div class="slider-container">
+                        <div class="slider-track">
+                            <div class="slide">
+                                <img src="slide1.jpg" alt="Mwenda Store">
+                                <div class="slide-overlay">
+                                    <div class="slide-content">
+                                        <span class="slide-icon">👋</span>
+                                        <h2>KARIBU MWENDA STORE</h2>
+                                        <p>Uaminifu na Huduma Bora Arusha</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slide">
+                                <img src="https://images.unsplash.com/photo-1558060370-d644479cb6f7?auto=format&fit=crop&q=80&w=1000"
+                                    alt="Watoto">
+                                <div class="slide-overlay">
+                                    <div class="slide-content">
+                                        <span class="slide-icon">🧸</span>
+                                        <h2>MICHEZO NA WATOTO</h2>
+                                        <p>Toys za Rangi na Furaha kwa Watoto</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slide">
+                                <img src="https://images.unsplash.com/photo-1590642916589-592bca10dfbf?auto=format&fit=crop&q=80&w=1000"
+                                    alt="Pest Control" alt="Pest Control">
+                                <div class="slide-overlay">
+                                    <div class="slide-content">
+                                        <span class="slide-icon">🚫</span>
+                                        <h2>KINGA YA WADUDU</h2>
+                                        <p>Dawa na Vifaa vya Kuua Wadudu Ofisini na Nyumbani</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slide">
+                                <img src="https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?auto=format&fit=crop&q=80&w=1000"
+                                    alt="Hardware">
+                                <div class="slide-overlay">
+                                    <div class="slide-content">
+                                        <span class="slide-icon">☕</span>
+                                        <h2>VIFAA VYA NDANI</h2>
+                                        <p>Vikombe na Vyombo Bora vya Jikoni</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slide">
+                                <img src="https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&q=80&w=1000"
+                                    alt="Stationaries">
+                                <div class="slide-overlay">
+                                    <div class="slide-content">
+                                        <span class="slide-icon">📝</span>
+                                        <h2>VIFAA VYA SHULE</h2>
+                                        <p>Kalamu na Karatasi kwa Ajili ya Masomo</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slide">
+                                <img src="slide1.jpg" alt="Clone">
+                                <div class="slide-overlay">
+                                    <div class="slide-content">
+                                        <span class="slide-icon">👋</span>
+                                        <h2>KARIBU MWENDA STORE</h2>
+                                        <p>Uaminifu na Huduma Bora Arusha</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </section>
 
-                    <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1558060370-d644479cb6f7?auto=format&fit=crop&q=80&w=1000"
-                            alt="Watoto">
-                        <div class="slide-overlay">
-                            <div class="slide-content">
-                                <span class="slide-icon">🧸</span>
-                                <h2>MICHEZO NA WATOTO</h2>
-                                <p>Toys za Rangi na Furaha kwa Watoto</p>
-                            </div>
-                        </div>
+                <h3 class="label">Bidhaa Zetu</h3>
+                <div class="cat-grid">
+                    <div class="cat-item glass" onclick="filterByCat('Stationery')">
+                        <div class="cat-icon">📚</div>
+                        <span>Shule & Ofisi</span>
                     </div>
-
-                    <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1590642916589-592bca10dfbf?auto=format&fit=crop&q=80&w=1000"
-                            alt="Pest Control" alt="Pest Control">
-                        <div class="slide-overlay">
-                            <div class="slide-content">
-                                <span class="slide-icon">🚫</span>
-                                <h2>KINGA YA WADUDU</h2>
-                                <p>Dawa na Vifaa vya Kuua Wadudu Ofisini na Nyumbani</p>
-                            </div>
-                        </div>
+                    <div class="cat-item glass" onclick="filterByCat('Personal Care')">
+                        <div class="cat-icon">✨</div>
+                        <span>Usafi & Urembo</span>
                     </div>
-
-                    <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?auto=format&fit=crop&q=80&w=1000"
-                            alt="Hardware">
-                        <div class="slide-overlay">
-                            <div class="slide-content">
-                                <span class="slide-icon">☕</span>
-                                <h2>VIFAA VYA NDANI</h2>
-                                <p>Vikombe na Vyombo Bora vya Jikoni</p>
-                            </div>
-                        </div>
+                    <div class="cat-item glass" onclick="filterByCat('Hardware')">
+                        <div class="cat-icon">🛠️</div>
+                        <span>Home & Hardware</span>
                     </div>
-
-                    <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&q=80&w=1000"
-                            alt="Stationaries">
-                        <div class="slide-overlay">
-                            <div class="slide-content">
-                                <span class="slide-icon">📝</span>
-                                <h2>VIFAA VYA SHULE</h2>
-                                <p>Kalamu na Karatasi kwa Ajili ya Masomo</p>
-                            </div>
-                        </div>
+                    <div class="cat-item glass" onclick="filterByCat('Sports')">
+                        <div class="cat-icon">⚽</div>
+                        <span>Michezo & Watoto</span>
                     </div>
-
-                    <div class="slide">
-                        <img src="slide1.jpg" alt="Clone">
-                        <div class="slide-overlay">
-                            <div class="slide-content">
-                                <span class="slide-icon">👋</span>
-                                <h2>KARIBU MWENDA STORE</h2>
-                                <p>Uaminifu na Huduma Bora Arusha</p>
-                            </div>
-                        </div>
+                    <div class="cat-item glass" onclick="filterByCat('Pest')">
+                        <div class="cat-icon">🦟</div>
+                        <span>Dawa za Wadudu</span>
+                    </div>
+                    <div class="cat-item glass" onclick="filterByCat('Grocery')">
+                        <div class="cat-icon">🍎</div>
+                        <span>Vyakula & Jikoni</span>
                     </div>
                 </div>
-            </div>
-            </section>
 
-            <h3 class="label">Bidhaa Zetu</h3>
-            <div class="cat-grid">
-                <div class="cat-item glass" onclick="filterByCat('Stationery')">
-                    <div class="cat-icon">📚</div>
-                    <span>Shule & Ofisi</span>
-                </div>
-                <div class="cat-item glass" onclick="filterByCat('Personal Care')">
-                    <div class="cat-icon">✨</div>
-                    <span>Usafi & Urembo</span>
-                </div>
-                <div class="cat-item glass" onclick="filterByCat('Hardware')">
-                    <div class="cat-icon">🛠️</div>
-                    <span>Home & Hardware</span>
-                </div>
-                <div class="cat-item glass" onclick="filterByCat('Sports')">
-                    <div class="cat-icon">⚽</div>
-                    <span>Michezo & Watoto</span>
-                </div>
-                <div class="cat-item glass" onclick="filterByCat('Pest')">
-                    <div class="cat-icon">🦟</div>
-                    <span>Dawa za Wadudu</span>
-                </div>
-                <div class="cat-item glass" onclick="filterByCat('Grocery')">
-                    <div class="cat-icon">🍎</div>
-                    <span>Vyakula & Jikoni</span>
+                <div class="schedule-full glass">
+                    <h3>⏰ Ratiba ya Wiki</h3>
+                    <div class="schedule-row"><span>Jumatatu - Ijumaa</span> <span>6:30 AM - 7:30 PM</span></div>
+                    <div class="schedule-row"><span>Jumamosi</span> <span>6:30 AM - 7:30 PM</span></div>
+                    <div class="schedule-row"><span>Jumapili</span> <span>8:00 AM - 6:00 PM</span></div>
                 </div>
             </div>
 
-            <div class="schedule-full glass">
-                <h3>⏰ Ratiba ya Wiki</h3>
-                <div class="schedule-row"><span>Jumatatu - Ijumaa</span> <span>6:30 AM - 7:30 PM</span></div>
-                <div class="schedule-row"><span>Jumamosi</span> <span>6:30 AM - 7:30 PM</span></div>
-                <div class="schedule-row"><span>Jumapili</span> <span>8:00 AM - 6:00 PM</span></div>
+            <div id="results-view" style="display: none;">
+                <div class="res-nav">
+                    <button onclick="goHome()" class="back-link">🏠 Rudi Nyumbani</button>
+                </div>
+                <div id="products-container">
+                </div>
             </div>
-    </div>
+        </main>
 
-    <div id="results-view" style="display: none;">
-        <div class="res-nav">
-            <button onclick="goHome()" class="back-link">🏠 Rudi Nyumbani</button>
-        </div>
-        <div id="products-container">
-        </div>
-    </div>
-    </main>
+        <a href="https://wa.me/255747185190" class="wa-float glass">
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WA">
+            <span>Chat nasi</span>
+        </a>
 
-    <a href="https://wa.me/255747185190" class="wa-float glass">
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WA">
-        <span>Chat nasi</span>
-    </a>
-
-    <footer class="footer-mobile glass">
-        <div class="map-container">
-            <h3 class="map-header">📍 TUNAPOPATIKANA</h3>
-            <div class="satellite-frame">
-                <iframe src="https://www.google.com/maps?q=-3.3708428,36.6867389&output=embed&t=k" class="map-frame"
-                    allowfullscreen="" loading="lazy">
-                </iframe>
-            </div>
-            <a href="https://maps.google.com/?cid=16019050050580367664&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNl"
-                target="_blank" class="map-action">
-                FUNGUA RAMANI KAMILI
-            </a>
-        </div>
-
-        <div class="footer-grid">
-            <div class="shop-details">
-                <p class="footer-brand">MWENDA STORE</p>
-                <p>Arusha, Tanzania (JMHP+MPW, Arusha)</p>
-                <p>📞 +255 747 185 190</p>
+        <footer class="footer-mobile glass">
+            <div class="map-container">
+                <h3 class="map-header">📍 TUNAPOPATIKANA</h3>
+                <div class="satellite-frame">
+                    <iframe src="https://www.google.com/maps?q=-3.3708428,36.6867389&output=embed&t=k" class="map-frame"
+                        allowfullscreen="" loading="lazy">
+                    </iframe>
+                </div>
+                <a href="https://maps.google.com/?cid=16019050050580367664&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNl"
+                    target="_blank" class="map-action">
+                    FUNGUA RAMANI KAMILI
+                </a>
             </div>
 
-            <div class="social-links">
-                <p><strong>Saa za Kazi:</strong></p>
-                <p>Jumatatu - Jumamosi: 06:30 - 19:30</p>
+            <div class="footer-grid">
+                <div class="shop-details">
+                    <p class="footer-brand">MWENDA STORE</p>
+                    <p>Arusha, Tanzania (JMHP+MPW, Arusha)</p>
+                    <p>📞 +255 747 185 190</p>
+                </div>
+
+                <div class="social-links">
+                    <p><strong>Saa za Kazi:</strong></p>
+                    <p>Jumatatu - Jumamosi: 06:30 - 19:30</p>
+                </div>
             </div>
-        </div>
 
-        <div class="copyright-section">
-            <p>© 2026 Mwenda Store. All Rights Reserved.</p>
-            <p style="font-size: 0.6rem; opacity: 0.5; margin-top: 5px;">Designed by Zepox Omni-Tech</p>
-        </div>
-    </footer>
+            <div class="copyright-section">
+                <p>© 2026 Mwenda Store. All Rights Reserved.</p>
+                <p style="font-size: 0.6rem; opacity: 0.5; margin-top: 5px;">Designed by Zepox Omni-Tech</p>
+            </div>
+        </footer>
 
-    <script>
-        // 1. LINK YAKO KAMILI YA SHEETY
-        const API = 'https://api.sheety.co/058cdf18e93420af4bfde475ec8274e3/mwendashopDb/sheet1';
-        let allItems = [];
+        <script>
+            // 1. LINK YAKO KAMILI YA SHEETY
+            const API = 'https://api.sheety.co/058cdf18e93420af4bfde475ec8274e3/mwendashopDb/sheet1';
+            let allItems = [];
 
-        // 2. MAELEZO YA KATEGORIA (Yaliyoboreshwa)
-        const categoryData = {
-            'Stationery': {
-                desc: 'Hiki ni kundi la vifaa vya kujifunzia na kazi za kiofisi: Madaftari, Kalamu, Vifaa vya Hesabu, na Sanaa.',
-                img: 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&q=80&w=1000'
-            },
-            'Personal Care': {
-                desc: 'Vifaa vya usafi wa mwili na muonekano: Miswaki, Dawa za meno, Sabuni, Urembo na Usafi wa Viatu.',
-                img: 'https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&q=80&w=1000'
-            },
-            'Hardware': {
-                desc: 'Vifaa vinavyosaidia kazi za kila siku nyumbani: Visu, Plugi za gesi, Ufungashaji na Mavazi kama soksi.',
-                img: 'https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?auto=format&fit=crop&q=80&w=1000'
-            },
-            'Sports': {
-                desc: 'Vifaa vya Michezo: Tennis balls na viatu vya Tennis. Watoto: Midoli na aina mbalimbali za Toys.',
-                img: 'https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&q=80&w=1000'
-            },
-            'Pest': {
-                desc: 'Bidhaa za kulinda nyumba dhidi ya wadudu na wanyama waharibifu kama Dawa za mbu na Tego za panya.',
-                img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1000'
-            },
-            'Grocery': {
-                desc: 'Vyakula na Mahitaji ya Jikoni: Maziwa ya nazi, sukari, chumvi, unga na vinywaji mbalimbali.',
-                img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1000'
-            },
-            'Mavazi': {
-                desc: 'Nguo na mavazi bora: Mashati, nguo za watoto na mitindo mbalimbali.',
-                img: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=1000'
+            // 2. MAELEZO YA KATEGORIA (Yaliyoboreshwa)
+            const categoryData = {
+                'Stationery': {
+                    desc: 'Hiki ni kundi la vifaa vya kujifunzia na kazi za kiofisi: Madaftari, Kalamu, Vifaa vya Hesabu, na Sanaa.',
+                    img: 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&q=80&w=1000'
+                },
+                'Personal Care': {
+                    desc: 'Vifaa vya usafi wa mwili na muonekano: Miswaki, Dawa za meno, Sabuni, Urembo na Usafi wa Viatu.',
+                    img: 'https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&q=80&w=1000'
+                },
+                'Hardware': {
+                    desc: 'Vifaa vinavyosaidia kazi za kila siku nyumbani: Visu, Plugi za gesi, Ufungashaji na Mavazi kama soksi.',
+                    img: 'https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?auto=format&fit=crop&q=80&w=1000'
+                },
+                'Sports': {
+                    desc: 'Vifaa vya Michezo: Tennis balls na viatu vya Tennis. Watoto: Midoli na aina mbalimbali za Toys.',
+                    img: 'https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&q=80&w=1000'
+                },
+                'Pest': {
+                    desc: 'Bidhaa za kulinda nyumba dhidi ya wadudu na wanyama waharibifu kama Dawa za mbu na Tego za panya.',
+                    img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1000'
+                },
+                'Grocery': {
+                    desc: 'Vyakula na Mahitaji ya Jikoni: Maziwa ya nazi, sukari, chumvi, unga na vinywaji mbalimbali.',
+                    img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1000'
+                },
+                'Mavazi': {
+                    desc: 'Nguo na mavazi bora: Mashati, nguo za watoto na mitindo mbalimbali.',
+                    img: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=1000'
+                }
+            };
+
+            // 3. THEME TOGGLE
+            document.getElementById('theme-toggle').onclick = () => document.body.classList.toggle('light-mode');
+
+            // 4. FETCH DATA (Kumbuka: d.sheet1)
+            async function fetchProducts() {
+                try {
+                    const r = await fetch(API);
+                    const d = await r.json();
+                    // Tunatumia d.sheet1 kwa sababu ndivyo API yako inavyotuma
+                    allItems = d.sheet1;
+                    console.log("Data imepakiwa kutoka Sheety!");
+                } catch (e) {
+                    console.error("Data Load Error:", e);
+                }
             }
-        };
 
-        // 3. THEME TOGGLE
-        document.getElementById('theme-toggle').onclick = () => document.body.classList.toggle('light-mode');
-
-        // 4. FETCH DATA (Kumbuka: d.sheet1)
-        async function fetchProducts() {
-            try {
-                const r = await fetch(API);
-                const d = await r.json();
-                // Tunatumia d.sheet1 kwa sababu ndivyo API yako inavyotuma
-                allItems = d.sheet1;
-                console.log("Data imepakiwa kutoka Sheety!");
-            } catch (e) {
-                console.error("Data Load Error:", e);
+            // 5. FILTER KWA KATEGORIA
+            function filterByCat(cat) {
+                const filtered = allItems.filter(p =>
+                    p.category && p.category.toLowerCase().trim() === cat.toLowerCase().trim()
+                );
+                renderResults(filtered, cat);
             }
-        }
 
-        // 5. FILTER KWA KATEGORIA
-        function filterByCat(cat) {
-            const filtered = allItems.filter(p =>
-                p.category && p.category.toLowerCase().trim() === cat.toLowerCase().trim()
-            );
-            renderResults(filtered, cat);
-        }
+            // 6. TAFUTA BIDHAA
+            function searchProducts() {
+                const q = document.getElementById('searchInput').value.toLowerCase();
+                if (q.length < 2) return;
+                const filtered = allItems.filter(p =>
+                    (p.name && p.name.toLowerCase().includes(q)) ||
+                    (p.category && p.category.toLowerCase().includes(q))
+                );
+                renderResults(filtered, `Matokeo ya: ${q}`);
+            }
 
-        // 6. TAFUTA BIDHAA
-        function searchProducts() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            if (q.length < 2) return;
-            const filtered = allItems.filter(p =>
-                (p.name && p.name.toLowerCase().includes(q)) ||
-                (p.category && p.category.toLowerCase().includes(q))
-            );
-            renderResults(filtered, `Matokeo ya: ${q}`);
-        }
+            // 7. RENDER RESULTS (Kwenye window mpya)
+            function renderResults(products, title) {
+                document.getElementById('home-view').style.display = 'none';
+                document.getElementById('results-view').style.display = 'block';
 
-        // 7. RENDER RESULTS (Kwenye window mpya)
-        function renderResults(products, title) {
-            document.getElementById('home-view').style.display = 'none';
-            document.getElementById('results-view').style.display = 'block';
+                const info = categoryData[title] || { desc: 'Bidhaa bora kwa bei nafuu.', img: 'pic1.jpg' };
+                const container = document.getElementById('products-container');
 
-            const info = categoryData[title] || { desc: 'Bidhaa bora kwa bei nafuu.', img: 'pic1.jpg' };
-            const container = document.getElementById('products-container');
-
-            container.innerHTML = `
+                container.innerHTML = `
         <div class="category-hero glass">
             <img src="${info.img}" class="hero-img">
             <div class="hero-overlay"><h2>${title}</h2></div>
@@ -313,53 +315,53 @@
             `).join('') : '<p style="padding:40px; text-align:center;">Samahani, bidhaa hazijapatikana kwa sasa.</p>'}
         </div>
     `;
-            window.scrollTo(0, 0);
-        }
-
-        function goHome() {
-            document.getElementById('home-view').style.display = 'block';
-            document.getElementById('results-view').style.display = 'none';
-        }
-
-        function order(n) {
-            window.open(`https://wa.me/255747185190?text=Habari Mwenda Shop 🌿, nahitaji: ${n}`);
-        }
-        function scrollToFooter() {
-            // Inatafuta footer na kumpeleka mteja huko
-            const footer = document.querySelector('.footer-mobile');
-            footer.scrollIntoView({
-                behavior: 'smooth', // Inashuka taratibu badala ya kuruka ghafla
-                block: 'start'
-            });
-        }
-        // Kazi ya kutafuta bidhaa
-        function searchProducts() {
-            const q = document.getElementById('searchInput').value.toLowerCase().trim();
-
-            // Inahakikisha mteja ameandika angalau herufi 2
-            if (q.length < 2) {
-                alert("Tafadhali andika jina la bidhaa unayotafuta.");
-                return;
+                window.scrollTo(0, 0);
             }
 
-            // Inatafuta kwenye list ya bidhaa zote tulizopakua kutoka Sheety
-            const filtered = allItems.filter(p =>
-                (p.name && p.name.toLowerCase().includes(q)) ||
-                (p.category && p.category.toLowerCase().includes(q))
-            );
-
-            renderResults(filtered, `Matokeo ya: ${q}`);
-        }
-
-        // Inaruhusu kutafuta kwa kubonyeza "Enter" kwenye keyboard
-        function checkEnter(event) {
-            if (event.key === "Enter") {
-                searchProducts();
+            function goHome() {
+                document.getElementById('home-view').style.display = 'block';
+                document.getElementById('results-view').style.display = 'none';
             }
-        }
-        // Pakia bidhaa punde tu ukurasa unapofunguka
-        window.onload = fetchProducts;
-    </script>
+
+            function order(n) {
+                window.open(`https://wa.me/255747185190?text=Habari Mwenda Shop 🌿, nahitaji: ${n}`);
+            }
+            function scrollToFooter() {
+                // Inatafuta footer na kumpeleka mteja huko
+                const footer = document.querySelector('.footer-mobile');
+                footer.scrollIntoView({
+                    behavior: 'smooth', // Inashuka taratibu badala ya kuruka ghafla
+                    block: 'start'
+                });
+            }
+            // Kazi ya kutafuta bidhaa
+            function searchProducts() {
+                const q = document.getElementById('searchInput').value.toLowerCase().trim();
+
+                // Inahakikisha mteja ameandika angalau herufi 2
+                if (q.length < 2) {
+                    alert("Tafadhali andika jina la bidhaa unayotafuta.");
+                    return;
+                }
+
+                // Inatafuta kwenye list ya bidhaa zote tulizopakua kutoka Sheety
+                const filtered = allItems.filter(p =>
+                    (p.name && p.name.toLowerCase().includes(q)) ||
+                    (p.category && p.category.toLowerCase().includes(q))
+                );
+
+                renderResults(filtered, `Matokeo ya: ${q}`);
+            }
+
+            // Inaruhusu kutafuta kwa kubonyeza "Enter" kwenye keyboard
+            function checkEnter(event) {
+                if (event.key === "Enter") {
+                    searchProducts();
+                }
+            }
+            // Pakia bidhaa punde tu ukurasa unapofunguka
+            window.onload = fetchProducts;
+        </script>
 </body>
 
 </html>
