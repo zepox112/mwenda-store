@@ -767,25 +767,32 @@ body {
     pointer-events: auto !important;
     /* Hii ndio inaruhusu zoom na kutelezesha ramani */
 }
+
 .whatsapp-sticky {
-    position: fixed !important; /* Hii ni lazima ili kisiondoke kwenye screen */
-    bottom: 30px;               /* Umbali kutoka chini */
-    right: 25px;                /* Umbali kutoka kulia */
-    background: #25D366;        /* Rangi ya kijani ya WhatsApp */
+    position: fixed !important;
+    /* Hii ni lazima ili kisiondoke kwenye screen */
+    bottom: 30px;
+    /* Umbali kutoka chini */
+    right: 25px;
+    /* Umbali kutoka kulia */
+    background: #25D366;
+    /* Rangi ya kijani ya WhatsApp */
     color: white !important;
     text-decoration: none;
     border-radius: 50px;
     padding: 12px 20px;
     font-weight: 800;
-    z-index: 99999 !important;  /* Namba kubwa ili kikae juu ya ramani na slider */
+    z-index: 99999 !important;
+    /* Namba kubwa ili kikae juu ya ramani na slider */
     display: flex;
     align-items: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
 }
 
 .whatsapp-sticky:hover {
-    transform: translateY(-5px); /* Kinacheza kidogo ukikigusa */
+    transform: translateY(-5px);
+    /* Kinacheza kidogo ukikigusa */
     background: #128C7E;
 }
 
@@ -798,55 +805,118 @@ body {
         font-size: 14px;
     }
 }
+
+.
+/* --- MUUNDO WA FAQ (FULL STYLE) --- */
+
 .faq-section {
+    max-width: 95%;
+    margin: 30px auto;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.05); /* Glassmorphism style */
-    border-radius: 15px;
-    margin: 20px 0;
+    background: rgba(255, 255, 255, 0.05);
+    /* Glassmorphism kwa ajili ya seva za mtandaoni */
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .section-title {
     text-align: center;
-    color: #fff;
-    margin-bottom: 20px;
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .faq-container {
-    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .faq-item {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+    /* Muhimu kwa ajili ya animation ya kufunguka */
+    transition: all 0.3s ease;
 }
 
 .faq-question {
     width: 100%;
-    padding: 15px;
+    padding: 18px;
     background: none;
     border: none;
-    color: #fff;
-    text-align: left;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: left;
 }
 
+.faq-question span {
+    font-size: 1.4rem;
+    transition: transform 0.3s ease;
+    color: #25D366;
+    /* Rangi ya kijani kama ya WhatsApp */
+}
+
+/* Jibu likiwa limejificha */
 .faq-answer {
-    padding: 0 15px;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-out; /* Inafanya ifunguke kwa ulaini */
-    color: #ccc;
+    transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+    /* Inafanya ifunguke kwa ulaini */
+    padding: 0 18px;
+    color: #dddddd;
+    line-height: 1.6;
+}
+
+.faq-answer p {
+    margin-bottom: 18px;
+    font-size: 0.95rem;
+    white-space: normal;
+    /* Inazuia maneno kukatika kwenye simu */
+}
+
+/* --- STYLE WAKATI SWALI LIMEBONYEZWA (ACTIVE) --- */
+
+.faq-item.active {
+    border: 1px solid rgba(37, 211, 102, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .faq-item.active .faq-answer {
-    max-height: 100px; /* Inaruhusu jibu lionekane */
-    padding-bottom: 15px;
+    max-height: 1000px;
+    /* Nafasi ya kutosha ili maneno yasikatike */
+    transition: max-height 0.5s cubic-bezier(1, 0, 1, 0);
 }
 
 .faq-item.active span {
-    transform: rotate(45deg); /* Inabadilisha + kuwa x */
+    transform: rotate(45deg);
+    /* Inageuza + kuwa X */
+    color: #ff4d4d;
+}
+
+/* --- MABORESHO KWA AJILI YA SIMU (MOBILE RESPONSIVE) --- */
+
+@media (max-width: 600px) {
+    .faq-section {
+        padding: 15px;
+        margin: 15px auto;
+    }
+
+    .faq-question {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+
+    .faq-answer p {
+        font-size: 0.85rem;
+        /* Inapunguza ukubwa wa maandishi ili yatoshe kwenye simu */
+    }
 }
