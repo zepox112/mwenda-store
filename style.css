@@ -878,36 +878,41 @@ body {
     /* Rangi ya WhatsApp */
 }
 
-/* Style ya Lightbox Popup */
-.popup-overlay {
+/* BACKGROUND YA GIZA (OVERLAY) */
+.modal-overlay {
     display: none;
-    /* Inajificha mwanzoni */
     position: fixed;
-    z-index: 9999;
+    z-index: 99999;
     /* Inakaa juu ya kila kitu */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    /* Giza la nyuma */
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    /* Inafanya nyuma kuwe na ukungu mzuri */
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    padding: 15px;
 }
 
-.popup-content {
-    max-width: 90%;
-    max-height: 80%;
-    border-radius: 10px;
-    border: 2px solid #81c784;
-    /* Rangi ya Mwenda Store */
-    animation: zoomEffect 0.3s ease-out;
+/* KADI YA MAELEZO */
+.modal-content {
+    background: #1e2124;
+    width: 100%;
+    max-width: 400px;
+    /* Inatosha vizuri kwenye simu */
+    border-radius: 25px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes zoomEffect {
+@keyframes popUp {
     from {
-        transform: scale(0.5);
+        transform: scale(0.8);
         opacity: 0;
     }
 
@@ -917,19 +922,118 @@ body {
     }
 }
 
-.close-popup {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    color: white;
-    font-size: 40px;
-    cursor: pointer;
-    font-weight: bold;
+/* PICHA NDANI YA MODAL */
+.modal-img-container img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 2px solid var(--accent);
 }
 
-#popupCaption {
+/* MAELEZO NDANI YA MODAL */
+.modal-details {
+    padding: 20px;
+    text-align: left;
+}
+
+#viewTitle {
+    color: #81c784;
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+#viewDesc {
     color: #ccc;
-    margin-top: 15px;
+    font-size: 0.9rem;
+    margin: 10px 0 15px;
+    line-height: 1.5;
+}
+
+.view-price {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 15px;
+}
+
+/* KITUFE CHA WHATSAPP */
+.order-wa-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
     font-size: 1rem;
-    text-align: center;
+}
+
+/* KITUFE CHA KUFUNGA (X) */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 10;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* OVERLAY INAYOTAWALA SCREEN */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    /* Inatandika kote (top, bottom, left, right: 0) */
+    z-index: 100000;
+    background: #000000;
+    /* Giza nene ili asione chochote kingine */
+    overflow-y: auto;
+    /* Inaruhusu scroll NDANI tu ya modal kama maelezo ni marefu */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* KADI INAYO-FIT SIMU */
+.modal-content {
+    width: 100%;
+    min-height: 100vh;
+    /* Inahakikisha inachukua urefu wote wa screen */
+    display: flex;
+    flex-direction: column;
+    background: #0f1113;
+    position: relative;
+}
+
+/* PICHA KUBWA */
+.modal-img-container {
+    width: 100%;
+    height: 60vh;
+    /* Picha inachukua 60% ya screen ya juu */
+    background: #000;
+}
+
+#viewImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Picha nzima itaonekana bila kukatwa */
+}
+
+/* MAELEZO CHINI */
+.modal-details {
+    padding: 30px 20px;
+    flex-grow: 1;
+    background: linear-gradient(to top, #0f1113, #1a1d20);
+    border-radius: 30px 30px 0 0;
+    margin-top: -30px;
+    /* Inafanya maelezo yaingiliane kidogo na picha kwa urembo */
+}
+
+/* ZUIA SCROLL KWENYE BODY */
+body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
 }

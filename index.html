@@ -214,31 +214,36 @@
                 <div id="products-container">
                 </div>
             </div>
-            <div id="productQuickView" class="modal-overlay" style="display:none;">
-                <div class="modal-content">
-                    <span class="close-btn">&times;</span>
-                    <div class="modal-body">
-                        <div class="modal-img-container">
-                            <img id="viewImg" src="">
-                        </div>
-                        <div class="modal-details">
-                            <h2 id="viewTitle"></h2>
-                            <p id="viewDesc"></p>
-                            <div class="view-price" id="viewPrice"></div>
-                            <button class="order-wa-btn" id="waOrderModal"
-                                style="background:#25D366; color:white; border:none; padding:15px; border-radius:10px; width:100%; font-weight:bold; cursor:pointer;">AGIZA
-                                KWA WHATSAPP</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </main>
 
         <a href="https://wa.me/255747185190" class="wa-float glass">
             <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WA">
             <span>Chat nasi</span>
         </a>
+        <div id="productQuickView" class="modal-overlay">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeProductDetails()"
+                    style="position:fixed; top:20px; left:20px; background:rgba(0,0,0,0.5); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white;">
+                    &larr;
+                </span>
 
+                <div class="modal-img-container">
+                    <img id="viewImg" src="">
+                </div>
+
+                <div class="modal-details">
+                    <h2 id="viewTitle" style="color:var(--accent); font-size:1.8rem;"></h2>
+                    <div id="viewPrice" style="font-size:1.4rem; font-weight:bold; margin:10px 0;"></div>
+                    <p id="viewDesc" style="color:#e0e0e0; line-height:1.6;"></p>
+
+                    <button class="order-wa-btn" id="waOrderModal"
+                        style="margin-top:20px; background:#25D366; color:white; border:none; padding:18px; border-radius:15px; width:100%; font-weight:900;">
+                        AGIZA SASA WHATSAPP
+                    </button>
+                </div>
+            </div>
+        </div>
         <footer class="footer-mobile glass">
             <div class="map-container">
                 <h3 class="map-header">📍 TUNAPOPATIKANA</h3>
@@ -409,7 +414,34 @@
                     modal.style.display = 'flex';
                 }
             });
+            // Function ya kufungua (Iweke ndani ya ile click event yako)
+            function openProductDetails(picha, jina, maelezo, bei) {
+                const modal = document.getElementById('productQuickView');
 
+                // 1. Jaza Data
+                document.getElementById('viewImg').src = picha;
+                document.getElementById('viewTitle').innerText = jina;
+                document.getElementById('viewDesc').innerText = maelezo;
+                document.getElementById('viewPrice').innerText = bei;
+
+                // 2. Onyesha Modal
+                modal.style.display = 'block';
+
+                // 3. ZUIA WEBSITE KUSCROLL (Lock body)
+                document.body.classList.add('no-scroll');
+            }
+
+            // Function ya kufunga
+            function closeProductDetails() {
+                const modal = document.getElementById('productQuickView');
+                modal.style.display = 'none';
+
+                // 4. RUHUSU WEBSITE KUSCROLL TENA (Unlock body)
+                document.body.classList.remove('no-scroll');
+            }
+
+            // Unganisha na kitufe cha kufunga (X)
+            document.querySelector('.close-btn').addEventListener('click', closeProductDetails);
             // Funga Modal
             window.onclick = (event) => {
                 const modal = document.getElementById('productQuickView');
@@ -444,6 +476,7 @@
             }
 
             window.onload = fetchProducts;
+
         </script>
 </body>
 
