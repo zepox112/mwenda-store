@@ -689,3 +689,12 @@ body {
         transform: translateX(-83.333%);
     }
 }
+
+@media (max-width: 480px) {
+
+    .main-slider,
+    .s-img {
+        height: 160px;
+        /* Tunapunguza urefu kidogo kwenye simu ndogo */
+    }
+}
