@@ -6,6 +6,7 @@
     --search-bg: #ffffff;
     --search-text: #121212;
     --grad: linear-gradient(135deg, #1b5e20, #43a047);
+    --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 .light-mode {
@@ -323,21 +324,63 @@ body {
     padding: 15px;
 }
 
-.p-card-small {
-    border-radius: 15px;
-    overflow: hidden;
+@media (min-width: 600px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+        /* Kwenye screen kubwa kidogo zikae tatu */
+    }
 }
 
+/* BOKSI LA BIDHAA */
+.p-card-small {
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+    transition: 0.3s;
+    height: 100%;
+    /* Inahakikisha boksi zote kwenye row moja zina urefu sawa */
+}
+
+/* PICHA ITAKAYOJILAZIMISHA KUTOSHEA */
 .p-card-small img {
     width: 100%;
-    height: 120px;
+    /* Hii inalazimisha picha iwe square (1 kwa 1). 
+       Unaweza kubadili iwe 4/3 kama unataka ziwe mstatili kidogo */
+    aspect-ratio: 1 / 1;
+
+    /* Hii ndio siri: Inakata picha ili ienee kwenye boksi bila kupoteza shape */
     object-fit: cover;
+
+    display: block;
+    background: #1a1a1a;
+    /* Rangi ya nyuma kama picha ikichelewa kuload */
 }
 
+/* MAELEZO CHINI YA PICHA */
 .p-details {
     padding: 10px;
     text-align: center;
+    flex-grow: 1;
+    /* Inasukuma maelezo yajaze nafasi iliyobaki */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
+/* PRODUCT GRID */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Column mbili kulingana na maelezo yako */
+    gap: 12px;
+    padding: 10px;
+    align-items: stretch;
+    /* Inalazimisha kadi zote zilingane urefu */
+}
+
 
 .p-details h4 {
     font-size: 0.75rem;
@@ -1036,4 +1079,82 @@ body {
 body.no-scroll {
     overflow: hidden;
     height: 100vh;
+}
+
+/* CONTAINER YA ICON */
+.whatsapp-glass-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    /* Glass Transparency */
+    backdrop-filter: blur(10px);
+    /* Liquid Glass Effect */
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100000;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    text-decoration: none;
+}
+
+/* ICON YENYEWE */
+.whatsapp-glass-btn img {
+    width: 35px;
+    height: 35px;
+    filter: drop-shadow(0 0 5px rgba(37, 211, 102, 0.5));
+}
+
+/* BLINKING GREEN GLOW */
+.glow-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid #25D366;
+    animation: blinkGlow 2s infinite ease-in-out;
+    pointer-events: none;
+}
+
+@keyframes blinkGlow {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4);
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.3;
+        box-shadow: 0 0 20px 10px rgba(37, 211, 102, 0);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+
+/* HOVER EFFECT */
+.whatsapp-glass-btn:hover {
+    transform: scale(1.1) translateY(-5px);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(37, 211, 102, 1);
+}
+
+/* KWA AJILI YA SIMU (Mobile Responsive) */
+@media screen and (max-width: 768px) {
+    .whatsapp-glass-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+    }
 }
