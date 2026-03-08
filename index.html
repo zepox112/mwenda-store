@@ -202,7 +202,11 @@
                     <div class="schedule-row"><span>Jumapili</span> <span>8:00 AM - 6:00 PM</span></div>
                 </div>
             </div>
-
+            <div id="imagePopup" class="popup-overlay">
+                <span class="close-popup">&times;</span>
+                <img id="popupImg" class="popup-content">
+                <div id="popupCaption"></div>
+            </div>
             <div id="results-view" style="display: none;">
                 <div class="res-nav">
                     <button onclick="goHome()" class="back-link">🏠 Rudi Nyumbani</button>
@@ -244,7 +248,31 @@
                 <p style="font-size: 0.6rem; opacity: 0.5; margin-top: 5px;">Designed by Zepox Omni-Tech</p>
             </div>
         </footer>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const popup = document.getElementById('imagePopup');
+                const popupImg = document.getElementById('popupImg');
+                const caption = document.getElementById('popupCaption');
+                const closeBtn = document.querySelector('.close-popup');
 
+                // SIKILIZA PICHA ZOTE (Dynamic na Static)
+                document.addEventListener('click', (e) => {
+                    // Hakikisha picha inayoguswa ina class ya 'product-image'
+                    // (Weka class hii kwenye picha zako zote za bidhaa kule kwenye database loop)
+                    if (e.target.classList.contains('product-image')) {
+                        popup.style.display = 'flex';
+                        popupImg.src = e.target.src; // Inajaza link ya picha yenyewe kiotomatiki
+                        caption.innerHTML = e.target.alt || "Bidhaa ya Mwenda Store";
+                    }
+                });
+
+                // Funga popup
+                closeBtn.onclick = () => popup.style.display = 'none';
+                popup.onclick = (e) => {
+                    if (e.target === popup) popup.style.display = 'none';
+                };
+            });
+        </script>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const faqQuestions = document.querySelectorAll('.faq-question');
