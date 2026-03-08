@@ -159,7 +159,55 @@
                         <span>Vyakula & Jikoni</span>
                     </div>
                 </div>
+                <section class="faq-section">
+                    <h3 class="section-title">❔ MASWALI YA MARA KWA MARA</h3>
 
+                    <div class="faq-container">
+                        <div class="faq-item">
+                            <button class="faq-question">Duka linapatikana wapi? <span>+</span></button>
+                            <div class="faq-answer">
+                                <p>Duka la Mwenda Store linapatikana katikati ya jiji la Arusha, eneo la Mjini Kati.
+                                    Tunapatikana mtaa wa jirani na Uwanja wa Michezo wa Sheikh Amri Abeid (Stadium),
+                                    eneo ambalo ni rahisi kufika kwa miguu, usafiri wa umma, au gari binafsi ukiwa
+                                    maeneo ya Posta au Soko Kuu.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">Je, mnafanya delivery? <span>+</span></button>
+                            <div class="faq-answer">
+                                <p>Ndiyo, tunafanya delivery kwa wateja waliopo ndani ya jiji la Arusha kwa gharama
+                                    nafuu kabisa.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">Je, mnauza bidhaa gani hasa? <span>+</span></button>
+                            <div class="faq-answer">
+                                <p>Sisi ni duka la mahitaji mchanganyiko (General Store) lililopo Arusha, tunajihusisha
+                                    na uuzaji wa bidhaa bora kwa bei nafuu. Tunahudumia kuanzia mahitaji ya jikoni,
+                                    vifaa vya shule (stationery), vifaa vya usafi wa mwili, hadi vifaa vya michezo na
+                                    watoto. Lengo letu ni kumpatia mteja kila anachohitaji chini ya paa moja kwa
+                                    uaminifu na urahisi wa malipo.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question">Njia gani za malipo mnakubali? <span>+</span></button>
+                            <div class="faq-answer">
+                                <p>Tunakubali njia mbalimbali za malipo ili kukupa urahisi na usalama unapofanya
+                                    manunuzi yako hapa Mwenda Store. Unaweza kulipia kupitia:
+
+                                    Pesa Taslimu (Cash): Tunapokea malipo ya kawaida kwa fedha taslimu.
+
+                                    Malipo ya Kadi na NFC: Tunakubali kadi za benki (Visa/Mastercard) pamoja na malipo
+                                    ya kugusa (NFC) kwa simu au saa janja.
+
+                                    Malipo ya Simu (Mobile Money): Unaweza pia kulipia kwa kutumia mitandao ya simu
+                                    inayotumika hapa nchini.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 <div class="schedule-full glass">
                     <h3>⏰ Ratiba ya Wiki</h3>
                     <div class="schedule-row"><span>Jumatatu - Ijumaa</span> <span>6:30 AM - 7:30 PM</span></div>
@@ -214,7 +262,31 @@
                 <p style="font-size: 0.6rem; opacity: 0.5; margin-top: 5px;">Designed by Zepox Omni-Tech</p>
             </div>
         </footer>
+        <script>
+            // Tunahakikisha kodi inaanza tu baada ya website yote kuwa tayari
+            document.addEventListener('DOMContentLoaded', () => {
+                const faqItems = document.querySelectorAll('.faq-item');
 
+                faqItems.forEach(item => {
+                    const question = item.querySelector('.faq-question');
+
+                    question.addEventListener('click', () => {
+                        // Angalia kama hili swali tayari limefunguliwa
+                        const isOpen = item.classList.contains('active');
+
+                        // Funga maswali mengine yote kwanza (Hii inafanya yawe nadhifu)
+                        faqItems.forEach(otherItem => {
+                            otherItem.classList.remove('active');
+                        });
+
+                        // Kama halikuwa wazi, lifungue sasa
+                        if (!isOpen) {
+                            item.classList.add('active');
+                        }
+                    });
+                });
+            });
+        </script>
         <script>
             // 1. LINK YAKO KAMILI YA SHEETY
             const API = 'https://api.sheety.co/058cdf18e93420af4bfde475ec8274e3/mwendashopDb/sheet1';
