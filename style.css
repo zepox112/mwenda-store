@@ -718,3 +718,35 @@ body {
         /* Tunapunguza urefu kidogo kwenye simu ndogo */
     }
 }
+
+/* --- MABORESHO KWA AJILI YA SIMU (Mobile Responsive) --- */
+@media (max-width: 600px) {
+
+    /* 1. Kupunguza ukubwa wa kichwa cha habari (h2) */
+    .slide-content h2 {
+        font-size: 1.1rem !important;
+        /* Inapunguza neno kuwa dogo zaidi */
+        line-height: 1.2;
+        margin-bottom: 5px;
+        white-space: normal;
+        /* Inaruhusu maneno yajipange mstari wa pili badala ya kujikata */
+    }
+
+    /* 2. Kupunguza ukubwa wa maelezo (p) */
+    .slide-content p {
+        font-size: 0.8rem !important;
+        opacity: 0.9;
+    }
+
+    /* 3. Kupunguza nafasi (padding) ili maandishi yapate nafasi zaidi */
+    .slide-overlay {
+        padding-top: 15px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /* 4. Kupunguza ukubwa wa icon kama unayo (span) */
+    .slide-icon {
+        font-size: 1.2rem !important;
+    }
+}
