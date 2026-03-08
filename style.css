@@ -212,6 +212,46 @@ body {
     border-radius: 20px;
 }
 
+.search-container {
+    margin: 20px;
+    padding: 15px;
+    border-radius: 20px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 5px;
+    border-radius: 15px;
+    border: 1px solid var(--glass-border);
+}
+
+#searchInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 10px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.search-btn {
+    background: var(--accent);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: 0.3s;
+}
+
+.search-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--accent);
+}
+
 .cat-icon {
     font-size: 1.8rem;
     margin-bottom: 5px;
@@ -403,5 +443,249 @@ body {
         width: 35px;
         /* inapunguza ukubwa wa logo kidogo */
         height: 35px;
+    }
+}
+
+/* BOKSI LA BIDHAA */
+.p-card-small {
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+    /* Ondoa height ya kulazimisha hapa */
+    height: auto;
+    transition: 0.3s;
+}
+
+/* PICHA ITAKAYOJILAZIMISHA KUTOSHEA */
+.p-card-small img {
+    width: 100%;
+    /* Inaruhusu picha kuonyesha urefu wake halisi hadi mwisho */
+    height: auto;
+
+    /* Inahakikisha picha haizidi urefu wa kero kwenye simu */
+    max-height: 300px;
+
+    /* Inazuia picha isijinyooshe (stretch) vibaya */
+    object-fit: scale-down;
+
+    display: block;
+    background: transparent;
+    /* Picha itakaa kwenye rangi ya boksi */
+}
+
+/* MAELEZO CHINI YA PICHA */
+.p-details {
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid var(--glass-border);
+}
+
+.product-grid {
+    display: grid;
+    /* Inatengeneza column mbili kwenye simu */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 10px;
+    /* Inaruhusu maboksi yawe na urefu tofauti bila kuharibu mpangilio */
+    align-items: start;
+}
+
+/* STYLES ZA BUTTON YA RUDI NYUMBANI */
+.back-link {
+    background: linear-gradient(135deg, #2e7d32, #66bb6a);
+    /* Gradient ya Kijani */
+    color: white !important;
+    /* Maandishi yawe meupe */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    /* Duara pembeni */
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.2);
+    /* Kivuli kidogo cha kijani */
+    margin: 15px 0;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    transform: translateX(-5px);
+    /* Inasogea kidogo kushoto ikiguswa */
+    filter: brightness(1.1);
+    /* Inang'aa zaidi */
+    box-shadow: 0 6px 20px rgba(46, 125, 50, 0.4);
+}
+
+.res-nav {
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+}
+
+.brand-details {
+    display: flex;
+    flex-direction: column;
+    /* Inahakikisha tagline inakaa CHINI ya jina */
+    justify-content: center;
+    gap: 2px;
+    /* Nafasi ndogo kati ya jina na tagline */
+}
+
+.brand-name {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: white;
+    line-height: 1;
+    letter-spacing: 1px;
+    /* Inafanya jina lisiwe fupi sana */
+}
+
+.brand-tagline {
+    font-size: 0.55rem;
+    /* Ukubwa mdogo ili tagline ienee mstari mmoja */
+    color: var(--accent);
+    /* Rangi ile ya kijani ya duka lako */
+    font-weight: 700;
+    text-transform: uppercase;
+    /* Herufi kubwa zinalala vizuri zaidi kwa mlalo */
+    letter-spacing: 1.2px;
+    /* Inazidisha urefu wa maandishi kwa mlalo */
+    white-space: nowrap;
+    /* Inazuia maandishi yasivunjike kwenda mstari wa pili */
+}
+
+.brand-slim {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* KONTEINA KUU */
+.slider-container {
+    width: 100%;
+    height: 250px;
+    /* Saizi sawa na boksi la bidhaa */
+    overflow: hidden;
+    position: relative;
+    border-radius: 20px;
+    background: #000;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* TRACK INAYOTELEZA */
+.slider-track {
+    display: flex;
+    width: 600%;
+    /* Kwa sababu tuna picha 5 + 1 clone */
+    height: 100%;
+    animation: slideStep 25s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* KILA PICHA MOJA */
+.slide {
+    width: 16.666%;
+    /* 100 / 6 picha */
+    height: 100%;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    /* Picha inakaa tabaka la 1 */
+}
+
+/* KIVULI CHA GIZA JUU YA PICHA */
+.slide-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 5;
+    /* Inakaa tabaka la 5 (Juu ya picha) */
+}
+
+/* MAANDISHI YA NDANI */
+.slide-content {
+    position: relative;
+    z-index: 10;
+    /* Maandishi yanakaa tabaka la 10 (Juu kabisa) */
+    padding: 0 20px;
+}
+
+.slide-icon {
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.slide-content h2 {
+    color: #4ade80 !important;
+    /* Kijani chako kinachong'aa */
+    font-size: 1.4rem;
+    font-weight: 900;
+    margin-bottom: 5px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.slide-content p {
+    color: #ffffff !important;
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.9;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
+}
+
+/* INJINI YA KUTELEZA (Sekunde 5 kila picha) */
+@keyframes slideStep {
+
+    0%,
+    15% {
+        transform: translateX(0);
+    }
+
+    20%,
+    35% {
+        transform: translateX(-16.666%);
+    }
+
+    40%,
+    55% {
+        transform: translateX(-33.333%);
+    }
+
+    60%,
+    75% {
+        transform: translateX(-50%);
+    }
+
+    80%,
+    95% {
+        transform: translateX(-66.666%);
+    }
+
+    100% {
+        transform: translateX(-83.333%);
     }
 }

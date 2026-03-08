@@ -10,7 +10,13 @@
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="apple-touch-icon" href="logo.jpg">
 
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mwenda Store">
+
     <meta name="theme-color" content="#121212">
+
+    <link rel="manifest" href="manifest.json">
 
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
@@ -38,18 +44,90 @@
                 <button id="theme-toggle" class="icon-btn">🌓</button>
             </div>
         </div>
+
+        </div>
     </header>
 
-    <main class="main-content">
-        <div id="home-view">
-            <section class="main-slider glass">
-                <div class="track">
-                    <img src="pic1.jpg" class="s-img">
-                    <img src="pic2.jpg" class="s-img">
-                    <img src="pic3.jpg" class="s-img">
-                    <img src="pic4.jpg" class="s-img">
-                    <img src="pic5.jpg" class="s-img">
+    <div class="search-container glass">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Tafuta bidhaa hapa..." onkeyup="checkEnter(event)">
+            <button onclick="searchProducts()" class="search-btn">🔍</button>
+        </div>
+
+        <main class="main-content">
+            <div class="slider-container">
+                <div class="slider-track">
+                    <div class="slide">
+                        <img src="slide1.jpg" alt="Mwenda Store">
+                        <div class="slide-overlay">
+                            <div class="slide-content">
+                                <span class="slide-icon">👋</span>
+                                <h2>KARIBU MWENDA STORE</h2>
+                                <p>Uaminifu na Huduma Bora Arusha</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1558060370-d644479cb6f7?auto=format&fit=crop&q=80&w=1000"
+                            alt="Watoto">
+                        <div class="slide-overlay">
+                            <div class="slide-content">
+                                <span class="slide-icon">🧸</span>
+                                <h2>MICHEZO NA WATOTO</h2>
+                                <p>Toys za Rangi na Furaha kwa Watoto</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1590642916589-592bca10dfbf?auto=format&fit=crop&q=80&w=1000"
+                            alt="Pest Control" alt="Pest Control">
+                        <div class="slide-overlay">
+                            <div class="slide-content">
+                                <span class="slide-icon">🚫</span>
+                                <h2>KINGA YA WADUDU</h2>
+                                <p>Dawa na Vifaa vya Kuua Wadudu Ofisini na Nyumbani</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?auto=format&fit=crop&q=80&w=1000"
+                            alt="Hardware">
+                        <div class="slide-overlay">
+                            <div class="slide-content">
+                                <span class="slide-icon">☕</span>
+                                <h2>VIFAA VYA NDANI</h2>
+                                <p>Vikombe na Vyombo Bora vya Jikoni</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&q=80&w=1000"
+                            alt="Stationaries">
+                        <div class="slide-overlay">
+                            <div class="slide-content">
+                                <span class="slide-icon">📝</span>
+                                <h2>VIFAA VYA SHULE</h2>
+                                <p>Kalamu na Karatasi kwa Ajili ya Masomo</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slide">
+                        <img src="slide1.jpg" alt="Clone">
+                        <div class="slide-overlay">
+                            <div class="slide-content">
+                                <span class="slide-icon">👋</span>
+                                <h2>KARIBU MWENDA STORE</h2>
+                                <p>Uaminifu na Huduma Bora Arusha</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
             </section>
 
             <h3 class="label">Bidhaa Zetu</h3>
@@ -86,15 +164,15 @@
                 <div class="schedule-row"><span>Jumamosi</span> <span>6:30 AM - 7:30 PM</span></div>
                 <div class="schedule-row"><span>Jumapili</span> <span>8:00 AM - 6:00 PM</span></div>
             </div>
-        </div>
+    </div>
 
-        <div id="results-view" style="display: none;">
-            <div class="res-nav">
-                <button onclick="goHome()" class="back-link">← Rudi Nyumbani</button>
-            </div>
-            <div id="products-container">
-            </div>
+    <div id="results-view" style="display: none;">
+        <div class="res-nav">
+            <button onclick="goHome()" class="back-link">🏠 Rudi Nyumbani</button>
         </div>
+        <div id="products-container">
+        </div>
+    </div>
     </main>
 
     <a href="https://wa.me/255747185190" class="wa-float glass">
@@ -119,7 +197,7 @@
         <div class="footer-grid">
             <div class="shop-details">
                 <p class="footer-brand">MWENDA STORE</p>
-                <p>Arusha, Tanzania (Kijenge Juu)</p>
+                <p>Arusha, Tanzania (JMHP+MPW, Arusha)</p>
                 <p>📞 +255 747 185 190</p>
             </div>
 
@@ -152,15 +230,15 @@
             },
             'Hardware': {
                 desc: 'Vifaa vinavyosaidia kazi za kila siku nyumbani: Visu, Plugi za gesi, Ufungashaji na Mavazi kama soksi.',
-                img: 'https://images.unsplash.com/photo-1530124560676-4fbc912f22c5?auto=format&fit=crop&q=80&w=1000'
+                img: 'https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?auto=format&fit=crop&q=80&w=1000'
             },
             'Sports': {
                 desc: 'Vifaa vya Michezo: Tennis balls na viatu vya Tennis. Watoto: Midoli na aina mbalimbali za Toys.',
-                img: 'https://images.unsplash.com/photo-1530549387634-e7a5b399d821?auto=format&fit=crop&q=80&w=1000'
+                img: 'https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&q=80&w=1000'
             },
             'Pest': {
                 desc: 'Bidhaa za kulinda nyumba dhidi ya wadudu na wanyama waharibifu kama Dawa za mbu na Tego za panya.',
-                img: 'https://images.unsplash.com/photo-1581578731522-a204e14675ea?auto=format&fit=crop&q=80&w=1000'
+                img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1000'
             },
             'Grocery': {
                 desc: 'Vyakula na Mahitaji ya Jikoni: Maziwa ya nazi, sukari, chumvi, unga na vinywaji mbalimbali.',
@@ -253,6 +331,31 @@
                 behavior: 'smooth', // Inashuka taratibu badala ya kuruka ghafla
                 block: 'start'
             });
+        }
+        // Kazi ya kutafuta bidhaa
+        function searchProducts() {
+            const q = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            // Inahakikisha mteja ameandika angalau herufi 2
+            if (q.length < 2) {
+                alert("Tafadhali andika jina la bidhaa unayotafuta.");
+                return;
+            }
+
+            // Inatafuta kwenye list ya bidhaa zote tulizopakua kutoka Sheety
+            const filtered = allItems.filter(p =>
+                (p.name && p.name.toLowerCase().includes(q)) ||
+                (p.category && p.category.toLowerCase().includes(q))
+            );
+
+            renderResults(filtered, `Matokeo ya: ${q}`);
+        }
+
+        // Inaruhusu kutafuta kwa kubonyeza "Enter" kwenye keyboard
+        function checkEnter(event) {
+            if (event.key === "Enter") {
+                searchProducts();
+            }
         }
         // Pakia bidhaa punde tu ukurasa unapofunguka
         window.onload = fetchProducts;
