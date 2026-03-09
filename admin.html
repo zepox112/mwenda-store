@@ -2,373 +2,306 @@
 <html lang="sw">
 
 <head>
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <title>Admin Panel | Mwenda Store</title>
-
-        <link rel="icon" type="image/jpeg" href="logo.jpg">
-        <link rel="apple-touch-icon" href="logo.jpg">
-
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="theme-color" content="#121212">
-
-        <link rel="manifest" href="manifest.json">
-
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="style.css">
-    </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Mwenda Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0f1113;
-            --accent: #81c784;
-            --grad: linear-gradient(135deg, #1b5e20, #43a047);
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text: #e0e0e0;
+            --primary: #25D366;
+            --bg: #0f172a;
+            --glass: rgba(255, 255, 255, 0.1);
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
             margin: 0;
             font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: white;
             display: flex;
             justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* BACKGROUND BLOBS */
-        .glass-bg {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            top: 0;
-            left: 0;
-        }
-
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.2;
-        }
-
-        .b1 {
-            width: 300px;
-            height: 300px;
-            background: var(--accent);
-            top: -50px;
-            left: -50px;
-        }
-
-        .b2 {
-            width: 250px;
-            height: 250px;
-            background: #2196f3;
-            bottom: -50px;
-            right: -50px;
-        }
-
-        /* CARD CONTAINER */
-        .admin-card {
-            width: 90%;
-            max-width: 450px;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            padding: 30px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .header-section {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .icon-circle {
-            width: 60px;
-            height: 60px;
-            background: var(--grad);
-            margin: 0 auto 15px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            box-shadow: 0 10px 20px rgba(27, 94, 32, 0.4);
-        }
-
-        h2 {
-            margin: 0;
-            font-weight: 900;
-            color: var(--accent);
-            letter-spacing: 1px;
-        }
-
-        p {
-            font-size: 0.8rem;
-            opacity: 0.7;
-            margin-top: 5px;
-        }
-
-        /* FORM STYLES */
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .field-row {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr;
-            gap: 12px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--accent);
-            text-transform: uppercase;
-        }
-
-        .glass-input {
-            width: 100%;
-            padding: 14px;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            color: white;
-            font-family: inherit;
-            font-size: 0.9rem;
+            padding: 20px;
             box-sizing: border-box;
-            transition: 0.3s ease;
         }
 
-        .glass-input:focus {
-            border-color: var(--accent);
-            background: rgba(255, 255, 255, 0.08);
-            outline: none;
-        }
-
-        select.glass-input option {
-            background: #121212;
-            color: white;
-        }
-
-        /* FILE UPLOAD */
-        .file-upload-box {
-            position: relative;
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 25px;
             width: 100%;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 2px dashed var(--glass-border);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .file-upload-box input {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .file-upload-box span {
-            font-size: 0.75rem;
-            opacity: 0.6;
-        }
-
-        .admin-header img {
-            object-fit: cover;
-            /* Inazuia picha kujinyoosha vibaya */
-            box-shadow: 0 0 20px rgba(129, 199, 132, 0.3);
-            /* Mwanga wa kijani */
-        }
-
-        /* BUTTONS */
-        .glass-btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: 15px;
-            border: none;
-            font-weight: 900;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-family: inherit;
-        }
-
-        .primary {
-            background: white;
-            color: black;
-            margin-top: 10px;
-        }
-
-        .success {
-            background: var(--grad);
-            color: white;
-            margin-top: 10px;
-        }
-
-        .glass-btn:active {
-            transform: scale(0.96);
-        }
-
-        .glass-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        #status {
-            margin-top: 15px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        .logout-btn {
-            display: block;
-            margin: 25px auto 0;
-            background: none;
-            border: none;
-            color: #ff5252;
-            font-size: 0.7rem;
-            cursor: pointer;
-            opacity: 0.6;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .hidden {
             display: none;
+        }
+
+        h2,
+        h3 {
+            color: var(--primary);
+            text-align: center;
+        }
+
+        /* Menu Buttons */
+        .admin-menu {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .admin-menu button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .admin-menu button:hover {
+            background: var(--primary);
+            color: black;
+        }
+
+        /* Form Styling */
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            border-radius: 12px;
+            border: none;
+            background: var(--primary);
+            color: #000;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .warning {
+            background: rgba(255, 82, 82, 0.1);
+            border: 1px solid #ff5252;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: #ff5252;
+            margin: 15px 0;
+        }
+
+        #admin-product-list div {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 12px;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
     </style>
 </head>
 
 <body>
 
-    <div class="glass-bg">
-        <div class="blob b1"></div>
-        <div class="blob b2"></div>
+    <div id="setup-section" class="glass-card hidden">
+        <h2>Karibu Admin! ✨</h2>
+        <p style="text-align:center; opacity:0.8;">Karibu Admin wa <b>Mwenda Store</b>. Tafadhali sajili PIN yako ya
+            siri kuanza.</p>
+        <div class="warning">⚠️ <b>ONYO:</b> Usishiriki link hii au PIN yako na mtu yeyote!</div>
+        <input type="password" id="reg-pin" placeholder="Sajili PIN mpya">
+        <input type="password" id="confirm-pin" placeholder="Thibitisha PIN">
+        <button class="btn-submit" onclick="registerAdmin()">SAJILI PANEL</button>
     </div>
 
-    <div id="login-section" class="admin-card">
-        <div class="header-section">
-            <div class="icon-circle">🔐</div>
-            <h2>ADMIN LOGIN</h2>
-            <p>Ingiza namba ya siri ya Mwenda Shop</p>
-        </div>
-        <button onclick="showReset()"
-            style="background:none; border:none; color:var(--accent); font-size:0.7rem; margin-top:15px; cursor:pointer; text-decoration:underline;">Umesahau
-            Password?</button>
-
-        <div id="reset-section" class="hidden"
-            style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
-            <p style="font-size: 0.7rem; color: #ff5252;">Weka Security Key kubadili password</p>
-            <input type="text" id="security-key" class="glass-input" placeholder="Security Key (Mfano: Zepox2026)"
-                style="margin-bottom: 10px;">
-            <input type="password" id="new-pass" class="glass-input" placeholder="Password Mpya">
-            <button class="glass-btn success" onclick="resetPassword()"
-                style="padding: 10px; font-size: 0.7rem;">BADILISHA SASA</button>
-        </div>
-        <div class="form-group">
-            <input type="password" id="admin-pass" class="glass-input" placeholder="Weka Password (2026)">
-        </div>
-        <button class="glass-btn primary" onclick="checkPass()">FUNGUA PANEL</button>
+    <div id="login-section" class="glass-card hidden">
+        <h2>Ingia Admin</h2>
+        <input type="password" id="admin-pass" placeholder="Ingiza PIN yako"
+            style="text-align:center; letter-spacing:5px;">
+        <button class="btn-submit" onclick="checkPass()">FUNGUA PANEL</button>
     </div>
 
-    <div id="admin-form" class="admin-card hidden">
-        <div class="header-section">
-            <div class="icon-circle">📦</div>
-            <h2>ONGEZA BIDHAA</h2>
-            <p>Jaza fomu kutuma bidhaa moja kwa moja</p>
+    <div id="admin-dashboard" class="glass-card hidden">
+        <h3>Mwenda Store Panel</h3>
+
+        <div class="admin-menu">
+            <button onclick="toggleView('add')">Ongeza 📦</button>
+            <button onclick="toggleView('remove')">Futa 🗑️</button>
+            <button onclick="toggleView('settings')">Settings ⚙️</button>
         </div>
 
-        <form id="productForm">
-            <div class="form-group">
-                <label>Jina la Bidhaa</label>
-                <input type="text" id="p-name" class="glass-input" placeholder="Daftari, Sabuni, n.k." required>
-            </div>
+        <div id="section-add">
+            <form id="productForm">
+                <input type="text" id="p-name" placeholder="Jina la Bidhaa" required>
+                <input type="text" id="p-price" placeholder="Bei (TZS)" required>
 
-            <div class="field-row">
-                <div class="form-group">
-                    <label>Kategoria</label>
-                    <select id="p-category" class="glass-input" required>
+                <div class="form-group" style="margin-top:12px;">
+                    <label style="font-size: 13px; color: #ccc; margin-left: 5px;">Kategoria ya Bidhaa</label>
+                    <select id="p-category" required>
                         <option value="">Chagua...</option>
-                        <option value="Stationery">Shue na ofisi</option>
-                        <option value="Personal Care">Usafi & Urembo</option>
-                        <option value="Hardware">Hardware & Home</option>
-                        <option value="Sports">Michezo & Watoto</option>
-                        <option value="Pest">Dawa za wadudu</option>
-                        <option value="Grocery">Vyakula & Jikoni</option>
-                        <option value="Clothing">Mavazi na Nguo</option>
+                        <option value="Stationery">Shule na Ofisi 📚</option>
+                        <option value="Personal Care">Usafi & Urembo ✨</option>
+                        <option value="Hardware">Hardware & Home 🛠️</option>
+                        <option value="Sports">Michezo & Watoto ⚽</option>
+                        <option value="Pest">Dawa za Wadudu 🦟</option>
+                        <option value="Grocery">Vyakula & Jikoni 🍎</option>
+                        <option value="Clothing">Mavazi na Nguo 👕</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Bei (TZS)</label>
-                    <input type="number" id="p-price" class="glass-input" placeholder="1500" required>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label>Picha ya Bidhaa</label>
-                <div class="file-upload-box">
-                    <input type="file" id="p-image-file" accept="image/*" required>
-                    <span id="file-label">Chagua picha ya bidhaa</span>
-                </div>
-            </div>
+                <textarea id="p-description" placeholder="Maelezo kidogo ya bidhaa..." rows="2"></textarea>
+                <p style="font-size: 12px; margin: 15px 0 0 5px; opacity: 0.7;">Picha ya Bidhaa:</p>
+                <input type="file" id="p-image-file" accept="image/*" required>
 
-            <div class="form-group">
-                <label>Maelezo (Optional)</label>
-                <textarea id="p-description" class="glass-input" rows="2" placeholder="Sifa za bidhaa..."></textarea>
-            </div>
-
-            <button type="submit" id="btn-save" class="glass-btn success">HIFADHI MTANDAONI</button>
-            <div id="status"></div>
-        </form>
-        <div id="manage-section" class="glass-card" style="margin-top: 30px; padding: 20px;">
-            <h3 style="color: #ff5252; margin-bottom: 15px;">🗑️ Manage Products</h3>
-            <p style="font-size: 0.8rem; margin-bottom: 20px;">Gusa kitufe cha "FUTA" kuondoa bidhaa kabisa.</p>
-
-            <div id="admin-product-list">
-                <p>Inapakia bidhaa...</p>
-            </div>
+                <div id="status" style="margin-top:10px; font-size:14px; text-align:center;"></div>
+                <button type="submit" id="btn-save" class="btn-submit">HIFADHI MTANDAONI 🌍</button>
+            </form>
         </div>
-        <button onclick="location.reload()" class="logout-btn">Log Out / Funga</button>
+
+        <div id="section-remove" class="hidden">
+            <div id="admin-product-list"></div>
+        </div>
+
+        <div id="reset-section" class="hidden">
+            <h3>Sasisha Usalama 🔐</h3>
+            <input type="password" id="old-pass" placeholder="Password ya sasa">
+            <input type="password" id="new-pin-reset" placeholder="Password mpya">
+            <button class="btn-submit" onclick="resetPassword()">BADILISHA SASA</button>
+        </div>
     </div>
 
-    <script src="admin.js"></script>
     <script>
-        // Preview jina la picha ikichaguliwa
-        document.getElementById('p-image-file').onchange = function () {
-            document.getElementById('file-label').innerText = this.files[0].name;
-            document.getElementById('file-label').style.color = "#81c784";
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwx-pbd2JNyT8-st-4AakEKFps0Ql6Y3o5_Zb4ZkEJbrJdpAJpffu88tEkvIFmKeQpigA/exec';
+        const IMGBB_API_KEY = '9d19a0f1d80f89446815cfbd8d40ee8c';
+
+        // --- AUTH LOGIC ---
+        window.onload = () => {
+            const savedPin = localStorage.getItem('mwendaAdminPIN');
+            if (!savedPin) {
+                document.getElementById('setup-section').classList.remove('hidden');
+            } else {
+                document.getElementById('login-section').classList.remove('hidden');
+            }
         };
+
+        function registerAdmin() {
+            const p1 = document.getElementById('reg-pin').value;
+            const p2 = document.getElementById('confirm-pin').value;
+            if (p1 === p2 && p1.length >= 4) {
+                localStorage.setItem('mwendaAdminPIN', p1);
+                alert("✅ Usajili umekamilika!");
+                location.reload();
+            } else { alert("Hakikisha PIN zinafanana na zina urefu wa 4+"); }
+        }
+
+        function checkPass() {
+            const input = document.getElementById('admin-pass').value;
+            if (input === localStorage.getItem('mwendaAdminPIN')) {
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+            } else { alert("PIN siyo sahihi!"); }
+        }
+
+        // --- NAVIGATION ---
+        function toggleView(view) {
+            document.getElementById('section-add').classList.add('hidden');
+            document.getElementById('section-remove').classList.add('hidden');
+            document.getElementById('reset-section').classList.add('hidden');
+
+            if (view === 'add') document.getElementById('section-add').classList.remove('hidden');
+            if (view === 'remove') {
+                document.getElementById('section-remove').classList.remove('hidden');
+                loadProducts();
+            }
+            if (view === 'settings') document.getElementById('reset-section').classList.remove('hidden');
+        }
+
+        // --- RESET PASSWORD ---
+        function resetPassword() {
+            const old = document.getElementById('old-pass').value;
+            const newP = document.getElementById('new-pin-reset').value;
+            if (old === localStorage.getItem('mwendaAdminPIN')) {
+                localStorage.setItem('mwendaAdminPIN', newP);
+                alert("✅ Password imebadilishwa!");
+                location.reload();
+            } else { alert("Password ya zamani si sahihi!"); }
+        }
+
+        // --- PRODUCT HANDLING ---
+        document.getElementById('productForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save');
+            const status = document.getElementById('status');
+            const file = document.getElementById('p-image-file').files[0];
+
+            btn.disabled = true; status.innerText = "Inatuma picha... ⏳";
+
+            try {
+                const formData = new FormData();
+                formData.append('image', file);
+                const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: 'POST', body: formData });
+                const imgData = await imgRes.json();
+
+                status.innerText = "Inahifadhi Excel... 📊";
+                const product = {
+                    action: 'add',
+                    name: document.getElementById('p-name').value,
+                    price: document.getElementById('p-price').value,
+                    category: document.getElementById('p-category').value,
+                    description: document.getElementById('p-description').value,
+                    imageUrl: imgData.data.url
+                };
+
+                await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(product) });
+                status.innerHTML = "<b style='color:#2ecc71;'>✅ Bidhaa Imehifadhiwa!</b>";
+                e.target.reset();
+            } catch (err) { status.innerHTML = "<b style='color:#ff5252;'>❌ Tatizo limetokea!</b>"; }
+            finally { btn.disabled = false; btn.innerText = "HIFADHI MTANDAONI 🌍"; }
+        };
+
+        async function loadProducts() {
+            const list = document.getElementById('admin-product-list');
+            list.innerHTML = "<p style='text-align:center;'>Inapakia... 🔄</p>";
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL + "?action=read");
+                const data = await res.json();
+                list.innerHTML = (data.sheet1 || []).map(p => `
+                    <div>
+                        <img src="${p.imageUrl}" width="40" height="40" style="border-radius:5px; object-fit:cover;">
+                        <span style="flex-grow:1; margin-left:10px; font-size:13px;">${p.name}<br><b>${p.price}</b></span>
+                        <button onclick="deleteProduct('${p.name}')" style="background:red; border:none; color:white; padding:5px; border-radius:5px; cursor:pointer;">Futa</button>
+                    </div>
+                `).join('');
+            } catch (e) { list.innerHTML = "Hitilafu kupakia data."; }
+        }
+
+        async function deleteProduct(name) {
+            if (!confirm(`Futa ${name}?`)) return;
+            await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'delete', name: name }) });
+            alert("Ombi limetumwa!"); setTimeout(loadProducts, 2000);
+        }
     </script>
 </body>
 
