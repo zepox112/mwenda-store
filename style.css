@@ -1203,3 +1203,110 @@ body.no-scroll {
 .glow-gallery-btn:hover::after {
     left: 120%;
 }
+
+/* Inahakikisha picha zote kwenye grid zina ukubwa sawa */
+.product-trigger {
+    width: 100%;
+    height: 180px;
+    /* Unaweza kubadilisha urefu huu kulingana na upendeleo wako */
+    object-fit: cover;
+    /* Hii ndio siri: inafanya picha ifit bila kupoteza ubora */
+    border-radius: 8px 8px 0 0;
+    /* Inazungusha kona za juu tu */
+    display: block;
+}
+
+/* Style ya kadi ya bidhaa ili iwe nadhifu */
+.p-card-small {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Image Viewer (Popup) - Inahakikisha picha inajaa kwenye simu */
+#popupImg {
+    max-width: 95%;
+    max-height: 85vh;
+    object-fit: contain;
+    /* Kwenye viewer, picha ionekane yote bila kukatwa */
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Container kuu ya picha inayofunguka */
+#imagePopup {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    /* Weusi mzito nyuma */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Boksi la maelezo (Lile lenye kadi) */
+.popup-content-box {
+    background: #1a1a1a;
+    /* Rangi ya giza kidogo */
+    width: 100%;
+    max-width: 400px;
+    /* Upana wa simu */
+    border-radius: 20px;
+    /* Hapa ndipo penye kuzi-curve kona */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Picha ndani ya Viewer */
+#popupImg {
+    width: 100%;
+    max-height: 45vh;
+    /* Inachukua nusu ya screen */
+    object-fit: contain;
+    /* Inaonyesha picha yote bila kuikata */
+    background: #000;
+}
+
+/* Sehemu ya Maandishi chini ya picha */
+.popup-details {
+    padding: 20px;
+    text-align: left;
+}
+
+.popup-details h3 {
+    margin: 0;
+    color: #4CAF50;
+    /* Rangi ya kijani kama Mwenda Store */
+    font-size: 1.4rem;
+}
+
+.popup-details .p-price-popup {
+    font-size: 1.2rem;
+    color: #fff;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+/* Kitufe cha Agiza */
+.agiza-btn-popup {
+    background: #25D366;
+    /* Rangi ya WhatsApp */
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+}

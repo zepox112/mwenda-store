@@ -269,194 +269,232 @@
             </div>
         </footer>
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const popup = document.getElementById('imagePopup');
-                const popupImg = document.getElementById('popupImg');
-                const caption = document.getElementById('popupCaption');
-                const closeBtn = document.querySelector('.close-popup');
+            // 1. MIKESHO NA DATA YA MSINGI
+            const API = 'https://script.google.com/macros/s/AKfycbwcdwgYb4McT-NXshkHeYYTndiyLbseAcnVw5HDyjxOwUXXRtM_LC5b3DCv_J29Eg8mmw/exec';
+            let allItems = [];
 
-                // SIKILIZA PICHA ZOTE (Dynamic na Static)
-                document.addEventListener('click', (e) => {
-                    // Hakikisha picha inayoguswa ina class ya 'product-image'
-                    // (Weka class hii kwenye picha zako zote za bidhaa kule kwenye database loop)
-                    if (e.target.classList.contains('product-image')) {
-                        popup.style.display = 'flex';
-                        popupImg.src = e.target.src; // Inajaza link ya picha yenyewe kiotomatiki
-                        caption.innerHTML = e.target.alt || "Bidhaa ya Mwenda Store";
-                    }
-                });
+            const categoryData = {
+                'Stationery': { desc: 'Hiki ni kundi la vifaa vya kujifunzia na kazi za kiofisi.', img: 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?q=80&w=1000' },
+                'Personal Care': { desc: 'Vifaa vya usafi wa mwili na muonekano.', img: 'https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=1000' },
+                'Hardware': { desc: 'Vifaa vinavyosaidia kazi za kila siku nyumbani.', img: 'https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?q=80&w=1000' },
+                'Sports': { desc: 'Vifaa vya Michezo na Midoli ya watoto.', img: 'https://images.unsplash.com/photo-1514989940723-e8e51635b782?q=80&w=1000' },
+                'Pest': { desc: 'Bidhaa za kulinda nyumba dhidi ya wadudu.', img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1000' },
+                'Grocery': { desc: 'Vyakula na Mahitaji ya Jikoni.', img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1000' },
+                'Clothing': { desc: 'Nguo na mavazi bora ya kisasa kwa rika zote.', img: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1000' },
+                'Mavazi': { desc: 'Nguo na mavazi bora ya kisasa kwa rika zote.', img: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1000' }
+            };
 
-                // Funga popup
-                closeBtn.onclick = () => popup.style.display = 'none';
-                popup.onclick = (e) => {
-                    if (e.target === popup) popup.style.display = 'none';
-                };
-            });
-        </script>
-        <script>
+            // 2. ANZISHA DATA MAPEMA
             document.addEventListener('DOMContentLoaded', () => {
+                // --- FAQ SYSTEM ---
                 const faqQuestions = document.querySelectorAll('.faq-question');
-
                 faqQuestions.forEach(question => {
                     question.addEventListener('click', () => {
                         const item = question.parentElement;
                         const answer = item.querySelector('.faq-answer');
                         const isActive = item.classList.contains('active');
-
-                        // Funga maswali mengine yote kwanza
                         document.querySelectorAll('.faq-item').forEach(otherItem => {
                             otherItem.classList.remove('active');
-                            otherItem.querySelector('.faq-answer').style.maxHeight = null;
+                            if (otherItem.querySelector('.faq-answer')) otherItem.querySelector('.faq-answer').style.maxHeight = null;
                         });
-
-                        // Kama swali halikuwa wazi, lifungue kwa kuhesabu urefu wake halisi
                         if (!isActive) {
                             item.classList.add('active');
-                            // scrollHeight inapata urefu wote wa maandishi hata kama ni mengi
                             answer.style.maxHeight = answer.scrollHeight + "px";
                         }
                     });
                 });
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    const popup = document.getElementById('imagePopup');
+
+                    // Tunatengeneza muundo mpya wa ndani ya popup ili uwe curved
+                    if (popup) {
+                        popup.innerHTML = `
+            <div class="popup-content-box">
+                <span class="close-popup" style="position:absolute; top:20px; right:20px; color:white; font-size:30px; cursor:pointer;">&times;</span>
+                <img id="popupImg" src="" alt="">
+                <div class="popup-details">
+                    <h3 id="viewTitle"></h3>
+                    <p class="p-price-popup" id="viewPrice"></p>
+                    <p id="viewDesc" style="color:#aaa; font-size:0.9rem; margin-bottom:15px;"></p>
+                    <button id="waOrderModal" class="agiza-btn-popup">AGIZA SASA WHATSAPP</button>
+                </div>
+            </div>
+        `;
+                    }
+
+                    const popupImg = document.getElementById('popupImg');
+                    const viewTitle = document.getElementById('viewTitle');
+                    const viewPrice = document.getElementById('viewPrice');
+                    const viewDesc = document.getElementById('viewDesc');
+                    const waBtn = document.getElementById('waOrderModal');
+
+                    document.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('product-trigger')) {
+                            const name = e.target.alt;
+                            const price = e.target.getAttribute('data-price');
+                            const desc = e.target.getAttribute('data-desc');
+
+                            popupImg.src = e.target.src;
+                            viewTitle.innerText = name;
+                            viewPrice.innerText = price;
+                            viewDesc.innerText = desc || "Bidhaa bora kutoka Mwenda Store.";
+
+                            // Tengeneza link ya WhatsApp
+                            waBtn.onclick = () => {
+                                const text = `Habari Mwenda Store, nahitaji:\n*Bidhaa:* ${name}\n*Bei:* ${price}`;
+                                window.open(`https://wa.me/255747185190?text=${encodeURIComponent(text)}`);
+                            };
+
+                            popup.style.display = 'flex';
+                            document.body.style.overflow = 'hidden';
+                        }
+                    });
+
+                    // Kufunga
+                    document.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('close-popup') || e.target === popup) {
+                            popup.style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                        }
+                    });
+                });
+                // Pakia data kimya kimya
+                fetchProducts();
             });
-        </script>
-        <script>
-            // 1. LINK YAKO KAMILI YA SHEETY
-            const API = 'https://api.sheety.co/058cdf18e93420af4bfde475ec8274e3/mwendashopDb/sheet1';
-            let allItems = [];
 
-            // 2. MAELEZO YA KATEGORIA
-            const categoryData = {
-                'Stationery': { desc: 'Hiki ni kundi la vifaa vya kujifunzia na kazi za kiofisi.', img: 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?q=80&w=1000' },
-                'Personal Care': { desc: 'Vifaa vya usafi wa mwili na muonekano.', img: 'https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=1000' },
-                'Hardware': { desc: 'Vifaa vinavyosaidia kazi za kila siku nyumbani.', img: 'https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?q=80&w=1000' },
-                'Sports': { desc: 'Vifaa vya Michezo na Midoli ya watoto.', img: 'https://images.unsplash.com/photo-1595079676339-1534801ad6cf?q=80&w=1000' },
-                'Pest': { desc: 'Bidhaa za kulinda nyumba dhidi ya wadudu.', img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1000' },
-                'Grocery': { desc: 'Vyakula na Mahitaji ya Jikoni.', img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1000' },
-                // Imeongezwa: Mavazi & Nguo
-                'Clothing': { desc: 'Nguo na mavazi bora ya kisasa kwa rika zote.', img: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1000' }
-            };
-            // 3. THEME TOGGLE
-            document.getElementById('theme-toggle').onclick = () => document.body.classList.toggle('light-mode');
-
-            // 4. FETCH DATA
+            // 3. FETCH DATA (Kimya Kimya)
             async function fetchProducts() {
                 try {
-                    const r = await fetch(API);
-                    const d = await r.json();
-                    allItems = d.sheet1;
-                    console.log("Data imepakiwa kutoka Sheety!");
-                } catch (e) {
-                    console.error("Data Load Error:", e);
+                    const response = await fetch(API);
+                    const json = await response.json();
+                    let rawData = Array.isArray(json) ? json : (json.data || json.sheet1 || []);
+                    allItems = rawData.map(item => ({
+                        ...item,
+                        category: item.category ? item.category.toString().trim() : ""
+                    }));
+                    console.log("Data Loaded.");
+                } catch (error) {
+                    console.error("Load Error:", error);
                 }
             }
 
-            // 5. RENDER RESULTS (Iliyoboreshwa na Function ya Gusa Picha)
+            // 4. RENDER (Inapakia mara moja bila maneno ya ziada)
             function renderResults(products, title) {
-                document.getElementById('home-view').style.display = 'none';
-                document.getElementById('results-view').style.display = 'block';
-
-                const info = categoryData[title] || { desc: 'Bidhaa bora kwa bei nafuu.', img: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=1000' };
+                const homeView = document.getElementById('home-view');
+                const resultsView = document.getElementById('results-view');
                 const container = document.getElementById('products-container');
 
+                if (homeView) homeView.style.display = 'none';
+                if (resultsView) resultsView.style.display = 'block';
+
+                const info = categoryData[title] || { desc: 'Bidhaa bora kwa bei nafuu.', img: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=1000' };
+
                 container.innerHTML = `
-            <div class="category-hero glass">
-                <img src="${info.img}" class="hero-img">
-                <div class="hero-overlay"><h2>${title}</h2></div>
-            </div>
-            <div class="category-description glass"><p>${info.desc}</p></div>
-            <h3 class="label">Bidhaa Zilizopo</h3>
-            <div class="product-grid-auto">
-                ${products.length ? products.map(p => `
-                    <div class="p-card-small glass">
-                        <img src="${p.imageurl || 'placeholder.jpg'}" 
+        <div class="category-hero glass">
+            <img src="${info.img}" class="hero-img">
+            <div class="hero-overlay"><h2>${title}</h2></div>
+        </div>
+        <div class="category-description glass"><p>${info.desc}</p></div>
+        <h3 class="label">Bidhaa Zilizopo (${products.length})</h3>
+        <div class="product-grid-auto">
+            ${products.length ? products.map(p => `
+                <div class="p-card-small glass">
+                    <div class="p-img-container">
+                        <img src="${p.imageurl || 'https://via.placeholder.com/200'}" 
                              class="product-trigger" 
                              alt="${p.name}" 
-                             data-desc="${p.description || 'Bidhaa bora kutoka Mwenda Store.'}" 
+                             data-desc="${p.description || 'Bidhaa bora.'}" 
                              data-price="TZS ${p.price}"
                              style="cursor:pointer;"
-                             onerror="this.src='pic1.jpg'">
-                        <div class="p-details">
-                            <h4>${p.name}</h4>
-                            <p class="p-price">TZS ${p.price}</p>
-                            <button class="order-btn-small" onclick="order('${p.name}', '${p.price}')">Agiza WhatsApp</button>
-                        </div>
+                             onerror="this.src='https://via.placeholder.com/200'">
                     </div>
-                `).join('') : '<p style="padding:40px; text-align:center;">Samahani, bidhaa hazijapatikana kwa sasa.</p>'}
-            </div>
-        `;
+                    <div class="p-details">
+                        <h4 style="font-size: 0.9rem; margin: 8px 0;">${p.name}</h4>
+                        <p class="p-price" style="font-weight: bold; color: #00d4ff;">TZS ${p.price}</p>
+                        <button class="order-btn-small" onclick="order('${p.name}', '${p.price}')" style="width:100%; margin-top:8px;">Agiza</button>
+                    </div>
+                </div>
+            `).join('') : '<p style="padding:40px; text-align:center;">Samahani, bidhaa hazijapatikana kwa sasa.</p>'}
+        </div>
+    `;
                 window.scrollTo(0, 0);
             }
 
-            // 6. FUNCTION YA QUICK VIEW (Gusa Picha)
+            // 5. CHUJA KATEGORIA (Hufunguka haraka)
+            async function filterByCat(cat) {
+                // Ikitokea data haijamaliza kupakia, subiri sekunde 0.5 kisha jaribu tena bila kusema neno
+                if (allItems.length === 0) {
+                    setTimeout(() => filterByCat(cat), 500);
+                    return;
+                }
+                const filtered = allItems.filter(p => p.category && p.category.toLowerCase() === cat.toLowerCase());
+                renderResults(filtered, cat);
+            }
+
+            function searchProducts() {
+                const q = document.getElementById('searchInput').value.toLowerCase().trim();
+                if (q.length < 2) return;
+                const filtered = allItems.filter(p =>
+                    (p.name && p.name.toLowerCase().includes(q)) ||
+                    (p.category && p.category.toLowerCase().includes(q))
+                );
+                renderResults(filtered, `Matokeo: ${q}`);
+            }
+
+            function checkEnter(event) { if (event.key === "Enter") searchProducts(); }
+
+            function goHome() {
+                document.getElementById('home-view').style.display = 'block';
+                document.getElementById('results-view').style.display = 'none';
+            }
+
+            function order(name, price) {
+                const text = `Habari Mwenda Shop 🌿, nahitaji bidhaa hii:\n\n*Bidhaa:* ${name}\n*Bei:* ${price}`;
+                window.open(`https://wa.me/255747185190?text=${encodeURIComponent(text)}`);
+            }
+
+            // 5. QUICK VIEW (Gusa Picha)
             document.addEventListener('click', (e) => {
                 if (e.target.classList.contains('product-trigger')) {
                     const modal = document.getElementById('productQuickView');
-                    if (!modal) return; // Hakikisha modal HTML ipo
+                    if (!modal) return;
 
-                    // Vuta data kutoka kwenye picha iliyoguswa
-                    const picha = e.target.src;
-                    const jina = e.target.alt;
-                    const maelezo = e.target.getAttribute('data-desc');
-                    const bei = e.target.getAttribute('data-price');
+                    document.getElementById('viewImg').src = e.target.src;
+                    document.getElementById('viewTitle').innerText = e.target.alt;
+                    document.getElementById('viewDesc').innerText = e.target.getAttribute('data-desc');
+                    document.getElementById('viewPrice').innerText = e.target.getAttribute('data-price');
 
-                    // Jaza Modal
-                    document.getElementById('viewImg').src = picha;
-                    document.getElementById('viewTitle').innerText = jina;
-                    document.getElementById('viewDesc').innerText = maelezo;
-                    document.getElementById('viewPrice').innerText = bei;
-
-                    // Link ya WhatsApp ndani ya Modal
-                    document.getElementById('waOrderModal').onclick = () => order(jina, bei);
+                    document.getElementById('waOrderModal').onclick = () => order(e.target.alt, e.target.getAttribute('data-price'));
 
                     modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
                 }
             });
-            // Function ya kufungua (Iweke ndani ya ile click event yako)
-            function openProductDetails(picha, jina, maelezo, bei) {
-                const modal = document.getElementById('productQuickView');
 
-                // 1. Jaza Data
-                document.getElementById('viewImg').src = picha;
-                document.getElementById('viewTitle').innerText = jina;
-                document.getElementById('viewDesc').innerText = maelezo;
-                document.getElementById('viewPrice').innerText = bei;
-
-                // 2. Onyesha Modal
-                modal.style.display = 'block';
-
-                // 3. ZUIA WEBSITE KUSCROLL (Lock body)
-                document.body.classList.add('no-scroll');
-            }
-
-            // Function ya kufunga
             function closeProductDetails() {
                 const modal = document.getElementById('productQuickView');
-                modal.style.display = 'none';
-
-                // 4. RUHUSU WEBSITE KUSCROLL TENA (Unlock body)
-                document.body.classList.remove('no-scroll');
+                if (modal) modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
             }
 
-            // Unganisha na kitufe cha kufunga (X)
-            document.querySelector('.close-btn').addEventListener('click', closeProductDetails);
-            // Funga Modal
-            window.onclick = (event) => {
-                const modal = document.getElementById('productQuickView');
-                if (event.target == modal || event.target.classList.contains('close-btn')) {
-                    modal.style.display = "none";
-                }
-            };
-
-            // 7. UTILITIES (Search, GoHome, Order)
+            // 6. UTILITIES (Chuja, Tafuta, Nyumbani)
             function filterByCat(cat) {
-                const filtered = allItems.filter(p => p.category && p.category.toLowerCase().trim() === cat.toLowerCase().trim());
+                if (allItems.length === 0) {
+                    alert("Data bado inapakuliwa, tafadhali subiri kidogo...");
+                    return;
+                }
+                const filtered = allItems.filter(p => p.category && p.category.toLowerCase() === cat.toLowerCase());
                 renderResults(filtered, cat);
             }
 
             function searchProducts() {
                 const q = document.getElementById('searchInput').value.toLowerCase().trim();
                 if (q.length < 2) return alert("Andika herufi 2 au zaidi.");
-                const filtered = allItems.filter(p => (p.name && p.name.toLowerCase().includes(q)) || (p.category && p.category.toLowerCase().includes(q)));
+                const filtered = allItems.filter(p =>
+                    (p.name && p.name.toLowerCase().includes(q)) ||
+                    (p.category && p.category.toLowerCase().includes(q))
+                );
                 renderResults(filtered, `Matokeo ya: ${q}`);
             }
 
@@ -466,24 +504,21 @@
                 document.getElementById('home-view').style.display = 'block';
                 document.getElementById('results-view').style.display = 'none';
             }
-            function closeModal() {
-                document.getElementById('productModal').style.display = 'none';
-                document.body.classList.remove('no-scroll');
-            }
+
             function order(name, price) {
                 const text = `Habari Mwenda Shop 🌿, nahitaji bidhaa hii:\n\n*Bidhaa:* ${name}\n*Bei:* ${price}`;
                 window.open(`https://wa.me/255747185190?text=${encodeURIComponent(text)}`);
             }
 
+            // 7. WINDOW EVENTS
+            window.onclick = (event) => {
+                const qvModal = document.getElementById('productQuickView');
+                if (event.target == qvModal || event.target.classList.contains('close-btn')) {
+                    closeProductDetails();
+                }
+            };
+
             window.onload = fetchProducts;
-            function openGallery() {
-                document.getElementById("galleryModal").style.display = "flex";
-            }
-
-            function closeGallery() {
-                document.getElementById("galleryModal").style.display = "none";
-            }
-
         </script>
         <a href="https://wa.me/255747185190" class="whatsapp-glass-btn" target="_blank">
             <div class="glow-ring"></div>
@@ -512,5 +547,6 @@
             </div>
         </div>
 </body>
+
 
 </html>
