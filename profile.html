@@ -14,7 +14,6 @@
         }
 
         body {
-            /* Background ya giza yenye mng'ao wa kijani kufanana na Login yako */
             background: radial-gradient(circle at top right, #1a2e1a 0%, #050505 100%);
             color: white;
             font-family: 'Poppins', sans-serif;
@@ -25,7 +24,6 @@
             padding: 20px;
         }
 
-        /* Glass Card Effect */
         .profile-card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(25px);
@@ -37,15 +35,13 @@
             max-width: 380px;
             text-align: center;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
         }
 
-        /* Profile Image Styling */
+        /* Profile Image Styling with Edit Button */
         .img-container {
             position: relative;
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             margin: 0 auto 20px;
         }
 
@@ -59,17 +55,25 @@
             background: rgba(0, 0, 0, 0.2);
         }
 
-        /* Status Indicator (Online) */
-        .status-dot {
+        /* Edit Icon Badge */
+        .edit-badge {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
-            width: 15px;
-            height: 15px;
+            bottom: 5px;
+            right: 5px;
             background: #4ade80;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
-            border: 2px solid #050505;
-            box-shadow: 0 0 10px #4ade80;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 3px solid #050505;
+            box-shadow: 0 0 15px rgba(74, 222, 128, 0.3);
+        }
+
+        .edit-badge:active {
+            transform: scale(0.9);
         }
 
         h2 {
@@ -84,7 +88,6 @@
             margin-bottom: 25px;
         }
 
-        /* Data Rows */
         .info-box {
             background: rgba(255, 255, 255, 0.05);
             padding: 15px;
@@ -104,11 +107,9 @@
         .value {
             font-size: 1rem;
             color: #fff;
-            font-weight: 400;
             margin-top: 3px;
         }
 
-        /* Buttons */
         .btn {
             width: 100%;
             padding: 14px;
@@ -125,19 +126,15 @@
             color: #000;
         }
 
-        .btn-home:hover {
-            background: #5ef396;
-            transform: translateY(-2px);
-        }
-
         .btn-logout {
             background: transparent;
             border: 1px solid rgba(255, 95, 95, 0.5);
             color: #ff5f5f;
         }
 
-        .btn-logout:hover {
-            background: rgba(255, 95, 95, 0.1);
+        /* Hidden File Input */
+        #file-input {
+            display: none;
         }
     </style>
 </head>
@@ -147,7 +144,10 @@
     <div class="profile-card">
         <div class="img-container">
             <img id="user-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
-            <div class="status-dot"></div>
+            <label for="file-input" class="edit-badge">
+                <span style="font-size: 18px;">📷</span>
+            </label>
+            <input type="file" id="file-input" accept="image/*">
         </div>
 
         <h2 id="u-name-top">Mteja</h2>
@@ -168,27 +168,88 @@
     </div>
 
     <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxY_C6F9pUpz5XyhJSUkjqBQLVCBtXH5Mztv4ddrUM9DM-CuevThqeFk0vyi47JvZXm/exec";
+        const IMGBB_KEY = "9d19a0f1d80f89446815cfbd8d40ee8c";
+
         window.onload = function () {
-            // 1. Pata data kutoka localStorage
             const name = localStorage.getItem('user_name') || "Mteja";
             const phone = localStorage.getItem('user_email') || "Hujaingia";
             const photo = localStorage.getItem('user_photo');
 
-            // 2. Weka data kwenye HTML
             document.getElementById('u-name').innerText = name;
             document.getElementById('u-name-top').innerText = name;
             document.getElementById('u-phone').innerText = phone;
-            document.getElementById('u-id-val').innerText = phone.substring(phone.length - 4); // ID ya mwisho wa namba
+            document.getElementById('u-id-val').innerText = phone.substring(phone.length - 4);
 
-            // 3. Hakikisha picha ipo, kama haipo weka ile ya default
-            if (photo && photo !== "undefined" && photo !== "") {
+            if (photo && photo !== "undefined" && photo !== "" && photo !== "null") {
                 document.getElementById('user-img').src = photo;
             }
         }
 
+        const fileInput = document.getElementById('file-input');
+        const userImg = document.getElementById('user-img');
+
+        fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                // Onyesha inapakia (Preview & Loading state)
+                userImg.style.opacity = "0.4";
+
+                reader.onload = async function (e) {
+                    const base64Data = e.target.result.split(',')[1]; // Toa header ya base64
+                    const phone = localStorage.getItem('user_email');
+
+                    try {
+                        // 1. Tuma Picha ImgBB kwanza upate Link
+                        let formData = new FormData();
+                        formData.append("image", base64Data);
+
+                        const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+                            method: "POST",
+                            body: formData
+                        });
+
+                        const imgbbData = await imgbbResponse.json();
+
+                        if (imgbbData.success) {
+                            const directLink = imgbbData.data.url; // Hii ndio link ya picha
+
+                            // 2. Tuma Link kwenda Google Sheets
+                            await fetch(SCRIPT_URL, {
+                                method: "POST",
+                                mode: "no-cors",
+                                body: JSON.stringify({
+                                    action: "updatePhoto",
+                                    phone: phone,
+                                    photoData: directLink // Tunatuma link, siyo picha nzito
+                                })
+                            });
+
+                            // 3. Update kioo na LocalStorage
+                            userImg.src = directLink;
+                            localStorage.setItem('user_photo', directLink);
+
+                            userImg.style.opacity = "1";
+                            alert("Picha imebadilishwa kikamilifu! ✅");
+                        } else {
+                            throw new Error("ImgBB Upload Failed");
+                        }
+
+                    } catch (error) {
+                        console.error("Error:", error);
+                        alert("Kuna tatizo la mtandao. Jaribu tena.");
+                        userImg.style.opacity = "1";
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
         function logout() {
-            // Usifute kila kitu kama unataka akumbuke picha, futa tu login status
             localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('user_photo'); // Optional: safisha picha akitoka
             location.href = 'login.html';
         }
     </script>
