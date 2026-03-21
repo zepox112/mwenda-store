@@ -1,184 +1,185 @@
-// 1. VIUNGO VYA MUHIMU
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbS_zEacJahcItVA_3v9BtJmVnZ1pG0ErUoDPdt8x_qfR3pr_PgEVT71El1c7KTtpJ/exec';
+// ==========================================
+// 1. CONFIGURATION & CONFIG
+// ==========================================
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwx-pbd2JNyT8-st-4AakEKFps0Ql6Y3o5_Zb4ZkEJbrJdpAJpffu88tEkvIFmKeQpigA/exec';
 const IMGBB_API_KEY = '9d19a0f1d80f89446815cfbd8d40ee8c';
+const MASTER_KEY = "2026"; // Namba ya dharura milele
 
-// 2. KAGUA NAMBA YA SIRI
-function checkPass() {
-    const passInput = document.getElementById('admin-pass').value;
-    const loginSection = document.getElementById('login-section');
-    const adminForm = document.getElementById('admin-form');
-
-    if (passInput === "2026") {
-        loginSection.style.display = 'none';
-        adminForm.style.display = 'block';
-    } else {
-        alert("Namba ya siri si sahihi! Jaribu tena.");
-    }
-}
-
-// 3. KAZI YA KUHIFADHI BIDHAA NA PICHA
-document.getElementById('productForm').onsubmit = async (e) => {
-    e.preventDefault();
-
-    const btn = document.getElementById('btn-save');
-    const status = document.getElementById('status');
-    const imageFile = document.getElementById('p-image-file').files[0];
-
-    // Zuia kitufe kisibonyezwe mara mbili
-    btn.disabled = true;
-    btn.innerText = "Inapakia... Subiri";
-    status.innerText = "Inatuma picha ImgBB...";
-    status.style.color = "#81c784";
-
-    try {
-        // HATUA YA 1: PAKIA PICHA KWENYE IMGBB
-        const formData = new FormData();
-        formData.append('image', imageFile);
-
-        const imgResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-            method: 'POST',
-            body: formData
-        });
-
-        const imgResult = await imgResponse.json();
-
-        if (!imgResult.success) {
-            throw new Error("Picha imekataa kupakiwa!");
-        }
-
-        const imageUrl = imgResult.data.url;
-
-        // HATUA YA 2: TUMA DATA KWENYE GOOGLE SHEETS
-        status.innerText = "Picha tayari! Inahifadhi kwenye Excel...";
-
-        const productData = {
-            name: document.getElementById('p-name').value,
-            price: document.getElementById('p-price').value,
-            category: document.getElementById('p-category').value,
-            imageUrl: imageUrl,
-            description: document.getElementById('p-description').value
-        };
-
-        // Tunatuma data kama JSON string
-        await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(productData)
-        });
-
-        // Kila kitu kimekamilika
-        status.innerText = "✅ Safi sana Zephaniah! Bidhaa imewekwa Live!";
-        status.style.color = "#81c784";
-
-        // Safisha fomu
-        document.getElementById('productForm').reset();
-
-    } catch (err) {
-        console.error(err);
-        status.innerText = "❌ Tatizo: " + err.message;
-        status.style.color = "#ff5252";
-    } finally {
-        btn.disabled = false;
-        btn.innerText = "HIFADHI MTANDAONI";
-    }
-};
-// 1. WEKA SECURITY KEY YAKO HAPA (Hii ndio utaitumia ukitaka kubadili password)
-const MASTER_SECURITY_KEY = "Zepox2026";
-
-// 2. ANGALIA KAMA KUNA PASSWORD KWENYE MEMORY, KAMA HAMNA WEKA 2026 KAMA DEFAULT
+// Hakikisha Password ipo kwenye mfumo mara ya kwanza
 if (!localStorage.getItem('adminPassword')) {
     localStorage.setItem('adminPassword', '2026');
 }
 
+// ==========================================
+// 2. LOGIN & PASSWORD SYSTEM (KAWAIDA)
+// ==========================================
+
+// Kuingia Admin (Lazima abonyeze Button)
 function checkPass() {
-    const passInput = document.getElementById('admin-pass').value;
+    const input = document.getElementById('admin-pass').value.trim();
     const currentPass = localStorage.getItem('adminPassword');
 
-    if (passInput === currentPass) {
-        document.getElementById('login-section').classList.add('hidden');
-        document.getElementById('admin-form').classList.remove('hidden');
+    if (input === currentPass) {
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('admin-dashboard').style.display = 'block';
+        document.getElementById('admin-pass').value = "";
     } else {
-        alert("Namba ya siri si sahihi!");
+        alert("❌ PIN uliyoweka si sahihi!");
     }
 }
 
-// 3. ONYESHA SEHEMU YA RESET
-function showReset() {
-    document.getElementById('reset-section').classList.toggle('hidden');
+// Onyesha/Ficha sehemu ya kusahau PIN
+function showForgot() {
+    const section = document.getElementById('forgot-section');
+    section.style.display = (section.style.display === 'none') ? 'block' : 'none';
 }
 
-// 4. BADILISHA PASSWORD
-function resetPassword() {
-    const inputKey = document.getElementById('security-key').value;
-    const newPass = document.getElementById('new-pass').value;
+// Kubadilisha PIN kwa kutumia Master Key (2026)
+function resetWithMasterKey() {
+    const masterIn = document.getElementById('master-key-input').value.trim();
+    const newPin = document.getElementById('new-pin-input').value.trim();
 
-    if (inputKey === MASTER_SECURITY_KEY) {
-        if (newPass.length < 4) {
-            alert("Password mpya iwe na angalau herufi 4!");
+    if (masterIn === MASTER_KEY) {
+        if (newPin.length < 4) {
+            alert("PIN mpya lazima iwe na herufi kuanzia 4!");
             return;
         }
-        localStorage.setItem('adminPassword', newPass);
-        alert("✅ Hongera! Password imebadilishwa. Tumia password mpya kuingia.");
-        location.reload(); // Refresh ukurasa
+        localStorage.setItem('adminPassword', newPin);
+        alert("✅ PIN imebadilishwa! Sasa ingia na PIN mpya.");
+
+        // Safisha na ufiche
+        document.getElementById('master-key-input').value = "";
+        document.getElementById('new-pin-input').value = "";
+        document.getElementById('forgot-section').style.display = 'none';
     } else {
-        alert("❌ Security Key si sahihi! Huwezi kubadili password.");
+        alert("❌ Master Key si sahihi!");
     }
 }
-// 1. KAZI YA KUPAKIA BIDHAA KWENYE ADMIN PANEL
-async function loadAdminProducts() {
-    const listDiv = document.getElementById('admin-product-list');
-    listDiv.innerHTML = '<p>Inapakia bidhaa kutoka Excel...</p>';
+
+// ==========================================
+// 3. NAVIGATION (TOGGLE VIEWS)
+// ==========================================
+function toggleView(view) {
+    const sections = ['section-add', 'section-remove'];
+    sections.forEach(s => {
+        const el = document.getElementById(s);
+        if (el) el.style.display = 'none';
+    });
+
+    if (view === 'add') {
+        document.getElementById('section-add').style.display = 'block';
+    } else if (view === 'remove') {
+        document.getElementById('section-remove').style.display = 'block';
+        loadProducts(); // Pakia bidhaa pindi unapoingia hapa
+    }
+}
+
+// ==========================================
+// 4. ONGEZA BIDHAA (IMGBB + GOOGLE SHEETS)
+// ==========================================
+const productForm = document.getElementById('productForm');
+if (productForm) {
+    productForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btn-save');
+        const status = document.getElementById('status');
+        const file = document.getElementById('p-image-file').files[0];
+
+        if (!file) {
+            alert("Tafadhali chagua picha ya bidhaa!");
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = "Inatuma Picha... ⏳";
+
+        try {
+            // Hatua ya 1: Upload to ImgBB
+            const formData = new FormData();
+            formData.append('image', file);
+            const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: 'POST',
+                body: formData
+            });
+            const imgData = await imgRes.json();
+            const imageUrl = imgData.data.url;
+
+            // Hatua ya 2: Tuma Data kwenye Google Sheets
+            status.innerText = "Inahifadhi Kwenye Excel... 📊";
+            const product = {
+                action: 'add', // Muhimu kwa Google Script kujua cha kufanya
+                name: document.getElementById('p-name').value,
+                price: document.getElementById('p-price').value,
+                category: document.getElementById('p-category').value,
+                description: document.getElementById('p-description').value,
+                imageUrl: imageUrl
+            };
+
+            await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(product)
+            });
+
+            status.innerHTML = "<b style='color:#2ecc71;'>✅ Bidhaa imewekwa Live!</b>";
+            e.target.reset();
+        } catch (err) {
+            status.innerHTML = "<b style='color:#ff5252;'>❌ Imeshindwa kuhifadhi!</b>";
+            console.error(err);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "HIFADHI MTANDAONI 🌍";
+        }
+    };
+}
+
+// ==========================================
+// 5. LOAD & DELETE PRODUCTS
+// ==========================================
+async function loadProducts() {
+    const list = document.getElementById('admin-product-list');
+    if (!list) return;
+
+    list.innerHTML = '<p style="color:white; text-align:center;">Inapakia bidhaa... 🔄</p>';
 
     try {
-        const response = await fetch(API);
-        const data = await response.json();
+        const res = await fetch(GOOGLE_SCRIPT_URL + '?action=read');
+        const data = await res.json();
+        const items = data.sheet1 || [];
 
-        // MUHIMU: Tunatumia .sheet1 kwa sababu ndivyo link yako inavyosoma
-        const items = data.sheet1;
-
-        if (!items || items.length === 0) {
-            listDiv.innerHTML = '<p>Duka lako halina bidhaa bado.</p>';
+        if (items.length === 0) {
+            list.innerHTML = '<p style="color:white; text-align:center;">Duka lipo tupu kwa sasa.</p>';
             return;
         }
 
-        listDiv.innerHTML = items.map(p => `
-            <div class="glass-input" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 15px;">
-                <div>
-                    <strong style="color: var(--accent);">${p.name}</strong>
-                    <br><small>Bei: TZS ${p.price}</small>
-                </div>
-                <button onclick="deleteProduct(${p.id})" 
-                    style="background: #ff5252; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">
-                    FUTA
-                </button>
+        list.innerHTML = items.map(p => `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:10px; border-radius:12px; margin-bottom:10px; border: 1px solid rgba(255,255,255,0.1);">
+                <img src="${p.imageUrl}" style="width:50px; height:50px; border-radius:8px; object-fit:cover;">
+                <span style="flex-grow:1; margin-left:15px; color:white;">
+                    <b style="font-size:0.9rem;">${p.name}</b><br>
+                    <small style="color:#25D366;">TZS ${p.price}</small>
+                </span>
+                <button onclick="deleteProduct('${p.name}')" style="background:#ff5252; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;">Futa</button>
             </div>
         `).join('');
     } catch (e) {
-        console.error("Error loading products:", e);
-        listDiv.innerHTML = '<p style="color:red;">Imeshindwa kupakia. Hakikisha internet iko vizuri.</p>';
+        list.innerHTML = '<p style="color:#ff5252; text-align:center;">Hitilafu! Hakikisha URL yako ipo sahihi.</p>';
     }
 }
 
-// 2. KAZI YA KUFUTA BIDHAA MOJA KWA MOJA
-async function deleteProduct(id) {
-    if (!confirm("Je, una uhakika unataka kuondoa bidhaa hii kabisa?")) return;
-
-    // Link ya kufuta inaongezwa namba ya ID mwishoni
-    const deleteUrl = `${API}/${id}`;
+async function deleteProduct(productName) {
+    if (!confirm(`Je, una uhakika unataka kufuta "${productName}"?`)) return;
 
     try {
-        const response = await fetch(deleteUrl, {
-            method: 'DELETE',
+        await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify({ action: 'delete', name: productName })
         });
 
-        if (response.ok) {
-            alert("✅ Safi! Bidhaa imefutwa.");
-            loadAdminProducts(); // Inapakia upya orodha papo hapo
-        } else {
-            alert("❌ Imeshindwa kufuta. Hakikisha kitufe cha DELETE kimewashwa Sheety.");
-        }
-    } catch (error) {
-        alert("Tatizo la mtandao.");
+        alert("Ombi la kufuta limetumwa. Inapakia orodha mpya...");
+        setTimeout(loadProducts, 2500); // Subiri sekunde 2.5 ili Excel isasishwe
+    } catch (e) {
+        alert("Hitilafu imetokea wakati wa kufuta.");
     }
 }

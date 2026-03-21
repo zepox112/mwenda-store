@@ -9,6 +9,10 @@
     --glass-border: rgba(255, 255, 255, 0.1);
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 .light-mode {
     --bg: #f0f2f5;
     --text: #1a1a1a;
@@ -29,8 +33,6 @@ body {
 
 .glass {
     background: var(--glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -1309,4 +1311,194 @@ body.no-scroll {
     font-size: 1rem;
     cursor: pointer;
     margin-top: 10px;
+}
+
+/* Hakikisha body ina nafasi ya chini ili bar isifunike vitu */
+body {
+    padding-bottom: 85px;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: rgba(18, 18, 18, 0.85);
+    /* Dark Glass */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 9999;
+    padding-bottom: env(safe-area-inset-bottom);
+    /* Kwa iPhone mpya */
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #888;
+    transition: 0.3s ease;
+    flex: 1;
+}
+
+.nav-item.active {
+    color: #4ade80;
+    /* Rangi ya kijani yako ya accent */
+}
+
+.nav-icon {
+    font-size: 1.4rem;
+    margin-bottom: 2px;
+}
+
+.nav-text {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Hi inayofanya Search iitikie ikiguswa */
+.nav-item:active {
+    transform: scale(0.9);
+}
+
+/* Kuboresha Footer Maalum */
+.footer-mobile {
+    margin-bottom: 20px;
+    /* Nafasi kati ya footer na bottom nav */
+    padding: 20px;
+    text-align: center;
+}
+
+/* Container ya Grid ya Tatu */
+.product-grid-triple {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Inalazimisha tatu kwenye safu moja */
+    gap: 5px;
+    /* Nafasi ndogo sana kati ya kadi */
+    padding: 8px;
+}
+
+/* Kadi Ndogo (Mini Card) */
+.p-card-mini {
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Picha iwe Square Ndogo */
+.p-img-square {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    /* Hii inafanya iwe square moja kwa moja */
+    overflow: hidden;
+}
+
+.p-img-square img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Wishlist ya Moyo (Vidogo) */
+.wishlist-float-mini {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    font-size: 0.6rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Maelezo ya Chini (Font ndogo sana) */
+.p-info-mini {
+    padding: 4px;
+    text-align: center;
+}
+
+.p-name-mini {
+    font-size: 0.55rem;
+    /* Font ndogo ili isivuruge muundo */
+    margin: 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Kama jina ni refu linaishia na ... */
+    color: #fff;
+}
+
+.p-price-mini {
+    font-size: 0.6rem;
+    font-weight: bold;
+    color: #4ade80;
+    margin-bottom: 4px;
+}
+
+/* Buttons za Chini (Zimeungana) */
+.p-actions-mini {
+    display: flex;
+    gap: 2px;
+}
+
+.cart-btn-icon {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    padding: 3px;
+    border-radius: 3px;
+    font-size: 0.6rem;
+    flex: 1;
+}
+
+.buy-btn-mini {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 3px;
+    border-radius: 3px;
+    font-size: 0.55rem;
+    font-weight: bold;
+    flex: 2;
+}
+
+/* Maelezo ya bidhaa (Description) */
+.p-desc-mini {
+    font-size: 0.5rem;
+    /* Ndogo sana kuliko jina na bei */
+    color: #bbb;
+    /* Rangi ya kijivu ili isichoshe macho */
+    margin-bottom: 5px;
+    display: -webkit-box;
+    /* Inaonyesha mistari miwili tu ya maelezo */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+/* Kurekebisha kadi iweze kubeba maelezo bila kupishana */
+.p-info-mini {
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }

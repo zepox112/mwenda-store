@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Mwenda Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background: #0a0a0a;
+            background-image:
+                radial-gradient(circle at 20% 30%, #1a3a1a 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, #0f250f 0%, transparent 40%);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            padding-bottom: 180px;
+        }
+
+        .cart-container {
+            padding: 25px 20px;
+        }
+
+        .header-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #4ade80;
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        /* Cart Item Styling */
+        .cart-item {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-category {
+            font-size: 0.65rem;
+            color: #4ade80;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .item-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin: 0;
+            color: #efefef;
+        }
+
+        .item-price {
+            color: #fff;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* Delete Button */
+        .btn-delete {
+            background: rgba(255, 69, 69, 0.15);
+            color: #ff5f5f;
+            border: 1px solid rgba(255, 95, 95, 0.2);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .btn-delete:active {
+            transform: scale(0.85);
+            background: rgba(255, 69, 69, 0.3);
+        }
+
+        /* Summary Bar */
+        .summary-card {
+            position: fixed;
+            bottom: 90px;
+            left: 5%;
+            width: 90%;
+            background: #4ade80;
+            padding: 20px;
+            border-radius: 24px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            color: #000;
+            box-shadow: 0 15px 35px rgba(74, 222, 128, 0.4);
+            z-index: 100;
+            cursor: pointer;
+        }
+
+        .summary-card:active {
+            transform: scale(0.97);
+        }
+
+        .total-label {
+            font-size: 0.8rem;
+            font-weight: 400;
+            display: block;
+        }
+
+        .total-amount {
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        .checkout-btn {
+            background: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(25px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #555;
+            text-align: center;
+            font-size: 0.65rem;
+        }
+
+        .nav-link.active {
+            color: #4ade80;
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* Helpers */
+        .loader {
+            text-align: center;
+            padding: 50px;
+            color: #4ade80;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 100px 20px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cart-container">
+        <div class="header-area">
+            <h2>🛒 Kikapu</h2>
+            <span id="item-count"
+                style="font-size: 0.8rem; background: #1a3a1a; padding: 5px 12px; border-radius: 20px; color: #4ade80;">0
+                Bidhaa</span>
+        </div>
+
+        <div id="loading" class="loader">Inapakia... ⏳</div>
+        <div id="cart-content"></div>
+
+        <div id="auth-check" class="empty-state" style="display: none;">
+            <p>Tafadhali ingia ili uone kikapu chako.</p>
+            <button onclick="location.href='login.html'"
+                style="background:#4ade80; border:none; padding:12px 25px; border-radius:12px; font-weight:bold; margin-top:10px;">Ingia
+                Sasa</button>
+        </div>
+    </div>
+
+    <div id="summary-float" class="summary-card" onclick="window.location.href='checkout.html'">
+        <div>
+            <span class="total-label">Jumla ya Malipo</span>
+            <span id="grand-total" class="total-amount">TSH 0</span>
+        </div>
+        <div class="checkout-btn">Lipa Sasa</div>
+    </div>
+
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link"><span class="nav-icon">🏠</span>Home</a>
+        <a href="wishlist.html" class="nav-link"><span class="nav-icon">❤️</span>Wishlist</a>
+        <a href="cart.html" class="nav-link active"><span class="nav-icon">🛒</span>Cart</a>
+        <a href="profile.html" class="nav-link"><span class="nav-icon">👤</span>Profile</a>
+    </nav>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbw5DXuO28vOzGWcOYXAWqB-02H5Xm_DMkgGuZ9gFrqDTQM8RwA_n0AvZSSqnZD89ie4/exec";
+        const userPhone = localStorage.getItem('user_email');
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+        if (isLoggedIn !== 'true' || !userPhone) {
+            document.getElementById('auth-check').style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
+        } else {
+            fetchCart();
+        }
+
+        async function fetchCart() {
+            const list = document.getElementById('cart-content');
+            const loading = document.getElementById('loading');
+            const summary = document.getElementById('summary-float');
+            const countBadge = document.getElementById('item-count');
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ action: "getUserData", phone: userPhone })
+                });
+                const data = await response.json();
+
+                loading.style.display = 'none';
+                list.innerHTML = "";
+                let total = 0;
+
+                if (data.cart && data.cart.length > 0) {
+                    // Filter kwa ajili ya user huyu
+                    const items = data.cart.filter(row => row[0].toString() === userPhone.toString());
+
+                    countBadge.innerText = `${items.length} Bidhaa`;
+
+                    if (items.length > 0) {
+                        items.forEach((item, index) => {
+                            const rawPrice = item[2].toString().replace(/[^0-9]/g, '');
+                            const price = parseInt(rawPrice) || 0;
+                            total += price;
+
+                            list.innerHTML += `
+                                <div class="cart-item" id="row-${index}">
+                                    <div class="item-details">
+                                        <span class="item-category">Bidhaa</span>
+                                        <p class="item-name">${item[1]}</p>
+                                        <p class="item-price">TSH ${price.toLocaleString()}</p>
+                                    </div>
+                                    <div class="btn-delete" onclick="confirmDelete('${item[1]}', ${index})">
+                                        🗑️
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        summary.style.display = 'flex';
+                        document.getElementById('grand-total').innerText = "TSH " + total.toLocaleString();
+                    } else {
+                        showEmpty();
+                    }
+                } else {
+                    showEmpty();
+                }
+            } catch (e) {
+                loading.innerText = "Imeshindwa kupata data. Jaribu tena.";
+            }
+        }
+
+        function showEmpty() {
+            document.getElementById('cart-content').innerHTML = `
+                <div class="empty-state">
+                    <span style="font-size:3rem; display:block; margin-bottom:10px;">🛍️</span>
+                    <p>Kikapu chako kiko tupu kabisa!</p>
+                    <a href="index.html" style="color:#4ade80; text-decoration:none; font-weight:bold;">Anza Manunuzi</a>
+                </div>
+            `;
+            document.getElementById('summary-float').style.display = 'none';
+            document.getElementById('item-count').innerText = "0 Bidhaa";
+        }
+
+        async function confirmDelete(name, id) {
+            if (!confirm(`Ondoa ${name}?`)) return;
+
+            const row = document.getElementById(`row-${id}`);
+            row.style.opacity = "0.4";
+            row.style.transform = "scale(0.95)";
+
+            try {
+                await fetch(API_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    body: JSON.stringify({
+                        action: "deleteItem",
+                        type: "Cart",
+                        phone: userPhone,
+                        itemName: name
+                    })
+                });
+
+                // Refresh baada ya kufuta
+                setTimeout(fetchCart, 1000);
+            } catch (err) {
+                alert("Hitilafu imetokea!");
+                fetchCart();
+            }
+        }
+    </script>
+</body>
+
+</html>

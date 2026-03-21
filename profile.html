@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zepox - Profaili Yangu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /* Background ya giza yenye mng'ao wa kijani kufanana na Login yako */
+            background: radial-gradient(circle at top right, #1a2e1a 0%, #050505 100%);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Glass Card Effect */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Profile Image Styling */
+        .img-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+        }
+
+        #user-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #4ade80;
+            padding: 5px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Status Indicator (Online) */
+        .status-dot {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 15px;
+            height: 15px;
+            background: #4ade80;
+            border-radius: 50%;
+            border: 2px solid #050505;
+            box-shadow: 0 0 10px #4ade80;
+        }
+
+        h2 {
+            color: #4ade80;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .user-id {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        /* Data Rows */
+        .info-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .label {
+            font-size: 0.7rem;
+            color: #4ade80;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .value {
+            font-size: 1rem;
+            color: #fff;
+            font-weight: 400;
+            margin-top: 3px;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 15px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .btn-home {
+            background: #4ade80;
+            color: #000;
+        }
+
+        .btn-home:hover {
+            background: #5ef396;
+            transform: translateY(-2px);
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid rgba(255, 95, 95, 0.5);
+            color: #ff5f5f;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 95, 95, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="profile-card">
+        <div class="img-container">
+            <img id="user-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
+            <div class="status-dot"></div>
+        </div>
+
+        <h2 id="u-name-top">Mteja</h2>
+        <p class="user-id">ID: <span id="u-id-val">0000</span></p>
+
+        <div class="info-box">
+            <div class="label">Jina Kamili</div>
+            <div class="value" id="u-name">...</div>
+        </div>
+
+        <div class="info-box">
+            <div class="label">Namba ya Simu</div>
+            <div class="value" id="u-phone">...</div>
+        </div>
+
+        <button class="btn btn-home" onclick="location.href='index.html'">Rudi Dukani</button>
+        <button class="btn btn-logout" onclick="logout()">Toka Kwenye Akaunti</button>
+    </div>
+
+    <script>
+        window.onload = function () {
+            // 1. Pata data kutoka localStorage
+            const name = localStorage.getItem('user_name') || "Mteja";
+            const phone = localStorage.getItem('user_email') || "Hujaingia";
+            const photo = localStorage.getItem('user_photo');
+
+            // 2. Weka data kwenye HTML
+            document.getElementById('u-name').innerText = name;
+            document.getElementById('u-name-top').innerText = name;
+            document.getElementById('u-phone').innerText = phone;
+            document.getElementById('u-id-val').innerText = phone.substring(phone.length - 4); // ID ya mwisho wa namba
+
+            // 3. Hakikisha picha ipo, kama haipo weka ile ya default
+            if (photo && photo !== "undefined" && photo !== "") {
+                document.getElementById('user-img').src = photo;
+            }
+        }
+
+        function logout() {
+            // Usifute kila kitu kama unataka akumbuke picha, futa tu login status
+            localStorage.removeItem('isLoggedIn');
+            location.href = 'login.html';
+        }
+    </script>
+</body>
+
+</html>

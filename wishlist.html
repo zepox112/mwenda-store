@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wishlist - Mwenda Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4ade80;
+            --bg: #050505;
+            --glass: rgba(255, 255, 255, 0.05);
+            --danger: #ff5f5f;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            transition: 0.3s;
+        }
+
+        body {
+            background: var(--bg);
+            background-image: radial-gradient(circle at 50% -20%, #1a2e1a 0%, #050505 80%);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .wishlist-container {
+            padding: 25px 20px 120px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Card Style */
+        .product-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .p-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 0 0 4px 0;
+            color: #fff;
+        }
+
+        .p-price {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        /* Buttons Container */
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .order-btn {
+            background: var(--primary);
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .delete-icon {
+            background: rgba(255, 95, 95, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 95, 95, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .delete-icon:active {
+            transform: scale(0.8);
+        }
+
+        /* Status Displays */
+        .loading-text {
+            color: var(--primary);
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .empty-msg {
+            text-align: center;
+            color: #666;
+            margin-top: 80px;
+        }
+
+        .auth-overlay {
+            text-align: center;
+            padding: 50px 20px;
+            background: var(--glass);
+            border-radius: 24px;
+            margin-top: 40px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #555;
+            text-align: center;
+            font-size: 0.65rem;
+            flex: 1;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 1.3rem;
+            display: block;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wishlist-container">
+        <h2>❤️ Wishlist Yangu</h2>
+
+        <div id="load-msg" class="loading-text">Inatafuta... ⏳</div>
+
+        <div id="items-list"></div>
+
+        <div id="login-prompt" class="auth-overlay" style="display:none;">
+            <p style="color: #ccc; margin-bottom: 20px;">Tafadhali ingia ili kuona wishlist yako.</p>
+            <a href="login.html"
+                style="background:var(--primary); padding:14px 30px; border-radius:15px; color:black; text-decoration:none; font-weight:bold; display: inline-block;">Ingia
+                Sasa</a>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span>Home</a>
+        <a href="wishlist.html" class="nav-item active"><span class="nav-icon">❤️</span>Wishlist</a>
+        <a href="cart.html" class="nav-item"><span class="nav-icon">🛒</span>Cart</a>
+        <a href="profile.html" class="nav-item"><span class="nav-icon">👤</span>Profile</a>
+    </nav>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw5DXuO28vOzGWcOYXAWqB-02H5Xm_DMkgGuZ9gFrqDTQM8RwA_n0AvZSSqnZD89ie4/exec";
+        const userPhone = localStorage.getItem('user_email');
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+        if (isLoggedIn !== 'true') {
+            document.getElementById('login-prompt').style.display = 'block';
+            document.getElementById('load-msg').style.display = 'none';
+        } else {
+            loadWishlist();
+        }
+
+        async function loadWishlist() {
+            const loadMsg = document.getElementById('load-msg');
+            const listDiv = document.getElementById('items-list');
+            loadMsg.style.display = 'block';
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ action: "getUserData", phone: userPhone })
+                });
+                const data = await response.json();
+
+                loadMsg.style.display = 'none';
+                listDiv.innerHTML = "";
+
+                if (data.wishlist && data.wishlist.length > 0) {
+                    const myItems = data.wishlist.filter(item => String(item[0]) === String(userPhone));
+
+                    if (myItems.length > 0) {
+                        myItems.forEach((item, index) => {
+                            listDiv.innerHTML += `
+                                <div class="product-card" id="wish-row-${index}">
+                                    <div class="product-info">
+                                        <p class="p-name">${item[1]}</p>
+                                        <p class="p-price">${item[2]}</p>
+                                    </div>
+                                    <div class="actions">
+                                        <button class="order-btn" onclick="addToCart('${item[1]}', '${item[2]}')">Oda</button>
+                                        <div class="delete-icon" onclick="removeFromWishlist('${item[1]}', ${index})">🗑️</div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        listDiv.innerHTML = `<div class="empty-msg">Wishlist yako haina kitu.</div>`;
+                    }
+                } else {
+                    listDiv.innerHTML = `<div class="empty-msg">Wishlist yako haina kitu.</div>`;
+                }
+            } catch (error) {
+                loadMsg.innerText = "Hitilafu imetokea. Jaribu tena.";
+            }
+        }
+
+        async function removeFromWishlist(itemName, id) {
+            if (!confirm(`Ondoa ${itemName}?`)) return;
+
+            const row = document.getElementById(`wish-row-${id}`);
+            row.style.opacity = "0.3";
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    body: JSON.stringify({
+                        action: "deleteItem",
+                        type: "Wishlist",
+                        phone: userPhone,
+                        itemName: itemName
+                    })
+                });
+
+                // Subiri kidogo kisha pakia upya
+                setTimeout(loadWishlist, 1000);
+            } catch (err) {
+                alert("Imeshindwa kufuta.");
+                loadWishlist();
+            }
+        }
+
+        async function addToCart(name, price) {
+            // Hapa unaweza kuongeza kodi ya kuhamisha bidhaa kwenda Cart
+            alert(`Umeagiza ${name}. Hakikisha imewekwa kwenye Cart.`);
+            // Logic ya saveItem kwenda Cart inaweza kuwekwa hapa
+        }
+    </script>
+</body>
+
+</html>
