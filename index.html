@@ -479,22 +479,6 @@
                 }
 
                 // 5. QUICK VIEW (Gusa Picha)
-                document.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('product-trigger')) {
-                        const modal = document.getElementById('productQuickView');
-                        if (!modal) return;
-
-                        document.getElementById('viewImg').src = e.target.src;
-                        document.getElementById('viewTitle').innerText = e.target.alt;
-                        document.getElementById('viewDesc').innerText = e.target.getAttribute('data-desc');
-                        document.getElementById('viewPrice').innerText = e.target.getAttribute('data-price');
-
-                        document.getElementById('waOrderModal').onclick = () => order(e.target.alt, e.target.getAttribute('data-price'));
-
-                        modal.style.display = 'flex';
-                        document.body.style.overflow = 'hidden';
-                    }
-                });
 
                 function closeProductDetails() {
                     const modal = document.getElementById('productQuickView');
