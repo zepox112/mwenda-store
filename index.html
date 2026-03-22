@@ -389,15 +389,15 @@
 
                     // 2. Weka picha na alama ya 🔄
                     container.innerHTML = `
-        <div class="category-hero glass">
-            <img src="${info.img}" class="hero-img" style="width:100%; height:200px; object-fit:cover; border-radius:15px;">
-            <div class="hero-overlay"><h2>${cat}</h2></div>
-        </div>
-        <div id="loading-area" style="text-align:center; padding:30px; color:white; font-size:1.2rem;">
-            🔄 Inapakia bidhaa za ${cat}...
-        </div>
-        <div class="product-grid-triple" id="actual-products"></div>
-    `;
+    <div class="category-hero glass" style="margin-bottom: 15px;">
+        <img src="${info.img}" class="hero-img" style="width:100%; height:160px; object-fit:cover; border-radius:15px;">
+        <div class="hero-overlay"><h2>${cat}</h2></div>
+    </div>
+    <div id="loading-area" style="text-align:center; padding:20px; color:white;">
+        🔄 Inapakia bidhaa za ${cat}...
+    </div>
+    <div class="product-grid-triple" id="actual-products"></div>
+`;
 
                     // 3. Anza kuangalia data
                     checkDataAndFill(cat);

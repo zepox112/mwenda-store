@@ -1460,6 +1460,61 @@ body {
     backdrop-filter: blur(5px);
 }
 
+/* Hii itahakikisha bidhaa zinakaa mbilimbili kwenye simu */
+.product-grid-triple {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Hapa ndipo zinapokaa mbilimbili */
+    gap: 12px;
+    padding: 10px;
+}
+
+/* Kwenye vishikwambi au PC, ziwe tatu au nne */
+@media (min-width: 768px) {
+    .product-grid-triple {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Kurekebisha picha na kadi zisizidi ukubwa */
+.p-card-mini {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.p-img-square {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    /* Inafanya picha iwe square kamili */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.p-img-square img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Inazuia picha isivutike (stretch) */
+}
+
+/* Maandishi ya bidhaa yawe madogo kidogo ili yapangike */
+.p-name-mini {
+    font-size: 0.9rem;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.p-price-mini {
+    font-weight: bold;
+    color: #4ade80;
+    font-size: 0.85rem;
+}
+
 /* --- Sehemu ya Maelezo (Text Data) --- */
 .p-info-mini {
     display: flex;
