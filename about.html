@@ -10,7 +10,8 @@
         :root {
             --primary: #4ade80;
             --bg: #050505;
-            --glass: rgba(255, 255, 255, 0.03);
+            --glass: rgba(255, 255, 255, 0.05);
+            --liquid-border: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -20,7 +21,10 @@
 
         body {
             background: var(--bg);
-            background-image: radial-gradient(circle at 50% -20%, #1a2e1a 0%, #050505 80%);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(74, 222, 128, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(74, 222, 128, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% -20%, #1a2e1a 0%, #050505 80%);
             color: white;
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -28,174 +32,180 @@
             overflow-x: hidden;
         }
 
-        /* Profile Header */
         .profile-header {
-            padding: 40px 20px 20px;
+            padding: 50px 20px 30px;
             text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .store-logo {
             width: 80px;
             height: 80px;
-            background: linear-gradient(45deg, #4ade80, #2d5a3d);
-            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--liquid-border);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
             margin: 0 auto 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
             font-weight: bold;
-            color: black;
-            box-shadow: 0 10px 20px rgba(74, 222, 128, 0.2);
+            color: var(--primary);
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.1);
+            animation: liquidMorph 8s ease-in-out infinite;
+        }
+
+        @keyframes liquidMorph {
+            0% {
+                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            }
+
+            50% {
+                border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
+            }
+
+            100% {
+                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            }
         }
 
         .hero-title {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 600;
             margin: 0;
-            color: var(--primary);
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero-sub {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #888;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            margin-top: 5px;
         }
 
         .content-wrapper {
-            padding: 20px;
+            padding: 15px;
         }
 
-        /* Mobile Cards */
         .mobile-card {
             background: var(--glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--liquid-border);
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
         }
 
         .card-label {
             color: var(--primary);
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: block;
+            opacity: 0.8;
         }
 
         .card-text {
             font-size: 0.9rem;
-            color: #ddd;
+            color: #ccc;
             line-height: 1.6;
         }
 
-        /* Map Styles */
-        .map-container {
-            margin-top: 30px;
+        /* Support Grid */
+        .support-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .support-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--liquid-border);
+            border-radius: 18px;
+            padding: 12px;
             text-align: center;
+            text-decoration: none;
+            transition: 0.3s;
         }
 
-        .map-header {
-            font-size: 1rem;
-            color: var(--primary);
-            margin-bottom: 15px;
+        .support-item:active {
+            transform: scale(0.95);
+            background: rgba(74, 222, 128, 0.1);
         }
 
-        .satellite-frame {
+        .support-icon {
+            font-size: 1.4rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .support-label {
+            font-size: 0.7rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Map Section (Iliyopunguzwa) */
+        .map-frame-wrapper {
             width: 100%;
-            height: 250px;
-            border-radius: 20px;
+            max-width: 280px;
+            /* Ramani imekuwa ndogo zaidi */
+            height: 120px;
+            /* Ramani imekuwa fupi zaidi */
+            margin: 0 auto 10px;
+            border-radius: 18px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 15px;
+            border: 1px solid var(--liquid-border);
         }
 
         .map-frame {
             width: 100%;
             height: 100%;
             border: none;
+            filter: grayscale(1) invert(0.9) contrast(1.2);
         }
 
-        .map-action {
+        .map-btn {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px 20px;
-            border-radius: 12px;
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 600;
+            padding: 6px 15px;
+            border-radius: 10px;
+            background: rgba(74, 222, 128, 0.1);
             border: 1px solid var(--primary);
-        }
-
-        /* Footer Styles */
-        #my-footer {
-            padding: 40px 20px 100px;
-            background: rgba(0, 0, 0, 0.4);
-            margin-top: 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .footer-grid {
-            text-align: center;
-            margin: 30px 0;
-        }
-
-        .footer-brand {
-            font-weight: bold;
-            font-size: 1.2rem;
             color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .glow-gallery-btn {
-            display: inline-block;
-            background: linear-gradient(45deg, #4ade80, #22c55e);
-            color: black;
-            padding: 12px 25px;
-            border-radius: 15px;
             text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(74, 222, 128, 0.3);
+            font-size: 0.7rem;
         }
 
-        .copyright-section {
-            text-align: center;
-            margin-top: 30px;
-            color: #555;
-            font-size: 0.8rem;
-        }
-
-        /* Form Styles */
+        /* Inputs */
         .mobile-input {
             width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--liquid-border);
+            border-radius: 15px;
+            padding: 14px;
             color: white;
             margin-bottom: 12px;
             font-family: inherit;
+            outline: none;
         }
 
         .btn-main {
             width: 100%;
             background: var(--primary);
-            color: black;
+            color: #052e16;
             border: none;
-            padding: 18px;
+            padding: 16px;
             border-radius: 18px;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 0.95rem;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
 
         /* Nav Bar */
@@ -206,22 +216,19 @@
             right: 0;
             height: 75px;
             background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(30px);
+            backdrop-filter: blur(20px);
             display: flex;
-            align-items: center;
             justify-content: space-around;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+            border-top: 1px solid var(--liquid-border);
             z-index: 1000;
-            padding-bottom: env(safe-area-inset-bottom);
         }
 
         .nav-link {
             text-decoration: none;
             color: #555;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
+            text-align: center;
         }
 
         .nav-link.active {
@@ -230,17 +237,7 @@
 
         .nav-icon {
             font-size: 1.4rem;
-            margin-bottom: 4px;
-        }
-
-        .chip {
-            display: inline-block;
-            background: rgba(74, 222, 128, 0.1);
-            color: var(--primary);
-            padding: 4px 12px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            margin: 10px 5px 0 0;
+            display: block;
         }
     </style>
 </head>
@@ -250,78 +247,74 @@
     <div class="profile-header">
         <div class="store-logo">M</div>
         <h1 class="hero-title">Mwenda Store</h1>
-        <p class="hero-sub">Jumla & Reja Reja • Arusha</p>
+        <p class="hero-sub">PREMIUM SHOPPING • ARUSHA</p>
     </div>
 
     <div class="content-wrapper">
         <div class="mobile-card">
-            <span class="card-label">Kuhusu Duka</span>
-            <p class="card-text">Duka bora la bidhaa mchanganyiko jijini Arusha. Tunakuletea urahisi wa kununua bidhaa
-                za jumla na reja reja popote ulipo.</p>
-            <div class="chip">📍 Arusha Mjini</div>
-            <div class="chip">🕒 08:00 - 20:00</div>
+            <span class="card-label">Kuhusu Sisi</span>
+            <p class="card-text">Karibu Mwenda Store, kituo chako namba moja jijini Arusha. Sisi ni washirika wa maisha
+                yako tukiwa na dhamira ya kuleta urahisi na ubora mlangoni pako kupitia teknolojia ya kisasa.</p>
         </div>
 
         <div class="mobile-card">
-            <span class="card-label">Tuandikie Oda Yako</span>
+            <span class="card-label">Agiza Kupitia WhatsApp</span>
             <input type="text" id="m-name" class="mobile-input" placeholder="Jina lako">
-            <textarea id="m-msg" class="mobile-input" rows="3" placeholder="Orodhesha bidhaa unazotaka..."></textarea>
-            <button class="btn-main" onclick="sendWhatsApp()">
-                <span>Tuma WhatsApp</span> 💬
-            </button>
+            <textarea id="m-msg" class="mobile-input" rows="2" placeholder="Orodhesha bidhaa..."></textarea>
+            <button class="btn-main" onclick="sendWhatsApp()">TUMA ODA SASA 💬</button>
         </div>
 
-        <footer id="my-footer">
-            <div class="map-container">
-                <h3 class="map-header">📍 TUNAPOPATIKANA</h3>
-                <div class="satellite-frame">
-                    <iframe src="https://www.google.com/maps?q=-3.3708428,36.6867389&output=embed&t=k" class="map-frame"
-                        allowfullscreen="" loading="lazy">
-                    </iframe>
-                </div>
-                <a href="https://maps.google.com" target="_blank" class="map-action">FUNGUA RAMANI KAMILI</a>
+        <div class="mobile-card">
+            <span class="card-label">Customer Support</span>
+            <div class="support-grid">
+                <a href="https://wa.me/255747185190" target="_blank" class="support-item">
+                    <span class="support-icon">💬</span>
+                    <span class="support-label">WhatsApp</span>
+                </a>
+                <a href="tel:+255747185190" class="support-item">
+                    <span class="support-icon">📞</span>
+                    <span class="support-label">Call</span>
+                </a>
+                <a href="sms:+255747185190" class="support-item">
+                    <span class="support-icon">📱</span>
+                    <span class="support-label">SMS</span>
+                </a>
+                <a href="mailto:mwendastore1@gmail.com" class="support-item">
+                    <span class="support-icon">✉️</span>
+                    <span class="support-label">Email</span>
+                </a>
             </div>
+        </div>
 
-            <div class="footer-grid">
-                <div class="shop-details">
-                    <p class="footer-brand">MWENDA STORE</p>
-                    <p style="font-size: 0.85rem; color: #bbb;">Arusha, Tanzania</p>
-                    <p style="color: var(--primary); margin: 10px 0;">📞 +255 747 185 190</p>
-                    <div style="margin-top: 20px;">
-                        <a href="gallery.html" class="glow-gallery-btn">Our Gallery</a>
-                    </div>
-                </div>
+        <div class="mobile-card" style="text-align: center;">
+            <span class="card-label">Location</span>
+            <div class="map-frame-wrapper">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15939.866419736561!2d36.6806541!3d-3.3718915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x18476d0590a5976b%3A0x673967965159897!2sArusha!5e0!3m2!1sen!2stz!4v1710000000000"
+                    class="map-frame" allowfullscreen="" loading="lazy"></iframe>
             </div>
+            <a href="https://maps.google.com/?q=Arusha" target="_blank" class="map-btn">Fungua Ramani</a>
+        </div>
 
-            <div class="copyright-section">
-                <p>© 2026 Mwenda Store. All Rights Reserved.</p>
-                <p style="font-size: 0.6rem; opacity: 0.5; margin-top: 5px;">Designed by Zepox Omni-Tech</p>
-            </div>
+        <footer style="text-align: center; padding-bottom: 100px; opacity: 0.5; font-size: 0.7rem;">
+            © 2026 Mwenda Store. Arusha, Tanzania.
         </footer>
     </div>
 
     <nav class="nav-bar">
-        <a href="index.html" class="nav-link">
-            <span class="nav-icon">🏠</span><span>Nyumbani</span>
-        </a>
-        <a href="cart.html" class="nav-link">
-            <span class="nav-icon">🛒</span><span>Cart</span>
-        </a>
-        <a href="about.html" class="nav-link active">
-            <span class="nav-icon">✨</span><span>Kuhusu</span>
-        </a>
-        <a href="profile.html" class="nav-link">
-            <span class="nav-icon">👤</span><span>Profaili</span>
-        </a>
+        <a href="index.html" class="nav-link"><span class="nav-icon">🏠</span>Home</a>
+        <a href="cart.html" class="nav-link"><span class="nav-icon">🛒</span>Cart</a>
+        <a href="about.html" class="nav-link active"><span class="nav-icon">✨</span>About</a>
+        <a href="profile.html" class="nav-link"><span class="nav-icon">👤</span>Profile</a>
     </nav>
 
     <script>
         function sendWhatsApp() {
             const name = document.getElementById('m-name').value;
             const msg = document.getElementById('m-msg').value;
-            if (!name || !msg) return alert("Tafadhali jaza taarifa zote");
-            const text = `Habari Mwenda Store,\nNaitwa: ${name}\nOda Yangu: ${msg}`;
-            window.open(`https://wa.me/255747185190?text=${encodeURIComponent(text)}`, '_blank');
+            if (!name || !msg) return alert("Jaza taarifa zote");
+            const text = encodeURIComponent(`*ODA MPYA*\n*Jina:* ${name}\n*Mahitaji:* ${msg}`);
+            window.open(`https://wa.me/255747185190?text=${text}`, '_blank');
         }
     </script>
 </body>
