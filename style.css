@@ -1377,178 +1377,191 @@ body {
     text-align: center;
 }
 
-/* Container ya Grid ya Tatu */
+/* --- Mpangilio wa Gridi (Mbilimbili) --- */
 .product-grid-triple {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* Inalazimisha tatu kwenye safu moja */
-    gap: 5px;
-    /* Nafasi ndogo sana kati ya kadi */
-    padding: 8px;
-}
-
-/* Kadi Ndogo (Mini Card) */
-.p-card-mini {
-    position: relative;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 6px;
-    overflow: hidden;
-    border: 0.5px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    flex-direction: column;
-}
-
-/* Picha iwe Square Ndogo */
-.p-img-square {
+    /* Grid ya mbilimbili inayojirekebisha (Auto-fit) */
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    /* Nafasi kati ya boksi na boksi */
+    padding: 10px;
     width: 100%;
-    aspect-ratio: 1 / 1;
-    /* Hii inafanya iwe square moja kwa moja */
-    overflow: hidden;
+    box-sizing: border-box;
 }
 
-.p-img-square img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Wishlist ya Moyo (Vidogo) */
-.wishlist-float-mini {
-    position: absolute;
-    top: 3px;
-    right: 3px;
-    background: rgba(0, 0, 0, 0.4);
-    border: none;
-    font-size: 0.6rem;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    z-index: 5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Maelezo ya Chini (Font ndogo sana) */
-.p-info-mini {
-    padding: 4px;
-    text-align: center;
-}
-
-.p-name-mini {
-    font-size: 0.55rem;
-    /* Font ndogo ili isivuruge muundo */
-    margin: 2px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    /* Kama jina ni refu linaishia na ... */
-    color: #fff;
-}
-
-.p-price-mini {
-    font-size: 0.6rem;
-    font-weight: bold;
-    color: #4ade80;
-    margin-bottom: 4px;
-}
-
-/* Buttons za Chini (Zimeungana) */
-.p-actions-mini {
-    display: flex;
-    gap: 2px;
-}
-
-.cart-btn-icon {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: white;
-    padding: 3px;
-    border-radius: 3px;
-    font-size: 0.6rem;
-    flex: 1;
-}
-
-.buy-btn-mini {
-    background: #2e7d32;
-    color: white;
-    border: none;
-    padding: 3px;
-    border-radius: 3px;
-    font-size: 0.55rem;
-    font-weight: bold;
-    flex: 2;
-}
-
-/* Maelezo ya bidhaa (Description) */
-.p-desc-mini {
-    font-size: 0.5rem;
-    /* Ndogo sana kuliko jina na bei */
-    color: #bbb;
-    /* Rangi ya kijivu ili isichoshe macho */
-    margin-bottom: 5px;
-    display: -webkit-box;
-    /* Inaonyesha mistari miwili tu ya maelezo */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.2;
-}
-
-/* Kurekebisha kadi iweze kubeba maelezo bila kupishana */
-.p-info-mini {
-    padding: 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.p-img-square {
-    aspect-ratio: 1 / 1;
-    /* Inahakikisha picha zote ni square kamili */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Staili ya Boksi la Bidhaa (Liquid Glass) */
+/* --- Boksi la Bidhaa (Liquid Glass Style) --- */
 .p-card-mini.glass {
-    background: rgba(255, 255, 255, 0.05);
-    /* Kioo chepesi */
-    backdrop-filter: blur(15px);
-    /* Inafanya background iwe na ukungu */
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    /* Border ya kioo */
-    border-radius: 20px;
-    padding: 12px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: rgba(255, 255, 255, 0.03);
+    /* Kioo chepesi sana */
+    backdrop-filter: blur(10px);
+    /* Ukungu wa kioo */
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Border nyembamba ya kioo */
+    border-radius: 16px;
+    /* Pembe zilizolainika */
+    padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    /* Nafasi kati ya vitu ndani ya boksi */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
+/* Effect mteja akigusa boksi */
+.p-card-mini.glass:active,
 .p-card-mini.glass:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Picha ndani ya kioo */
+/* --- Sehemu ya Picha --- */
 .p-img-square {
     width: 100%;
-    aspect-ratio: 1/1;
-    border-radius: 15px;
+    aspect-ratio: 1 / 1;
+    /* Picha zote ziwe square */
+    border-radius: 12px;
     overflow: hidden;
     background: rgba(0, 0, 0, 0.2);
+    /* Rangi ya background kabla picha haijatokea */
+    position: relative;
 }
 
 .p-img-square img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: scale 0.5s ease;
+    /* Picha ienee vizuri bila kupotoka umbo */
+    transition: scale 0.4s ease;
+}
+
+.p-card-mini.glass:hover .p-img-square img {
+    scale: 1.05;
+    /* Picha ijivute kidogo ikiguswa */
+}
+
+/* Kitufe cha Wishlist kilichoelea */
+.wishlist-float-mini {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+}
+
+/* --- Sehemu ya Maelezo (Text Data) --- */
+.p-info-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.p-name-mini {
+    font-size: 0.9rem;
+    /* Saizi nzuri kwa simu */
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.2;
+    /* Inakata jina refu sana lisivuruge boksi */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.p-price-mini {
+    color: #4ade80;
+    /* Rangi ya kijani ya kisasa (Accent) */
+    font-weight: 800;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.p-desc-mini {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.3;
+    margin: 2px 0 6px 0;
+    /* Inakata maelezo marefu yasizidi mistari miwili */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* --- Sehemu ya Vifungo (Actions) --- */
+.p-actions-mini {
+    display: flex;
+    gap: 6px;
+    margin-top: auto;
+    /* Inasukuma vifungo chini kabisa */
+}
+
+/* Kitufe cha Cart (Icon pekee) */
+.cart-btn-icon {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cart-btn-icon:active {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Kitufe cha Agiza (Text) */
+.buy-btn-mini {
+    flex: 1;
+    /* Inachukua nafasi yote iliyobaki */
+    background: #4ade80;
+    /* Rangi ya kijani ya agiza */
+    color: #000;
+    /* Maandishi meusi yaonekane vizuri */
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.buy-btn-mini:active {
+    background: #36b366;
+    /* Kijani iliyoiva ikiguswa */
+}
+
+/* --- Mabadiliko kwa Screen Kubwa (Computer/Tablet) --- */
+@media (min-width: 600px) {
+    .product-grid-triple {
+        /* Inajipanga mbilimbili mpaka tano kulingana na ukubwa wa screen */
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+
+    .p-name-mini {
+        font-size: 1rem;
+    }
+
+    .p-price-mini {
+        font-size: 1.1rem;
+    }
 }
 
 .p-card-mini.glass:hover .p-img-square img {

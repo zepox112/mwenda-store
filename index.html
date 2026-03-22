@@ -374,17 +374,65 @@
                 }
 
                 // 4. CHUJA KATEGORIA (Instant Loading)
+                // Futa filterByCat zote za zamani na weka hii moja tu:
                 function filterByCat(cat) {
-                    // Kama data bado haijafika (Labda internet ya mteja ni polepole),
-                    // jaribu tena kimya kimya baada ya sekunde 0.5 bila kutoa alert.
-                    if (allItems.length === 0) {
-                        setTimeout(() => filterByCat(cat), 500);
-                        return;
-                    }
+                    const homeView = document.getElementById('home-view');
+                    const resultsView = document.getElementById('results-view');
+                    const container = document.getElementById('products-container');
 
-                    // Chukua data moja kwa moja kutoka kwenye memory (Hakuna delay)
-                    const products = categorizedData[cat.toLowerCase()] || [];
-                    renderResults(products, cat);
+                    // Fungua ukurasa wa matokeo sekunde hiyo hiyo
+                    homeView.style.display = 'none';
+                    resultsView.style.display = 'block';
+
+                    // 1. Pata picha sahihi ya kategoria kutoka kwenye categoryData yako
+                    const info = categoryData[cat] || { img: 'https://via.placeholder.com/1000x400' };
+
+                    // 2. Weka picha na alama ya 🔄
+                    container.innerHTML = `
+        <div class="category-hero glass">
+            <img src="${info.img}" class="hero-img" style="width:100%; height:200px; object-fit:cover; border-radius:15px;">
+            <div class="hero-overlay"><h2>${cat}</h2></div>
+        </div>
+        <div id="loading-area" style="text-align:center; padding:30px; color:white; font-size:1.2rem;">
+            🔄 Inapakia bidhaa za ${cat}...
+        </div>
+        <div class="product-grid-triple" id="actual-products"></div>
+    `;
+
+                    // 3. Anza kuangalia data
+                    checkDataAndFill(cat);
+                    window.scrollTo(0, 0);
+                }
+                function checkDataAndFill(cat) {
+                    const productGrid = document.getElementById('actual-products');
+                    const loadingArea = document.getElementById('loading-area');
+
+                    if (allItems && allItems.length > 0) {
+                        // Data imeshafika! Chuja bidhaa za kategoria husika
+                        const products = allItems.filter(p => p.category && p.category.toLowerCase() === cat.toLowerCase());
+
+                        if (loadingArea) loadingArea.remove(); // Ondoa ile 🔄
+
+                        if (products.length > 0) {
+                            productGrid.innerHTML = products.map(p => `
+                <div class="p-card-mini glass">
+                    <div class="p-img-square">
+                        <img src="${p.imageurl || 'https://via.placeholder.com/200'}" alt="${p.name}">
+                    </div>
+                    <div class="p-info-mini">
+                        <h4 class="p-name-mini">${p.name}</h4>
+                        <p class="p-price-mini">TZS ${p.price}</p>
+                        <button class="buy-btn-mini" onclick="order('${p.name}', '${p.price}')">Agiza</button>
+                    </div>
+                </div>
+            `).join('');
+                        } else {
+                            productGrid.innerHTML = '<p style="color:white; padding:20px; text-align:center;">Bado hakuna bidhaa hapa.</p>';
+                        }
+                    } else {
+                        // Kama bado haijashuka, subiri kidogo kisha jaribu tena (background process)
+                        setTimeout(() => checkDataAndFill(cat), 200);
+                    }
                 }
 
                 // 5. RENDER RESULTS (Liquid Glass Style)
@@ -399,41 +447,41 @@
                     const info = categoryData[title] || { desc: 'Bidhaa bora kutoka Mwenda Store.', img: 'https://via.placeholder.com/1000x400' };
 
                     container.innerHTML = `
-        <div class="category-hero glass">
-            <img src="${info.img}" class="hero-img" loading="eager">
-            <div class="hero-overlay"><h2>${title}</h2></div>
-        </div>
-        
-        <div class="product-grid-triple">
-            ${products.length ? products.map(p => `
-                <div class="p-card-mini glass">
-                    <button class="wishlist-float-mini" onclick="addToWishlist('${p.name}', '${p.price}', '${p.imageurl}')">❤️</button>
-                    
-                    <div class="p-img-square" style="background: rgba(255,255,255,0.05); overflow: hidden; border-radius: 12px;">
-                        <img src="${p.imageurl || 'https://via.placeholder.com/200'}" 
-                             class="product-trigger" 
-                             alt="${p.name}" 
-                             loading="lazy"
-                             data-price="${p.price}"
-                             data-desc="${p.description || ''}"
-                             style="width: 100%; height: 100%; object-fit: cover; cursor: pointer; display: block;"
-                             onerror="this.src='https://via.placeholder.com/200'">
-                    </div>
+    <div class="category-hero glass">
+        <img src="${info.img}" class="hero-img" loading="eager">
+        <div class="hero-overlay"><h2>${title}</h2></div>
+    </div>
+    
+    <div class="product-grid-triple">
+        ${products.length ? products.map(p => `
+            <div class="p-card-mini glass">
+                <button class="wishlist-float-mini" onclick="addToWishlist('${p.name}', '${p.price}', '${p.imageurl}')">❤️</button>
+                
+                <div class="p-img-square">
+                    <img src="${p.imageurl || 'https://via.placeholder.com/200'}" 
+                         class="product-trigger" 
+                         alt="${p.name}" 
+                         loading="lazy"
+                         data-price="${p.price}"
+                         data-desc="${p.description || ''}"
+                         onclick="showProductDetails('${p.name}', '${p.price}', '${p.imageurl}')"
+                         onerror="this.src='https://via.placeholder.com/200'">
+                </div>
 
-                    <div class="p-info-mini">
-                        <h4 class="p-name-mini">${p.name}</h4>
-                        <p class="p-price-mini">TZS ${p.price}</p>
-                        <p class="p-desc-mini">${p.description || 'Bidhaa bora'}</p>
-                        
-                        <div class="p-actions-mini">
-                            <button class="cart-btn-icon" onclick="addToCart('${p.name}', '${p.price}', '${p.imageurl}')">🛒</button>
-                            <button class="buy-btn-mini" onclick="order('${p.name}', '${p.price}')">Agiza</button>
-                        </div>
+                <div class="p-info-mini">
+                    <h4 class="p-name-mini">${p.name}</h4>
+                    <p class="p-price-mini">TZS ${p.price}</p>
+                    <p class="p-desc-mini">${p.description || 'Bidhaa bora kutoka Mwenda Store.'}</p>
+                    
+                    <div class="p-actions-mini">
+                        <button class="cart-btn-icon" onclick="addToCart('${p.name}', '${p.price}', '${p.imageurl}')">🛒</button>
+                        <button class="buy-btn-mini" onclick="order('${p.name}', '${p.price}')">Agiza</button>
                     </div>
                 </div>
-            `).join('') : '<p style="grid-column: span 3; text-align:center; padding:20px; color:white;">Bado hakuna bidhaa hapa.</p>'}
-        </div>
-    `;
+            </div>
+        `).join('') : '<p style="grid-column: span 2; text-align:center; color: white; padding: 20px;">Bado hakuna bidhaa hapa.</p>'}
+    </div>
+`;
                     window.scrollTo(0, 0);
                 }
 
@@ -513,16 +561,6 @@
                     const msg = `Habari Mwenda Store, nataka kuagiza:\n📦 Bidhaa: ${name}\n💰 Bei: TZS ${price}`;
                     const url = `https://wa.me/255747185190?text=${encodeURIComponent(msg)}`;
                     window.open(url, '_blank');
-                }
-
-                // 6. UTILITIES (Chuja, Tafuta, Nyumbani)
-                function filterByCat(cat) {
-                    if (allItems.length === 0) {
-                        alert("Data bado inapakuliwa, tafadhali subiri kidogo...");
-                        return;
-                    }
-                    const filtered = allItems.filter(p => p.category && p.category.toLowerCase() === cat.toLowerCase());
-                    renderResults(filtered, cat);
                 }
 
                 function searchProducts() {
