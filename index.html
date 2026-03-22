@@ -382,21 +382,33 @@
                     fetchProducts();
                 });
 
-                // 3. FETCH DATA (Kimya Kimya)
+                // 3. FETCH DATA (Kimya Kimya + Pre-load Images)
                 async function fetchProducts() {
                     try {
                         const response = await fetch(API);
                         const json = await response.json();
                         let rawData = Array.isArray(json) ? json : (json.data || json.sheet1 || []);
+
                         allItems = rawData.map(item => ({
                             ...item,
                             category: item.category ? item.category.toString().trim() : ""
                         }));
-                        console.log("Data Loaded.");
+
+                        // PAKIA PICHA MAPEMA (Pre-loading)
+                        // Hii inafanya picha ziingie kwenye cache ya simu mteja akiwa bado yuko home
+                        allItems.forEach(p => {
+                            if (p.imageurl) {
+                                const img = new Image();
+                                img.src = p.imageurl;
+                            }
+                        });
+
+                        console.log("Data & Images Loaded.");
                     } catch (error) {
                         console.error("Load Error:", error);
                     }
                 }
+
                 function renderResults(products, title) {
                     const homeView = document.getElementById('home-view');
                     const resultsView = document.getElementById('results-view');
@@ -418,18 +430,14 @@
                 <div class="p-card-mini glass">
                     <button class="wishlist-float-mini" onclick="addToWishlist('${p.name}', '${p.price}', '${p.imageurl}')">❤️</button>
                     
-                   <div class="p-img-square" style="position: relative; background: rgba(255,255,255,0.05); overflow: hidden; border-radius: 12px;">
-    <div class="img-loader" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.8rem; opacity: 0.3;">⏳</div>
-    
-    <img src="${p.imageurl || 'https://via.placeholder.com/200'}" 
-         class="product-trigger" 
-         alt="${p.name}" 
-         loading="lazy"
-         style="opacity: 0; transition: opacity 0.4s ease-in-out; width: 100%; height: 100%; object-fit: cover; cursor: pointer;"
-         onclick="showProductDetails('${p.name}', '${p.price}', '${p.imageurl}')"
-         onerror="this.src='https://via.placeholder.com/200'; this.style.opacity='1';"
-         onload="this.style.opacity='1'; this.previousElementSibling.style.display='none';">
-</div>
+                    <div class="p-img-square" style="background: rgba(255,255,255,0.05); overflow: hidden; border-radius: 12px;">
+                        <img src="${p.imageurl || 'https://via.placeholder.com/200'}" 
+                             class="product-trigger" 
+                             alt="${p.name}" 
+                             style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;"
+                             onclick="showProductDetails('${p.name}', '${p.price}', '${p.imageurl}')"
+                             onerror="this.src='https://via.placeholder.com/200'">
+                    </div>
 
                     <div class="p-info-mini">
                         <h4 class="p-name-mini">${p.name}</h4>
