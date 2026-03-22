@@ -12,12 +12,13 @@
             --bg: #050505;
             --glass: rgba(255, 255, 255, 0.05);
             --danger: #ff5f5f;
+            --selection: rgba(74, 222, 128, 0.2);
         }
 
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            transition: 0.3s;
+            transition: 0.2s ease;
         }
 
         body {
@@ -28,17 +29,58 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            user-select: none;
         }
 
         .wishlist-container {
-            padding: 25px 20px 120px;
+            padding: 25px 20px 150px;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
         }
 
         h2 {
-            font-size: 1.5rem;
-            margin-bottom: 25px;
+            font-size: 1.4rem;
+            margin: 0;
             color: var(--primary);
             font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Desktop Select Button */
+        .select-toggle-btn {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .select-toggle-btn.active {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .select-count {
+            font-size: 0.9rem;
+            background: var(--primary);
+            color: black;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: none;
         }
 
         /* Card Style */
@@ -53,19 +95,35 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            animation: fadeIn 0.4s ease;
+            position: relative;
+            cursor: pointer;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
+        .product-card:hover {
+            border-color: rgba(74, 222, 128, 0.3);
+        }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .product-card.selected {
+            border-color: var(--primary);
+            background: var(--selection);
+            transform: scale(0.98);
+        }
+
+        .product-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: black;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
         }
 
         .product-info {
@@ -75,73 +133,54 @@
         .p-name {
             font-weight: 600;
             font-size: 1rem;
-            margin: 0 0 4px 0;
+            margin: 0;
             color: #fff;
         }
 
         .p-price {
             color: var(--primary);
             font-size: 0.9rem;
+            margin-top: 4px;
             font-weight: 500;
-            margin: 0;
         }
 
-        /* Buttons Container */
-        .actions {
+        /* Floating Delete Button */
+        #floating-delete {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: var(--danger);
+            color: white;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 8px 25px rgba(255, 95, 95, 0.4);
+            z-index: 2000;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .order-btn {
-            background: var(--primary);
-            color: black;
+            gap: 12px;
             border: none;
-            padding: 10px 15px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.8rem;
             cursor: pointer;
+            visibility: hidden;
+            font-family: 'Poppins', sans-serif;
         }
 
-        .delete-icon {
-            background: rgba(255, 95, 95, 0.1);
-            color: var(--danger);
-            border: 1px solid rgba(255, 95, 95, 0.2);
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.1rem;
+        #floating-delete.show {
+            transform: translateX(-50%) translateY(0);
+            visibility: visible;
         }
 
-        .delete-icon:active {
-            transform: scale(0.8);
-        }
-
-        /* Status Displays */
         .loading-text {
             color: var(--primary);
             text-align: center;
-            margin: 40px 0;
+            margin-top: 50px;
         }
 
         .empty-msg {
             text-align: center;
             color: #666;
             margin-top: 80px;
-        }
-
-        .auth-overlay {
-            text-align: center;
-            padding: 50px 20px;
-            background: var(--glass);
-            border-radius: 24px;
-            margin-top: 40px;
-            border: 1px dashed rgba(255, 255, 255, 0.1);
         }
 
         /* Bottom Nav */
@@ -183,19 +222,21 @@
 <body>
 
     <div class="wishlist-container">
-        <h2>❤️ Wishlist Yangu</h2>
+        <div class="header-section">
+            <h2>❤️ Wishlist</h2>
+            <div class="header-actions">
+                <span id="counter" class="select-count">0</span>
+                <button id="select-toggle" class="select-toggle-btn" onclick="toggleSelectionMode()">Select</button>
+            </div>
+        </div>
 
         <div id="load-msg" class="loading-text">Inatafuta... ⏳</div>
-
         <div id="items-list"></div>
-
-        <div id="login-prompt" class="auth-overlay" style="display:none;">
-            <p style="color: #ccc; margin-bottom: 20px;">Tafadhali ingia ili kuona wishlist yako.</p>
-            <a href="login.html"
-                style="background:var(--primary); padding:14px 30px; border-radius:15px; color:black; text-decoration:none; font-weight:bold; display: inline-block;">Ingia
-                Sasa</a>
-        </div>
     </div>
+
+    <button id="floating-delete" onclick="deleteSelectedItems()">
+        <span>🗑️ Futa Bidhaa (<span id="btn-count">0</span>)</span>
+    </button>
 
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span>Home</a>
@@ -207,19 +248,36 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw5DXuO28vOzGWcOYXAWqB-02H5Xm_DMkgGuZ9gFrqDTQM8RwA_n0AvZSSqnZD89ie4/exec";
         const userPhone = localStorage.getItem('user_email');
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
 
-        if (isLoggedIn !== 'true') {
-            document.getElementById('login-prompt').style.display = 'block';
-            document.getElementById('load-msg').style.display = 'none';
-        } else {
-            loadWishlist();
+        let selectedItems = [];
+        let isSelectionMode = false;
+        let pressTimer;
+
+        // Kuanza na kuzima mode ya kuselect (Kwa PC na Simu)
+        function toggleSelectionMode() {
+            isSelectionMode = !isSelectionMode;
+            const btn = document.getElementById('select-toggle');
+
+            if (isSelectionMode) {
+                btn.innerText = "Ghairi";
+                btn.classList.add('active');
+            } else {
+                btn.innerText = "Select";
+                btn.classList.remove('active');
+                clearSelections();
+            }
+        }
+
+        function clearSelections() {
+            selectedItems = [];
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(c => c.classList.remove('selected'));
+            updateUI();
         }
 
         async function loadWishlist() {
-            const loadMsg = document.getElementById('load-msg');
             const listDiv = document.getElementById('items-list');
-            loadMsg.style.display = 'block';
+            const loadMsg = document.getElementById('load-msg');
 
             try {
                 const response = await fetch(SCRIPT_URL, {
@@ -231,66 +289,119 @@
                 loadMsg.style.display = 'none';
                 listDiv.innerHTML = "";
 
-                if (data.wishlist && data.wishlist.length > 0) {
-                    const myItems = data.wishlist.filter(item => String(item[0]) === String(userPhone));
+                const myItems = data.wishlist.filter(item => String(item[0]) === String(userPhone));
 
-                    if (myItems.length > 0) {
-                        myItems.forEach((item, index) => {
-                            listDiv.innerHTML += `
-                                <div class="product-card" id="wish-row-${index}">
-                                    <div class="product-info">
-                                        <p class="p-name">${item[1]}</p>
-                                        <p class="p-price">${item[2]}</p>
-                                    </div>
-                                    <div class="actions">
-                                        <button class="order-btn" onclick="addToCart('${item[1]}', '${item[2]}')">Oda</button>
-                                        <div class="delete-icon" onclick="removeFromWishlist('${item[1]}', ${index})">🗑️</div>
-                                    </div>
-                                </div>
-                            `;
-                        });
-                    } else {
-                        listDiv.innerHTML = `<div class="empty-msg">Wishlist yako haina kitu.</div>`;
-                    }
+                if (myItems.length > 0) {
+                    myItems.forEach((item, index) => {
+                        const card = document.createElement('div');
+                        card.className = 'product-card';
+                        card.id = `item-${index}`;
+                        card.innerHTML = `
+                            <div class="product-info">
+                                <p class="p-name">${item[1]}</p>
+                                <p class="p-price">${item[2]}</p>
+                            </div>
+                        `;
+
+                        // Mambo ya Long Press (Hii bado inafanya kazi kwa simu)
+                        card.addEventListener('touchstart', (e) => startPress(item[1], card.id));
+                        card.addEventListener('touchend', cancelPress);
+                        card.addEventListener('mousedown', (e) => startPress(item[1], card.id));
+                        card.addEventListener('mouseup', cancelPress);
+
+                        // Click ya kawaida
+                        card.addEventListener('click', () => handleItemClick(item[1], card.id));
+
+                        listDiv.appendChild(card);
+                    });
                 } else {
-                    listDiv.innerHTML = `<div class="empty-msg">Wishlist yako haina kitu.</div>`;
+                    listDiv.innerHTML = `<div class="empty-msg">Huna kitu kwenye Wishlist yako.</div>`;
                 }
-            } catch (error) {
-                loadMsg.innerText = "Hitilafu imetokea. Jaribu tena.";
+            } catch (e) {
+                loadMsg.innerText = "Hitilafu imetokea!";
             }
         }
 
-        async function removeFromWishlist(itemName, id) {
-            if (!confirm(`Ondoa ${itemName}?`)) return;
+        function startPress(name, id) {
+            pressTimer = setTimeout(() => {
+                if (!isSelectionMode) toggleSelectionMode();
+                toggleSelect(name, id);
+                if (window.navigator.vibrate) window.navigator.vibrate(50);
+            }, 700);
+        }
 
-            const row = document.getElementById(`wish-row-${id}`);
-            row.style.opacity = "0.3";
+        function cancelPress() { clearTimeout(pressTimer); }
 
-            try {
-                await fetch(SCRIPT_URL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    body: JSON.stringify({
-                        action: "deleteItem",
-                        type: "Wishlist",
-                        phone: userPhone,
-                        itemName: itemName
-                    })
-                });
-
-                // Subiri kidogo kisha pakia upya
-                setTimeout(loadWishlist, 1000);
-            } catch (err) {
-                alert("Imeshindwa kufuta.");
-                loadWishlist();
+        function handleItemClick(name, id) {
+            if (isSelectionMode) {
+                toggleSelect(name, id);
+            } else {
+                // Hapa unaweza kuweka logic ya kufungua bidhaa ukitaka
             }
         }
 
-        async function addToCart(name, price) {
-            // Hapa unaweza kuongeza kodi ya kuhamisha bidhaa kwenda Cart
-            alert(`Umeagiza ${name}. Hakikisha imewekwa kwenye Cart.`);
-            // Logic ya saveItem kwenda Cart inaweza kuwekwa hapa
+        function toggleSelect(name, id) {
+            const card = document.getElementById(id);
+            const index = selectedItems.indexOf(name);
+
+            if (index > -1) {
+                selectedItems.splice(index, 1);
+                card.classList.remove('selected');
+            } else {
+                selectedItems.push(name);
+                card.classList.add('selected');
+            }
+
+            if (selectedItems.length === 0 && isSelectionMode) {
+                // Hiari: Ukiondoa vyote mode izime? Naacha iwe ON mpaka ubonyeze Ghairi
+            }
+            updateUI();
         }
+
+        function updateUI() {
+            const fBtn = document.getElementById('floating-delete');
+            const counter = document.getElementById('counter');
+            const btnCount = document.getElementById('btn-count');
+
+            if (selectedItems.length > 0) {
+                fBtn.classList.add('show');
+                counter.style.display = 'block';
+                counter.innerText = selectedItems.length;
+                btnCount.innerText = selectedItems.length;
+            } else {
+                fBtn.classList.remove('show');
+                counter.style.display = 'none';
+            }
+        }
+
+        async function deleteSelectedItems() {
+            const idadi = selectedItems.length;
+            if (!confirm(`Ondoa bidhaa hizi ${idadi} kwenye Wishlist?`)) return;
+
+            const fBtn = document.getElementById('floating-delete');
+            fBtn.innerHTML = "Inafuta... ⏳";
+            fBtn.style.background = "#555";
+
+            for (let item of selectedItems) {
+                try {
+                    await fetch(SCRIPT_URL, {
+                        method: "POST",
+                        mode: "no-cors",
+                        body: JSON.stringify({
+                            action: "deleteItem",
+                            type: "Wishlist",
+                            phone: userPhone,
+                            itemName: item
+                        })
+                    });
+                } catch (e) { }
+            }
+
+            alert("Bidhaa zimeondolewa!");
+            location.reload();
+        }
+
+        loadWishlist();
     </script>
 </body>
 
