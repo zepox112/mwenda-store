@@ -1502,6 +1502,64 @@ body {
     /* Inazuia picha isivutike (stretch) */
 }
 
+.action-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border: none;
+    color: white;
+}
+
+.p-card-mini {
+    position: relative;
+    /* Muhimu ili kadi iweze kubeba icon za juu */
+}
+
+.card-actions {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    flex-direction: column;
+    /* Icon moja juu ya nyingine */
+    gap: 5px;
+    z-index: 10;
+}
+
+.mini-action {
+    background: rgba(0, 0, 0, 0.5);
+    /* Background nyeusi ya kioo */
+    backdrop-filter: blur(5px);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.mini-action:hover {
+    background: #ff4757;
+    /* Inabadilika rangi ukigusa */
+}
+
+.top-actions {
+    position: sticky;
+    /* Hii inazifanya zibaki juu mteja akiscroll */
+    top: 10px;
+    z-index: 100;
+}
+
 /* Maandishi ya bidhaa yawe madogo kidogo ili yapangike */
 .p-name-mini {
     font-size: 0.9rem;

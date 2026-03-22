@@ -372,34 +372,31 @@
                         console.error("Load Error:", error);
                     }
                 }
-
-                // 4. CHUJA KATEGORIA (Instant Loading)
-                // Futa filterByCat zote za zamani na weka hii moja tu:
                 function filterByCat(cat) {
                     const homeView = document.getElementById('home-view');
                     const resultsView = document.getElementById('results-view');
                     const container = document.getElementById('products-container');
 
-                    // Fungua ukurasa wa matokeo sekunde hiyo hiyo
                     homeView.style.display = 'none';
                     resultsView.style.display = 'block';
 
-                    // 1. Pata picha sahihi ya kategoria kutoka kwenye categoryData yako
                     const info = categoryData[cat] || { img: 'https://via.placeholder.com/1000x400' };
 
-                    // 2. Weka picha na alama ya 🔄
+                    // HAPA TUNAWEKA WISHLIST NA CART TENA
                     container.innerHTML = `
-    <div class="category-hero glass" style="margin-bottom: 15px;">
-        <img src="${info.img}" class="hero-img" style="width:100%; height:160px; object-fit:cover; border-radius:15px;">
-        <div class="hero-overlay"><h2>${cat}</h2></div>
-    </div>
-    <div id="loading-area" style="text-align:center; padding:20px; color:white;">
-        🔄 Inapakia bidhaa za ${cat}...
-    </div>
-    <div class="product-grid-triple" id="actual-products"></div>
-`;
+    
 
-                    // 3. Anza kuangalia data
+        <div class="category-hero glass" style="margin-bottom: 15px;">
+            <img src="${info.img}" class="hero-img" style="width:100%; height:160px; object-fit:cover; border-radius:15px;">
+            <div class="hero-overlay"><h2>${cat}</h2></div>
+        </div>
+
+        <div id="loading-area" style="text-align:center; padding:20px; color:white;">
+            🔄 Inapakia bidhaa za ${cat}...
+        </div>
+        <div class="product-grid-triple" id="actual-products"></div>
+    `;
+
                     checkDataAndFill(cat);
                     window.scrollTo(0, 0);
                 }
@@ -408,17 +405,22 @@
                     const loadingArea = document.getElementById('loading-area');
 
                     if (allItems && allItems.length > 0) {
-                        // Data imeshafika! Chuja bidhaa za kategoria husika
                         const products = allItems.filter(p => p.category && p.category.toLowerCase() === cat.toLowerCase());
 
-                        if (loadingArea) loadingArea.remove(); // Ondoa ile 🔄
+                        if (loadingArea) loadingArea.remove();
 
                         if (products.length > 0) {
                             productGrid.innerHTML = products.map(p => `
                 <div class="p-card-mini glass">
+                    <div class="card-actions">
+                        <button class="mini-action" onclick="addToWishlist('${p.name}', '${p.price}', '${p.imageurl}')">❤️</button>
+                        <button class="mini-action" onclick="addToCart('${p.name}', '${p.price}', '${p.imageurl}')">🛒</button>
+                    </div>
+                    
                     <div class="p-img-square">
                         <img src="${p.imageurl || 'https://via.placeholder.com/200'}" alt="${p.name}">
                     </div>
+                    
                     <div class="p-info-mini">
                         <h4 class="p-name-mini">${p.name}</h4>
                         <p class="p-price-mini">TZS ${p.price}</p>
@@ -430,11 +432,9 @@
                             productGrid.innerHTML = '<p style="color:white; padding:20px; text-align:center;">Bado hakuna bidhaa hapa.</p>';
                         }
                     } else {
-                        // Kama bado haijashuka, subiri kidogo kisha jaribu tena (background process)
                         setTimeout(() => checkDataAndFill(cat), 200);
                     }
                 }
-
                 // 5. RENDER RESULTS (Liquid Glass Style)
                 function renderResults(products, title) {
                     const homeView = document.getElementById('home-view');
