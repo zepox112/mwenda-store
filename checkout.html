@@ -21,7 +21,7 @@
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 20px;
-            padding-bottom: 50px;
+            padding-bottom: 150px;
             min-height: 100vh;
         }
 
@@ -40,12 +40,10 @@
         .card {
             background: var(--glass);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .section-title {
@@ -75,15 +73,14 @@
             padding: 12px;
             border-radius: 12px;
             color: white;
-            font-family: inherit;
+            outline: none;
             box-sizing: border-box;
         }
 
-        /* Payment Grid */
         .payment-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 10px;
             margin-top: 10px;
         }
 
@@ -91,32 +88,30 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--glass-border);
             border-radius: 18px;
-            padding: 15px 10px;
+            padding: 12px 5px;
             cursor: pointer;
             text-align: center;
-            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .payment-card img {
-            width: 55px;
-            height: 55px;
+            width: 45px;
+            height: 45px;
             object-fit: contain;
-            border-radius: 12px;
+            border-radius: 8px;
         }
 
         .payment-card span {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
         }
 
         .payment-card.active {
             border-color: var(--primary);
             background: rgba(74, 222, 128, 0.15);
-            transform: translateY(-3px);
         }
 
         .total-row {
@@ -126,6 +121,8 @@
             font-size: 1.1rem;
             margin-top: 15px;
             color: var(--primary);
+            border-top: 1px dashed var(--glass-border);
+            padding-top: 10px;
         }
 
         .btn-confirm {
@@ -133,21 +130,61 @@
             background: var(--primary);
             color: #052e16;
             border: none;
-            padding: 16px;
+            padding: 18px;
             border-radius: 16px;
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
-            text-transform: uppercase;
         }
 
+        /* Order Item Styling */
         .order-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             font-size: 0.85rem;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 12px;
+        }
+
+        .btn-delete {
+            background: rgba(255, 69, 69, 0.15);
+            color: #ff6b6b;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(25px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #555;
+            text-align: center;
+            font-size: 0.65rem;
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+            display: block;
         }
     </style>
 </head>
@@ -161,36 +198,31 @@
             <span class="section-title">📍 Maelezo ya Mteja</span>
             <div class="input-group">
                 <label>Jina Kamili</label>
-                <input type="text" id="cust-name" placeholder="Mfano: Zephaniah Kennedy">
+                <input type="text" id="cust-name" placeholder="Zephaniah Kennedy">
             </div>
             <div class="input-group">
                 <label>Eneo Unapoishi (Arusha)</label>
-                <input type="text" id="cust-location" placeholder="Mfano: Kijenge Juu">
+                <input type="text" id="cust-location" placeholder="Kijenge Juu">
             </div>
 
-            <label style="margin-top: 15px; display: block; font-size: 0.8rem;">Chagua Njia ya Malipo:</label>
-
+            <label style="margin-top: 15px; display: block; font-size: 0.8rem;">Njia ya Malipo:</label>
             <div class="payment-grid">
                 <div class="payment-card" onclick="selectPayment('M-Pesa', this)">
                     <img src="https://i.ibb.co/4RVDBsth/voda.jpg" alt="M-Pesa">
                     <span>M-Pesa</span>
                 </div>
-
                 <div class="payment-card" onclick="selectPayment('Mixx by yass', this)">
                     <img src="https://i.ibb.co/B5pMSMQV/yass.jpg" alt="Tigo">
                     <span>Mixx by yass</span>
                 </div>
-
                 <div class="payment-card" onclick="selectPayment('Airtel Money', this)">
                     <img src="https://i.ibb.co/3yfFHHdw/airtel.jpg" alt="Airtel">
                     <span>Airtel Money</span>
                 </div>
-
                 <div class="payment-card" onclick="selectPayment('HaloPesa', this)">
                     <img src="https://i.ibb.co/XkMkKZfJ/halo.jpg" alt="HaloPesa">
                     <span>HaloPesa</span>
                 </div>
-
                 <div class="payment-card" style="grid-column: span 2;"
                     onclick="selectPayment('Cash on Delivery', this)">
                     <img src="https://cdn-icons-png.flaticon.com/512/2331/2331714.png" alt="Cash">
@@ -213,8 +245,14 @@
         <button class="btn-confirm" onclick="processOrder()">KAMILISHA AGIZO ✅</button>
     </div>
 
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link"><span class="nav-icon">🏠</span>Home</a>
+        <a href="wishlist.html" class="nav-link"><span class="nav-icon">❤️</span>Wishlist</a>
+        <a href="cart.html" class="nav-link"><span class="nav-icon">🛒</span>Cart</a>
+        <a href="profile.html" class="nav-link"><span class="nav-icon">👤</span>Profile</a>
+    </nav>
+
     <script>
-        // ... (Script inabaki ile ile ya mwanzo, nimehakikisha hizi link zinafanya kazi sasa)
         const API_URL = "https://script.google.com/macros/s/AKfycbw5DXuO28vOzGWcOYXAWqB-02H5Xm_DMkgGuZ9gFrqDTQM8RwA_n0AvZSSqnZD89ie4/exec";
         const userPhone = localStorage.getItem('user_email');
         let myCartItems = [];
@@ -229,21 +267,48 @@
                     body: JSON.stringify({ action: "getUserData", phone: userPhone })
                 });
                 const data = await response.json();
-                const listDiv = document.getElementById('order-items-list');
-                const totalDiv = document.getElementById('grand-total');
-
-                if (data.cart) {
-                    myCartItems = data.cart.filter(item => String(item[0]) === String(userPhone));
-                    listDiv.innerHTML = "";
-                    finalTotal = 0;
-                    myCartItems.forEach(item => {
-                        const price = parseInt(item[2].toString().replace(/[^0-9]/g, '')) || 0;
-                        finalTotal += price;
-                        listDiv.innerHTML += `<div class="order-item"><span>${item[1]}</span><span>${price.toLocaleString()}</span></div>`;
-                    });
-                    totalDiv.innerText = "TSH " + finalTotal.toLocaleString();
-                }
+                renderCart(data.cart || []);
             } catch (e) { console.log(e); }
+        }
+
+        function renderCart(cartData) {
+            const listDiv = document.getElementById('order-items-list');
+            const totalDiv = document.getElementById('grand-total');
+
+            myCartItems = cartData.filter(item => String(item[0]) === String(userPhone));
+            listDiv.innerHTML = "";
+            finalTotal = 0;
+
+            if (myCartItems.length === 0) {
+                listDiv.innerHTML = "<p style='text-align:center;'>Kikapu chako kiko tupu.</p>";
+                totalDiv.innerText = "TSH 0";
+                return;
+            }
+
+            myCartItems.forEach(item => {
+                const price = parseInt(item[2].toString().replace(/[^0-9]/g, '')) || 0;
+                finalTotal += price;
+                listDiv.innerHTML += `
+                    <div class="order-item">
+                        <span>${item[1]} <br><small>TSH ${price.toLocaleString()}</small></span>
+                        <button class="btn-delete" onclick="removeItem('${item[1]}')">Futa</button>
+                    </div>`;
+            });
+            totalDiv.innerText = "TSH " + finalTotal.toLocaleString();
+        }
+
+        async function removeItem(itemName) {
+            if (!confirm("Ondoa " + itemName + "?")) return;
+            try {
+                // Tunaita API kufuta bidhaa kwenye Google Sheets
+                await fetch(API_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    body: JSON.stringify({ action: "deleteItem", type: "Cart", phone: userPhone, itemName: itemName })
+                });
+                // Tunapakia upya data baada ya kufuta
+                loadCheckoutData();
+            } catch (e) { alert("Imeshindwa kufuta."); }
         }
 
         function selectPayment(method, element) {
@@ -255,10 +320,11 @@
         function processOrder() {
             const name = document.getElementById('cust-name').value;
             const location = document.getElementById('cust-location').value;
-            if (!name || !location || !selectedPaymentMethod) {
+            if (!name || !location || !selectedPaymentMethod || myCartItems.length === 0) {
                 alert("Jaza taarifa zote!"); return;
             }
-            let message = `*AGIZO JIPYA - MWENDA STORE*%0A*Mteja:* ${name}%0A*Mahali:* ${location}%0A*Malipo:* ${selectedPaymentMethod}%0A*JUMLA:* TSH ${finalTotal.toLocaleString()}`;
+            let itemNames = myCartItems.map(i => `- ${i[1]}`).join('%0A');
+            let message = `*AGIZO JIPYA - MWENDA STORE*%0A%0A*Mteja:* ${name}%0A*Mahali:* ${location}%0A*Malipo:* ${selectedPaymentMethod}%0A%0A*BIDHAA:*%0A${itemNames}%0A%0A*JUMLA:* TSH ${finalTotal.toLocaleString()}`;
             window.open(`https://wa.me/255747185190?text=${message}`, '_blank');
         }
 

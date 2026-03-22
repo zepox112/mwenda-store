@@ -10,6 +10,7 @@
         * {
             box-sizing: border-box;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -32,7 +33,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
 
         h2 {
@@ -42,11 +43,32 @@
             font-weight: 600;
         }
 
+        /* Delete Multi Button */
+        #multi-delete-btn {
+            background: #ff4545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: none;
+            /* Inatokea tu kukiwa na selection */
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 69, 69, 0.3);
+        }
+
+        .instruction-text {
+            font-size: 0.7rem;
+            color: #666;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
         /* Cart Item Styling */
         .cart-item {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
             padding: 18px;
@@ -54,7 +76,24 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ikichaguliwa (Selected) */
+        .cart-item.selected {
+            border: 2px solid #4ade80;
+            background: rgba(74, 222, 128, 0.05);
+        }
+
+        .cart-item.selected::after {
+            content: "✓";
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #4ade80;
+            font-weight: bold;
         }
 
         .item-details {
@@ -65,7 +104,6 @@
             font-size: 0.65rem;
             color: #4ade80;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
             margin-bottom: 4px;
             display: block;
         }
@@ -84,26 +122,6 @@
             margin-top: 5px;
         }
 
-        /* Delete Button */
-        .btn-delete {
-            background: rgba(255, 69, 69, 0.15);
-            color: #ff5f5f;
-            border: 1px solid rgba(255, 95, 95, 0.2);
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        .btn-delete:active {
-            transform: scale(0.85);
-            background: rgba(255, 69, 69, 0.3);
-        }
-
         /* Summary Bar */
         .summary-card {
             position: fixed;
@@ -117,33 +135,12 @@
             justify-content: space-between;
             align-items: center;
             color: #000;
-            box-shadow: 0 15px 35px rgba(74, 222, 128, 0.4);
             z-index: 100;
-            cursor: pointer;
-        }
-
-        .summary-card:active {
-            transform: scale(0.97);
-        }
-
-        .total-label {
-            font-size: 0.8rem;
-            font-weight: 400;
-            display: block;
         }
 
         .total-amount {
             font-size: 1.2rem;
             font-weight: 800;
-        }
-
-        .checkout-btn {
-            background: #000;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.85rem;
         }
 
         /* Navigation */
@@ -175,10 +172,8 @@
         .nav-icon {
             font-size: 1.5rem;
             display: block;
-            margin-bottom: 2px;
         }
 
-        /* Helpers */
         .loader {
             text-align: center;
             padding: 50px;
@@ -198,10 +193,13 @@
     <div class="cart-container">
         <div class="header-area">
             <h2>🛒 Kikapu</h2>
+            <button id="multi-delete-btn" onclick="deleteSelected()">Futa Zilizochaguliwa</button>
             <span id="item-count"
                 style="font-size: 0.8rem; background: #1a3a1a; padding: 5px 12px; border-radius: 20px; color: #4ade80;">0
                 Bidhaa</span>
         </div>
+
+        <p class="instruction-text">Gusa bidhaa moja au zaidi kuzichagua, kisha futa zote kwa pamoja.</p>
 
         <div id="loading" class="loader">Inapakia... ⏳</div>
         <div id="cart-content"></div>
@@ -216,10 +214,11 @@
 
     <div id="summary-float" class="summary-card" onclick="window.location.href='checkout.html'">
         <div>
-            <span class="total-label">Jumla ya Malipo</span>
+            <span style="font-size: 0.8rem;">Jumla ya Malipo</span><br>
             <span id="grand-total" class="total-amount">TSH 0</span>
         </div>
-        <div class="checkout-btn">Lipa Sasa</div>
+        <div style="background:#000; color:#fff; padding:10px 20px; border-radius:12px; font-weight:600;">Lipa Sasa
+        </div>
     </div>
 
     <nav class="nav-bar">
@@ -234,6 +233,8 @@
         const userPhone = localStorage.getItem('user_email');
         const isLoggedIn = localStorage.getItem('isLoggedIn');
 
+        let selectedItems = [];
+
         if (isLoggedIn !== 'true' || !userPhone) {
             document.getElementById('auth-check').style.display = 'block';
             document.getElementById('loading').style.display = 'none';
@@ -247,6 +248,9 @@
             const summary = document.getElementById('summary-float');
             const countBadge = document.getElementById('item-count');
 
+            selectedItems = [];
+            updateDeleteButton();
+
             try {
                 const response = await fetch(API_URL, {
                     method: "POST",
@@ -259,9 +263,7 @@
                 let total = 0;
 
                 if (data.cart && data.cart.length > 0) {
-                    // Filter kwa ajili ya user huyu
                     const items = data.cart.filter(row => row[0].toString() === userPhone.toString());
-
                     countBadge.innerText = `${items.length} Bidhaa`;
 
                     if (items.length > 0) {
@@ -270,69 +272,84 @@
                             const price = parseInt(rawPrice) || 0;
                             total += price;
 
-                            list.innerHTML += `
-                                <div class="cart-item" id="row-${index}">
-                                    <div class="item-details">
-                                        <span class="item-category">Bidhaa</span>
-                                        <p class="item-name">${item[1]}</p>
-                                        <p class="item-price">TSH ${price.toLocaleString()}</p>
-                                    </div>
-                                    <div class="btn-delete" onclick="confirmDelete('${item[1]}', ${index})">
-                                        🗑️
-                                    </div>
+                            const itemDiv = document.createElement('div');
+                            itemDiv.className = 'cart-item';
+                            itemDiv.dataset.name = item[1];
+                            itemDiv.innerHTML = `
+                                <div class="item-details">
+                                    <span class="item-category">Bidhaa</span>
+                                    <p class="item-name">${item[1]}</p>
+                                    <p class="item-price">TSH ${price.toLocaleString()}</p>
                                 </div>
                             `;
+
+                            itemDiv.onclick = () => toggleSelect(itemDiv, item[1]);
+                            list.appendChild(itemDiv);
                         });
                         summary.style.display = 'flex';
                         document.getElementById('grand-total').innerText = "TSH " + total.toLocaleString();
-                    } else {
-                        showEmpty();
-                    }
-                } else {
-                    showEmpty();
-                }
+                    } else { showEmpty(); }
+                } else { showEmpty(); }
             } catch (e) {
-                loading.innerText = "Imeshindwa kupata data. Jaribu tena.";
+                loading.innerText = "Jaribu tena baadaye.";
+            }
+        }
+
+        function toggleSelect(element, name) {
+            if (element.classList.contains('selected')) {
+                element.classList.remove('selected');
+                selectedItems = selectedItems.filter(i => i !== name);
+            } else {
+                element.classList.add('selected');
+                selectedItems.push(name);
+            }
+            updateDeleteButton();
+        }
+
+        function updateDeleteButton() {
+            const btn = document.getElementById('multi-delete-btn');
+            if (selectedItems.length > 0) {
+                btn.style.display = 'block';
+                btn.innerText = `Futa (${selectedItems.length})`;
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        async function deleteSelected() {
+            if (!confirm(`Ondoa bidhaa ${selectedItems.length} zilizochaguliwa?`)) return;
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('loading').innerText = "Inafuta... Tafadhali subiri ⏳";
+
+            try {
+                // Tunafuta moja baada ya nyingine kulingana na API yako
+                for (const itemName of selectedItems) {
+                    await fetch(API_URL, {
+                        method: "POST",
+                        mode: "no-cors",
+                        body: JSON.stringify({
+                            action: "deleteItem",
+                            type: "Cart",
+                            phone: userPhone,
+                            itemName: itemName
+                        })
+                    });
+                }
+
+                // Refresh kikapu baada ya kumaliza zote
+                fetchCart();
+            } catch (err) {
+                alert("Kuna tatizo limetokea wakati wa kufuta.");
+                fetchCart();
             }
         }
 
         function showEmpty() {
-            document.getElementById('cart-content').innerHTML = `
-                <div class="empty-state">
-                    <span style="font-size:3rem; display:block; margin-bottom:10px;">🛍️</span>
-                    <p>Kikapu chako kiko tupu kabisa!</p>
-                    <a href="index.html" style="color:#4ade80; text-decoration:none; font-weight:bold;">Anza Manunuzi</a>
-                </div>
-            `;
+            document.getElementById('cart-content').innerHTML = `<div class="empty-state">🛍️<br>Kikapu kiko tupu.</div>`;
             document.getElementById('summary-float').style.display = 'none';
             document.getElementById('item-count').innerText = "0 Bidhaa";
-        }
-
-        async function confirmDelete(name, id) {
-            if (!confirm(`Ondoa ${name}?`)) return;
-
-            const row = document.getElementById(`row-${id}`);
-            row.style.opacity = "0.4";
-            row.style.transform = "scale(0.95)";
-
-            try {
-                await fetch(API_URL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    body: JSON.stringify({
-                        action: "deleteItem",
-                        type: "Cart",
-                        phone: userPhone,
-                        itemName: name
-                    })
-                });
-
-                // Refresh baada ya kufuta
-                setTimeout(fetchCart, 1000);
-            } catch (err) {
-                alert("Hitilafu imetokea!");
-                fetchCart();
-            }
+            document.getElementById('multi-delete-btn').style.display = 'none';
         }
     </script>
 </body>
