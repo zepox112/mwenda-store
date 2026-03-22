@@ -1502,3 +1502,90 @@ body {
     flex-direction: column;
     justify-content: space-between;
 }
+
+.p-img-square {
+    aspect-ratio: 1 / 1;
+    /* Inahakikisha picha zote ni square kamili */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Staili ya Boksi la Bidhaa (Liquid Glass) */
+.p-card-mini.glass {
+    background: rgba(255, 255, 255, 0.05);
+    /* Kioo chepesi */
+    backdrop-filter: blur(15px);
+    /* Inafanya background iwe na ukungu */
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Border ya kioo */
+    border-radius: 20px;
+    padding: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.p-card-mini.glass:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Picha ndani ya kioo */
+.p-img-square {
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 15px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.p-img-square img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 0.5s ease;
+}
+
+.p-card-mini.glass:hover .p-img-square img {
+    scale: 1.1;
+    /* Inavuta picha kidogo ikiguswa */
+}
+
+/* Maelezo ya Data (Text) */
+.p-info-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.p-name-mini {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Inakata jina refu */
+}
+
+.p-price-mini {
+    color: #4ade80;
+    /* Rangi ya kijani ya kisasa */
+    font-weight: 900;
+    font-size: 1rem;
+}
+
+.p-desc-mini {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.2;
+    height: 32px;
+    /* Mistari miwili pekee */
+    overflow: hidden;
+}
