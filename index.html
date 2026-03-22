@@ -292,7 +292,7 @@
                 const API = 'https://script.google.com/macros/s/AKfycbwcdwgYb4McT-NXshkHeYYTndiyLbseAcnVw5HDyjxOwUXXRtM_LC5b3DCv_J29Eg8mmw/exec';
                 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUqtwF_2bkAALiqMPVq_Z0H10suZZQqLZRaen1-83Az_1uEhp7sYopF5lM8kznF4ST/exec";
                 let allItems = [];
-                let categorizedData = {}; // Hifadhi ya kategoria kwa ajili ya speed
+                let categorizedData = {};
 
                 const categoryData = {
                     'Stationery': { desc: 'Hiki ni kundi la vifaa vya kujifunzia na kazi za kiofisi.', img: 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?q=80&w=1000' },
@@ -307,7 +307,7 @@
 
                 // 2. ANZISHA APP
                 document.addEventListener('DOMContentLoaded', () => {
-                    // --- FAQ SYSTEM ---
+                    // FAQ SYSTEM
                     const faqQuestions = document.querySelectorAll('.faq-question');
                     faqQuestions.forEach(question => {
                         question.addEventListener('click', () => {
@@ -325,11 +325,38 @@
                         });
                     });
 
-                    // Pakia data sekunde ya kwanza kabisa
-                    fetchProducts();
+                    // Mfumo wa Back to Top
+                    window.onscroll = function () {
+                        const btn = document.getElementById("backToTop");
+                        if (btn) {
+                            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                                btn.style.display = "flex";
+                            } else {
+                                btn.style.display = "none";
+                            }
+                        }
+                    };
+
+                    // Pakia bidhaa (Anza na Cache kisha Fetch)
+                    loadAllProducts();
                 });
 
-                // 3. FETCH DATA (Kasi ya AliExpress + WebP + Auto-Crop)
+                // 3. Mfumo wa Caching (STALE-WHILE-REVALIDATE)
+                async function loadAllProducts() {
+                    // A. Angalia kama kuna bidhaa kwenye simu
+                    const cached = localStorage.getItem('products_cache');
+                    if (cached) {
+                        allItems = JSON.parse(cached);
+                        // Kama mteja alikuwa kwenye kategoria fulani (refresh), muonyeshe bidhaa zake mara moja
+                        const currentCat = sessionStorage.getItem('lastCategory');
+                        if (currentCat && document.getElementById('results-view').style.display === 'block') {
+                            checkDataAndFill(currentCat);
+                        }
+                    }
+                    // B. Pakia data mpya kimya kimya
+                    await fetchProducts();
+                }
+
                 async function fetchProducts() {
                     try {
                         const response = await fetch(API);
@@ -337,16 +364,9 @@
                         let rawData = Array.isArray(json) ? json : (json.data || json.sheet1 || []);
 
                         allItems = rawData.map(item => {
-                            // 1. Chukua link ya Admin kutoka Sheet (ImgBB)
                             let originalUrl = item.imageurl || 'https://via.placeholder.com/200';
-
-                            // 2. Iunge na Weserv Proxy
-                            // &output=webp (Inageuza JPG kuwa WebP)
-                            // &q=80 (Inatunza ubora wa 80% lakini inapunguza uzito sana)
-                            // &w=400&h=400&fit=cover (Inazifanya picha zote ziwe square na size moja ili duka lipangike)
-                            // &il (Interlace: Picha inatokea blurred kwanza kuliko kukaa nyeupe)
+                            // Optimized URL via Weserv
                             let optimizedUrl = `https://images.weserv.nl/?url=${encodeURIComponent(originalUrl)}&output=webp&q=80&il&w=400&h=400&fit=cover`;
-
                             return {
                                 ...item,
                                 imageurl: optimizedUrl,
@@ -354,25 +374,28 @@
                             };
                         });
 
-                        // Panga data mapema ili kuzuia filter delay (Instant Access)
-                        categorizedData = allItems.reduce((acc, item) => {
-                            const cat = item.category.toLowerCase();
-                            if (!acc[cat]) acc[cat] = [];
-                            acc[cat].push(item);
-                            return acc;
-                        }, {});
+                        // Hifadhi data mpya kwenye Cache
+                        localStorage.setItem('products_cache', JSON.stringify(allItems));
 
-                        // Background Pre-load: Pakia picha 10 za kwanza ili ziwe instant
+                        // Background Pre-load
                         allItems.slice(0, 10).forEach(p => {
                             if (p.imageurl) { const img = new Image(); img.src = p.imageurl; }
                         });
 
-                        console.log("Mwenda Store: Picha zote zimeshaandaliwa kuwa WebP!");
+                        console.log("Mwenda Store: Data imekuwa updated kimya kimya!");
+
+                        // Kama mteja anaangalia kategoria fulani, i-refresh kimya kimya ili aone bei mpya
+                        const currentCat = sessionStorage.getItem('lastCategory');
+                        if (currentCat) checkDataAndFill(currentCat);
+
                     } catch (error) {
                         console.error("Load Error:", error);
                     }
                 }
+
+                // 4. FILTER & DISPLAY LOGIC
                 function filterByCat(cat) {
+                    sessionStorage.setItem('lastCategory', cat); // Kumbuka kategoria
                     const homeView = document.getElementById('home-view');
                     const resultsView = document.getElementById('results-view');
                     const container = document.getElementById('products-container');
@@ -382,31 +405,28 @@
 
                     const info = categoryData[cat] || { img: 'https://via.placeholder.com/1000x400' };
 
-                    // HAPA TUNAWEKA WISHLIST NA CART TENA
                     container.innerHTML = `
-    
-
         <div class="category-hero glass" style="margin-bottom: 15px;">
             <img src="${info.img}" class="hero-img" style="width:100%; height:160px; object-fit:cover; border-radius:15px;">
             <div class="hero-overlay"><h2>${cat}</h2></div>
         </div>
-
         <div id="loading-area" style="text-align:center; padding:20px; color:white;">
-            🔄 Inapakia bidhaa za ${cat}...
+            🔄 Inatayarisha bidhaa za ${cat}...
         </div>
         <div class="product-grid-triple" id="actual-products"></div>
     `;
 
                     checkDataAndFill(cat);
-                    window.scrollTo(0, 0);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
+
                 function checkDataAndFill(cat) {
                     const productGrid = document.getElementById('actual-products');
                     const loadingArea = document.getElementById('loading-area');
+                    if (!productGrid) return;
 
                     if (allItems && allItems.length > 0) {
                         const products = allItems.filter(p => p.category && p.category.toLowerCase() === cat.toLowerCase());
-
                         if (loadingArea) loadingArea.remove();
 
                         if (products.length > 0) {
@@ -416,11 +436,9 @@
                         <button class="mini-action" onclick="addToWishlist('${p.name}', '${p.price}', '${p.imageurl}')">❤️</button>
                         <button class="mini-action" onclick="addToCart('${p.name}', '${p.price}', '${p.imageurl}')">🛒</button>
                     </div>
-                    
                     <div class="p-img-square">
-                        <img src="${p.imageurl || 'https://via.placeholder.com/200'}" alt="${p.name}">
+                        <img src="${p.imageurl}" alt="${p.name}" loading="lazy" onclick="showProductDetails('${p.name}', '${p.price}', '${p.imageurl}')">
                     </div>
-                    
                     <div class="p-info-mini">
                         <h4 class="p-name-mini">${p.name}</h4>
                         <p class="p-price-mini">TZS ${p.price}</p>
@@ -431,141 +449,14 @@
                         } else {
                             productGrid.innerHTML = '<p style="color:white; padding:20px; text-align:center;">Bado hakuna bidhaa hapa.</p>';
                         }
-                    } else {
-                        setTimeout(() => checkDataAndFill(cat), 200);
-                    }
-                }
-                // 5. RENDER RESULTS (Liquid Glass Style)
-                function renderResults(products, title) {
-                    const homeView = document.getElementById('home-view');
-                    const resultsView = document.getElementById('results-view');
-                    const container = document.getElementById('products-container');
-
-                    if (homeView) homeView.style.display = 'none';
-                    if (resultsView) resultsView.style.display = 'block';
-
-                    const info = categoryData[title] || { desc: 'Bidhaa bora kutoka Mwenda Store.', img: 'https://via.placeholder.com/1000x400' };
-
-                    container.innerHTML = `
-    <div class="category-hero glass">
-        <img src="${info.img}" class="hero-img" loading="eager">
-        <div class="hero-overlay"><h2>${title}</h2></div>
-    </div>
-    
-    <div class="product-grid-triple">
-        ${products.length ? products.map(p => `
-            <div class="p-card-mini glass">
-                <button class="wishlist-float-mini" onclick="addToWishlist('${p.name}', '${p.price}', '${p.imageurl}')">❤️</button>
-                
-                <div class="p-img-square">
-                    <img src="${p.imageurl || 'https://via.placeholder.com/200'}" 
-                         class="product-trigger" 
-                         alt="${p.name}" 
-                         loading="lazy"
-                         data-price="${p.price}"
-                         data-desc="${p.description || ''}"
-                         onclick="showProductDetails('${p.name}', '${p.price}', '${p.imageurl}')"
-                         onerror="this.src='https://via.placeholder.com/200'">
-                </div>
-
-                <div class="p-info-mini">
-                    <h4 class="p-name-mini">${p.name}</h4>
-                    <p class="p-price-mini">TZS ${p.price}</p>
-                    <p class="p-desc-mini">${p.description || 'Bidhaa bora kutoka Mwenda Store.'}</p>
-                    
-                    <div class="p-actions-mini">
-                        <button class="cart-btn-icon" onclick="addToCart('${p.name}', '${p.price}', '${p.imageurl}')">🛒</button>
-                        <button class="buy-btn-mini" onclick="order('${p.name}', '${p.price}')">Agiza</button>
-                    </div>
-                </div>
-            </div>
-        `).join('') : '<p style="grid-column: span 2; text-align:center; color: white; padding: 20px;">Bado hakuna bidhaa hapa.</p>'}
-    </div>
-`;
-                    window.scrollTo(0, 0);
-                }
-
-                // 6. SEARCH & NAVIGATION
-                function searchProducts() {
-                    const q = document.getElementById('searchInput').value.toLowerCase().trim();
-                    if (q.length < 2) return;
-                    const filtered = allItems.filter(p =>
-                        (p.name && p.name.toLowerCase().includes(q)) ||
-                        (p.category && p.category.toLowerCase().includes(q))
-                    );
-                    renderResults(filtered, `Matokeo: ${q}`);
-                }
-
-                function checkEnter(event) { if (event.key === "Enter") searchProducts(); }
-
-                function goHome() {
-                    document.getElementById('home-view').style.display = 'block';
-                    document.getElementById('results-view').style.display = 'none';
-                }
-
-                // 7. ACTIONS (Order & Cart)
-                function order(name, price) {
-                    const text = `Habari Mwenda Store 🌿, nahitaji bidhaa hii:\n\n*Bidhaa:* ${name}\n*Bei:* ${price}`;
-                    window.open(`https://wa.me/255747185190?text=${encodeURIComponent(text)}`);
-                }
-
-                async function addToCart(itemName, price, imgUrl) {
-                    const userPhone = localStorage.getItem('user_email');
-                    if (localStorage.getItem('isLoggedIn') !== 'true') {
-                        alert("Tafadhali ingia kwenye akaunti kwanza!");
-                        window.location.href = "login.html";
-                        return;
-                    }
-
-                    const payload = { action: "saveItem", type: "Cart", phone: userPhone, itemName: itemName, price: price };
-
-                    try {
-                        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
-                        alert("✅ " + itemName + " imeongezwa kwenye Cart!");
-                    } catch (e) {
-                        alert("Imeshindwa kuongeza bidhaa.");
-                    }
-                }
-                // Kazi ya kuongeza kwenye WISHLIST
-                async function addToWishlist(itemName, price, imgUrl) {
-                    const userPhone = localStorage.getItem('user_email');
-                    const isLoggedIn = localStorage.getItem('isLoggedIn');
-
-                    if (isLoggedIn !== 'true') {
-                        alert("Tafadhali ingia kwanza!");
-                        return;
-                    }
-
-                    const payload = {
-                        action: "saveItem",
-                        type: "Wishlist",
-                        phone: userPhone,
-                        itemName: itemName,
-                        price: price
-                    };
-
-                    try {
-                        fetch(SCRIPT_URL, {
-                            method: "POST",
-                            mode: "no-cors",
-                            body: JSON.stringify(payload)
-                        });
-                        alert("❤️ " + itemName + " imehifadhiwa kwenye Wishlist!");
-                    } catch (e) {
-                        console.log("Error saving wishlist");
                     }
                 }
 
-                // Kazi ya Agiza (Direct WhatsApp)
-                function order(name, price) {
-                    const msg = `Habari Mwenda Store, nataka kuagiza:\n📦 Bidhaa: ${name}\n💰 Bei: TZS ${price}`;
-                    const url = `https://wa.me/255747185190?text=${encodeURIComponent(msg)}`;
-                    window.open(url, '_blank');
-                }
-
+                // 5. SEARCH & NAVIGATION
                 function searchProducts() {
                     const q = document.getElementById('searchInput').value.toLowerCase().trim();
                     if (q.length < 2) return alert("Andika herufi 2 au zaidi.");
+
                     const filtered = allItems.filter(p =>
                         (p.name && p.name.toLowerCase().includes(q)) ||
                         (p.category && p.category.toLowerCase().includes(q))
@@ -573,54 +464,101 @@
                     renderResults(filtered, `Matokeo ya: ${q}`);
                 }
 
-                function checkEnter(event) { if (event.key === "Enter") searchProducts(); }
+                function renderResults(products, title) {
+                    const homeView = document.getElementById('home-view');
+                    const resultsView = document.getElementById('results-view');
+                    const container = document.getElementById('products-container');
+
+                    homeView.style.display = 'none';
+                    resultsView.style.display = 'block';
+
+                    container.innerHTML = `
+        <div class="category-hero glass">
+            <div class="hero-overlay"><h2>${title}</h2></div>
+        </div>
+        <div class="product-grid-triple">
+            ${products.length ? products.map(p => `
+                <div class="p-card-mini glass">
+                    <button class="wishlist-float-mini" onclick="addToWishlist('${p.name}', '${p.price}', '${p.imageurl}')">❤️</button>
+                    <div class="p-img-square">
+                        <img src="${p.imageurl}" alt="${p.name}" loading="lazy" onclick="showProductDetails('${p.name}', '${p.price}', '${p.imageurl}')">
+                    </div>
+                    <div class="p-info-mini">
+                        <h4 class="p-name-mini">${p.name}</h4>
+                        <p class="p-price-mini">TZS ${p.price}</p>
+                        <div class="p-actions-mini">
+                            <button class="cart-btn-icon" onclick="addToCart('${p.name}', '${p.price}', '${p.imageurl}')">🛒</button>
+                            <button class="buy-btn-mini" onclick="order('${p.name}', '${p.price}')">Agiza</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('') : '<p style="text-align:center; color: white; padding: 20px;">Hakuna matokeo yaliyopatikana.</p>'}
+        </div>
+    `;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
 
                 function goHome() {
                     document.getElementById('home-view').style.display = 'block';
                     document.getElementById('results-view').style.display = 'none';
+                    sessionStorage.removeItem('lastCategory');
                 }
 
+                // 6. ACTIONS (WhatsApp, Cart, Wishlist)
                 function order(name, price) {
                     const text = `Habari Mwenda Shop 🌿, nahitaji bidhaa hii:\n\n*Bidhaa:* ${name}\n*Bei:* ${price}`;
                     window.open(`https://wa.me/255747185190?text=${encodeURIComponent(text)}`);
                 }
 
-                // 7. WINDOW EVENTS
-                window.onclick = (event) => {
-                    const qvModal = document.getElementById('productQuickView');
-                    if (event.target == qvModal || event.target.classList.contains('close-btn')) {
-                        closeProductDetails();
+                async function addToCart(itemName, price, imgUrl) {
+                    const userPhone = localStorage.getItem('user_email');
+                    if (localStorage.getItem('isLoggedIn') !== 'true') {
+                        alert("Tafadhali ingia kwenye akaunti kwanza!");
+                        return;
                     }
-                };
+                    const payload = { action: "saveItem", type: "Cart", phone: userPhone, itemName: itemName, price: price };
+                    try {
+                        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
+                        alert("✅ " + itemName + " imeongezwa kwenye Cart!");
+                    } catch (e) { alert("Imeshindwa kuongeza bidhaa."); }
+                }
 
-                window.onload = fetchProducts;
-            </script>
+                async function addToWishlist(itemName, price, imgUrl) {
+                    const userPhone = localStorage.getItem('user_email');
+                    if (localStorage.getItem('isLoggedIn') !== 'true') {
+                        alert("Tafadhali ingia kwanza!");
+                        return;
+                    }
+                    const payload = { action: "saveItem", type: "Wishlist", phone: userPhone, itemName: itemName, price: price };
+                    try {
+                        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
+                        alert("❤️ " + itemName + " imehifadhiwa!");
+                    } catch (e) { console.log("Error wishlist"); }
+                }
 
+                // 7. UTILITIES
+                function checkEnter(event) { if (event.key === "Enter") searchProducts(); }
 
-            <script>
                 function toggleSearch() {
-                    // 1. Pata ile sehemu ya search ya juu
                     const searchArea = document.getElementById('top-search-area');
-                    const searchInput = document.getElementById('search-input');
-
-                    // 2. Pandisha ukurasa mpaka juu kabisa kwa ulaini (Smooth Scroll)
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-
-                    // 3. Subiri sekunde kidogo (wakati inascroll) kisha weka mshale wa kuandikia
+                    const searchInput = document.getElementById('searchInput'); // Imetajwa kama searchInput kwenye HTML yako
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     setTimeout(() => {
                         if (searchInput) {
                             searchInput.focus();
-                            // Unaweza pia kuongeza class ya kung'aa (highlight) hapa kama unataka
-                            searchArea.style.border = "1px solid #4ade80";
+                            if (searchArea) searchArea.style.border = "1px solid #4ade80";
                         }
-                    }, 500); // 500ms ni muda wa kutosha kwa scroll kufika juu
+                    }, 500);
+                }
+
+                function scrollToTop() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             </script>
 
-
+            <button id="backToTop" class="glass" onclick="scrollToTop()">
+                <span style="font-size: 20px;">↑</span>
+            </button>
 </body>
 
 
