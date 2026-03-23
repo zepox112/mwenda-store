@@ -11,6 +11,7 @@
             --primary: #25D366;
             --bg: #0f172a;
             --glass: rgba(255, 255, 255, 0.1);
+            --danger: #ff5252;
         }
 
         body {
@@ -34,25 +35,28 @@
             width: 100%;
             max-width: 500px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         h2,
         h3 {
             color: var(--primary);
             text-align: center;
+            margin-bottom: 10px;
         }
 
-        /* Menu Buttons */
+        /* Navigation Menu */
         .admin-menu {
             display: flex;
             gap: 10px;
-            padding: 10px;
+            padding-bottom: 20px;
             justify-content: center;
-            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
         }
 
         .admin-menu button {
@@ -63,6 +67,7 @@
             border-radius: 12px;
             cursor: pointer;
             transition: 0.3s;
+            font-weight: 600;
         }
 
         .admin-menu button:hover {
@@ -70,7 +75,7 @@
             color: black;
         }
 
-        /* Form Styling */
+        /* Inputs */
         input,
         select,
         textarea {
@@ -81,13 +86,8 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             background: rgba(0, 0, 0, 0.3);
             color: white;
-            font-size: 1rem;
             box-sizing: border-box;
             outline: none;
-        }
-
-        input:focus {
-            border-color: var(--primary);
         }
 
         .btn-submit {
@@ -102,205 +102,301 @@
             cursor: pointer;
         }
 
-        .warning {
-            background: rgba(255, 82, 82, 0.1);
-            border: 1px solid #ff5252;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            color: #ff5252;
-            margin: 15px 0;
-        }
-
-        #admin-product-list div {
+        /* Product List Styles */
+        .product-item {
             display: flex;
             align-items: center;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            border-radius: 12px;
-            margin-top: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
         }
+
+        .product-item.selected {
+            border-color: var(--danger);
+            background: rgba(255, 82, 82, 0.15);
+        }
+
+        .product-info {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            pointer-events: none;
+        }
+
+        .product-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #222;
+        }
+
+        .product-info div {
+            margin-left: 15px;
+        }
+
+        .product-info b {
+            display: block;
+            font-size: 0.95rem;
+        }
+
+        .product-info small {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .select-dot {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            margin-left: 10px;
+        }
+
+        .selected .select-dot {
+            background: var(--danger);
+            border-color: var(--danger);
+            box-shadow: 0 0 8px var(--danger);
+        }
+
+        #multi-delete-btn {
+            position: sticky;
+            bottom: 0;
+            background: var(--danger);
+            color: white;
+            display: none;
+            z-index: 100;
+        }
+
+        /* --- SCROLL ARROW BUTTON --- */
+        #scroll-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: black;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: 0.3s ease;
+            z-index: 1000;
+            border: none;
+            opacity: 0.8;
+        }
+
+        #scroll-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .arrow-up {
+            transform: rotate(180deg);
+        }
+
+        /* Inageuza mshale uonekane juu */
     </style>
 </head>
 
 <body>
 
+    <button id="scroll-btn" onclick="handleScrollBtn()">↓</button>
+
     <div id="setup-section" class="glass-card hidden">
-        <h2>Karibu Admin! ✨</h2>
-        <p style="text-align:center; opacity:0.8;">Karibu Admin wa <b>Mwenda Store</b>. Tafadhali sajili PIN yako ya
-            siri kuanza.</p>
-        <div class="warning">⚠️ <b>ONYO:</b> Usishiriki link hii au PIN yako na mtu yeyote!</div>
-        <input type="password" id="reg-pin" placeholder="Sajili PIN mpya">
+        <h2>Sajili Panel ✨</h2>
+        <input type="password" id="reg-pin" placeholder="PIN mpya">
         <input type="password" id="confirm-pin" placeholder="Thibitisha PIN">
-        <button class="btn-submit" onclick="registerAdmin()">SAJILI PANEL</button>
+        <button class="btn-submit" onclick="registerAdmin()">SAJILI</button>
     </div>
 
     <div id="login-section" class="glass-card hidden">
         <h2>Ingia Admin</h2>
-        <input type="password" id="admin-pass" placeholder="Ingiza PIN yako"
-            style="text-align:center; letter-spacing:5px;">
+        <input type="password" id="admin-pass" placeholder="PIN" style="text-align:center;">
         <button class="btn-submit" onclick="checkPass()">FUNGUA PANEL</button>
     </div>
 
     <div id="admin-dashboard" class="glass-card hidden">
-        <h3>Mwenda Store Panel</h3>
-
         <div class="admin-menu">
             <button onclick="toggleView('add')">Ongeza 📦</button>
             <button onclick="toggleView('remove')">Futa 🗑️</button>
-            <button onclick="toggleView('settings')">Settings ⚙️</button>
+            <button onclick="toggleView('settings')">⚙️</button>
         </div>
 
         <div id="section-add">
             <form id="productForm">
                 <input type="text" id="p-name" placeholder="Jina la Bidhaa" required>
-                <input type="text" id="p-price" placeholder="Bei (TZS)" required>
-
-                <div class="form-group" style="margin-top:12px;">
-                    <label style="font-size: 13px; color: #ccc; margin-left: 5px;">Kategoria ya Bidhaa</label>
-                    <select id="p-category" required>
-                        <option value="">Chagua...</option>
-                        <option value="Stationery">Shule na Ofisi 📚</option>
-                        <option value="Personal Care">Usafi & Urembo ✨</option>
-                        <option value="Hardware">Hardware & Home 🛠️</option>
-                        <option value="Sports">Michezo & Watoto ⚽</option>
-                        <option value="Pest">Dawa za Wadudu 🦟</option>
-                        <option value="Grocery">Vyakula & Jikoni 🍎</option>
-                        <option value="Clothing">Mavazi na Nguo 👕</option>
-                    </select>
-                </div>
-
-                <textarea id="p-description" placeholder="Maelezo kidogo ya bidhaa..." rows="2"></textarea>
-                <p style="font-size: 12px; margin: 15px 0 0 5px; opacity: 0.7;">Picha ya Bidhaa:</p>
+                <input type="text" id="p-price" placeholder="Bei" required>
+                <select id="p-category" required>
+                    <option value="">Chagua Kategoria...</option>
+                    <option value="Stationery">Shule na Ofisi 📚</option>
+                    <option value="Personal Care">Usafi & Urembo ✨</option>
+                    <option value="Hardware">Hardware & Home 🛠️</option>
+                    <option value="Sports">Michezo & Watoto ⚽</option>
+                    <option value="Pest">Dawa za Wadudu 🦟</option>
+                    <option value="Grocery">Vyakula & Jikoni 🍎</option>
+                    <option value="Clothing">Mavazi na Nguo 👕</option>
+                    <option value="Other">Nyinginezo 📦</option>
+                </select>
+                <textarea id="p-description" placeholder="Maelezo..." rows="2"></textarea>
                 <input type="file" id="p-image-file" accept="image/*" required>
-
-                <div id="status" style="margin-top:10px; font-size:14px; text-align:center;"></div>
+                <div id="status" style="margin-top:10px; text-align:center;"></div>
                 <button type="submit" id="btn-save" class="btn-submit">HIFADHI MTANDAONI 🌍</button>
             </form>
         </div>
 
         <div id="section-remove" class="hidden">
             <div id="admin-product-list"></div>
+            <button id="multi-delete-btn" class="btn-submit" onclick="deleteSelected()">FUTA ZILIZOCHAGULIWA
+                (0)</button>
         </div>
 
         <div id="reset-section" class="hidden">
-            <h3>Sasisha Usalama 🔐</h3>
-            <input type="password" id="old-pass" placeholder="Password ya sasa">
-            <input type="password" id="new-pin-reset" placeholder="Password mpya">
-            <button class="btn-submit" onclick="resetPassword()">BADILISHA SASA</button>
+            <h3>Badili PIN 🔐</h3>
+            <input type="password" id="old-pass" placeholder="PIN ya sasa">
+            <input type="password" id="new-pin-reset" placeholder="PIN mpya">
+            <button class="btn-submit" onclick="resetPassword()">BADILISHA PIN</button>
         </div>
     </div>
 
     <script>
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwx-pbd2JNyT8-st-4AakEKFps0Ql6Y3o5_Zb4ZkEJbrJdpAJpffu88tEkvIFmKeQpigA/exec';
         const IMGBB_API_KEY = '9d19a0f1d80f89446815cfbd8d40ee8c';
+        let selectedProducts = [];
 
-        // --- AUTH LOGIC ---
-        window.onload = () => {
-            const savedPin = localStorage.getItem('mwendaAdminPIN');
-            if (!savedPin) {
-                document.getElementById('setup-section').classList.remove('hidden');
+        // --- SCROLL LOGIC ---
+        window.onscroll = function () {
+            const btn = document.getElementById('scroll-btn');
+            // Ikiwa mtumiaji ameshuka zaidi ya 300px, geuza mshale uelekee juu
+            if (window.scrollY > 300) {
+                btn.innerHTML = "↑";
+                btn.classList.remove('arrow-down');
             } else {
-                document.getElementById('login-section').classList.remove('hidden');
+                btn.innerHTML = "↓";
             }
+        };
+
+        function handleScrollBtn() {
+            const btn = document.getElementById('scroll-btn');
+            if (btn.innerHTML === "↓") {
+                // Shuka chini kabisa
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            } else {
+                // Panda juu kabisa
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // --- AUTH & OTHER FUNCTIONS ---
+        window.onload = () => {
+            if (!localStorage.getItem('mwendaAdminPIN')) document.getElementById('setup-section').classList.remove('hidden');
+            else document.getElementById('login-section').classList.remove('hidden');
         };
 
         function registerAdmin() {
             const p1 = document.getElementById('reg-pin').value;
-            const p2 = document.getElementById('confirm-pin').value;
-            if (p1 === p2 && p1.length >= 4) {
-                localStorage.setItem('mwendaAdminPIN', p1);
-                alert("✅ Usajili umekamilika!");
-                location.reload();
-            } else { alert("Hakikisha PIN zinafanana na zina urefu wa 4+"); }
+            if (p1.length >= 4) { localStorage.setItem('mwendaAdminPIN', p1); location.reload(); }
         }
 
         function checkPass() {
-            const input = document.getElementById('admin-pass').value;
-            if (input === localStorage.getItem('mwendaAdminPIN')) {
+            if (document.getElementById('admin-pass').value === localStorage.getItem('mwendaAdminPIN')) {
                 document.getElementById('login-section').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
-            } else { alert("PIN siyo sahihi!"); }
+            } else alert("PIN wrong!");
         }
 
-        // --- NAVIGATION ---
         function toggleView(view) {
-            document.getElementById('section-add').classList.add('hidden');
-            document.getElementById('section-remove').classList.add('hidden');
-            document.getElementById('reset-section').classList.add('hidden');
+            document.getElementById('section-add').className = view === 'add' ? '' : 'hidden';
+            document.getElementById('section-remove').className = view === 'remove' ? '' : 'hidden';
+            document.getElementById('reset-section').className = view === 'settings' ? '' : 'hidden';
+            if (view === 'remove') loadProducts();
+        }
 
-            if (view === 'add') document.getElementById('section-add').classList.remove('hidden');
-            if (view === 'remove') {
-                document.getElementById('section-remove').classList.remove('hidden');
+        async function loadProducts() {
+            const list = document.getElementById('admin-product-list');
+            list.innerHTML = "<p style='text-align:center;'>Inapakia duka... 🔄</p>";
+            selectedProducts = [];
+            updateDeleteButton();
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL + "?action=read&t=" + new Date().getTime());
+                const data = await res.json();
+                const items = data.sheet1 || [];
+                list.innerHTML = items.map(p => {
+                    const img = `https://images.weserv.nl/?url=${encodeURIComponent(p.imageUrl)}&w=100&h=100&fit=cover&output=webp`;
+                    return `
+                        <div class="product-item" onclick="toggleSelect(this, '${p.name}')">
+                            <div class="product-info">
+                                <img src="${img}">
+                                <div><b>${p.name}</b><small>TZS ${p.price}</small></div>
+                            </div>
+                            <div class="select-dot"></div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) { list.innerHTML = "Network Error!"; }
+        }
+
+        function toggleSelect(element, name) {
+            element.classList.toggle('selected');
+            if (element.classList.contains('selected')) selectedProducts.push(name);
+            else selectedProducts = selectedProducts.filter(p => p !== name);
+            updateDeleteButton();
+        }
+
+        function updateDeleteButton() {
+            const btn = document.getElementById('multi-delete-btn');
+            btn.style.display = selectedProducts.length > 0 ? 'block' : 'none';
+            btn.innerText = `FUTA BIDHAA ${selectedProducts.length} ZILIZOCHAGULIWA 🗑️`;
+        }
+
+        async function deleteSelected() {
+            if (!confirm(`Futa bidhaa hizi ${selectedProducts.length}?`)) return;
+            const btn = document.getElementById('multi-delete-btn');
+            btn.disabled = true; btn.innerText = "Inafuta... ⏳";
+            try {
+                for (let name of selectedProducts) {
+                    await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'delete', name: name }) });
+                }
+                alert("✅ Zimefutwa!");
                 loadProducts();
-            }
-            if (view === 'settings') document.getElementById('reset-section').classList.remove('hidden');
+            } catch (e) { alert("Error!"); loadProducts(); }
         }
 
-        // --- RESET PASSWORD ---
-        function resetPassword() {
-            const old = document.getElementById('old-pass').value;
-            const newP = document.getElementById('new-pin-reset').value;
-            if (old === localStorage.getItem('mwendaAdminPIN')) {
-                localStorage.setItem('mwendaAdminPIN', newP);
-                alert("✅ Password imebadilishwa!");
-                location.reload();
-            } else { alert("Password ya zamani si sahihi!"); }
-        }
-
-        // --- PRODUCT HANDLING ---
         document.getElementById('productForm').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-save');
             const status = document.getElementById('status');
             const file = document.getElementById('p-image-file').files[0];
-
-            btn.disabled = true; status.innerText = "Inatuma picha... ⏳";
-
+            btn.disabled = true; status.innerHTML = "Inatuma... ⏳";
             try {
-                const formData = new FormData();
-                formData.append('image', file);
+                const formData = new FormData(); formData.append('image', file);
                 const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: 'POST', body: formData });
                 const imgData = await imgRes.json();
-
-                status.innerText = "Inahifadhi Excel... 📊";
-                const product = {
-                    action: 'add',
-                    name: document.getElementById('p-name').value,
-                    price: document.getElementById('p-price').value,
-                    category: document.getElementById('p-category').value,
-                    description: document.getElementById('p-description').value,
-                    imageUrl: imgData.data.url
-                };
-
-                await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(product) });
-                status.innerHTML = "<b style='color:#2ecc71;'>✅ Bidhaa Imehifadhiwa!</b>";
-                e.target.reset();
-            } catch (err) { status.innerHTML = "<b style='color:#ff5252;'>❌ Tatizo limetokea!</b>"; }
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST', mode: 'no-cors', body: JSON.stringify({
+                        action: 'add', name: document.getElementById('p-name').value, price: document.getElementById('p-price').value,
+                        category: document.getElementById('p-category').value, description: document.getElementById('p-description').value, imageUrl: imgData.data.url
+                    })
+                });
+                status.innerHTML = "✅ Saved!"; e.target.reset();
+            } catch (err) { status.innerHTML = "❌ Error!"; }
             finally { btn.disabled = false; btn.innerText = "HIFADHI MTANDAONI 🌍"; }
         };
 
-        async function loadProducts() {
-            const list = document.getElementById('admin-product-list');
-            list.innerHTML = "<p style='text-align:center;'>Inapakia... 🔄</p>";
-            try {
-                const res = await fetch(GOOGLE_SCRIPT_URL + "?action=read");
-                const data = await res.json();
-                list.innerHTML = (data.sheet1 || []).map(p => `
-                    <div>
-                        <img src="${p.imageUrl}" width="40" height="40" style="border-radius:5px; object-fit:cover;">
-                        <span style="flex-grow:1; margin-left:10px; font-size:13px;">${p.name}<br><b>${p.price}</b></span>
-                        <button onclick="deleteProduct('${p.name}')" style="background:red; border:none; color:white; padding:5px; border-radius:5px; cursor:pointer;">Futa</button>
-                    </div>
-                `).join('');
-            } catch (e) { list.innerHTML = "Hitilafu kupakia data."; }
-        }
-
-        async function deleteProduct(name) {
-            if (!confirm(`Futa ${name}?`)) return;
-            await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'delete', name: name }) });
-            alert("Ombi limetumwa!"); setTimeout(loadProducts, 2000);
+        function resetPassword() {
+            const old = document.getElementById('old-pass').value;
+            const newP = document.getElementById('new-pin-reset').value;
+            if (old === localStorage.getItem('mwendaAdminPIN')) {
+                localStorage.setItem('mwendaAdminPIN', newP);
+                alert("✅ Changed!"); location.reload();
+            } else alert("Old PIN incorrect!");
         }
     </script>
 </body>
